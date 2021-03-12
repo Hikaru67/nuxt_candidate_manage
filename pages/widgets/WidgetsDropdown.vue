@@ -137,6 +137,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import { CChartLineSimple, CChartBarSimple } from '../charts/index.js'
 
 export default {

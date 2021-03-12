@@ -14,6 +14,22 @@ export default [
       },
       {
         _name: 'CSidebarNavTitle',
+        _children: ['Email Templates']
+      },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'New email template',
+        to: '/email/templates/add',
+        icon: 'cil-pencil'
+      },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'List email templates',
+        to: '/email/templates',
+        icon: 'cil-drop'
+      },
+      {
+        _name: 'CSidebarNavTitle',
         _children: ['Theme']
       },
       {

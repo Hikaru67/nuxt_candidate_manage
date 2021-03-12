@@ -22,7 +22,7 @@
                 :key="key"
                 color="outline-secondary"
                 class="mx-0"
-                :pressed="value === selected ? true : false"
+                :pressed="value === selected"
                 @click="selected = value"
               >
                 {{ value }}
