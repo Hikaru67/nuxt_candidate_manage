@@ -72,7 +72,7 @@
 <script>
 export default {
   name: 'Register',
-  layout: 'empty',
+  layout: 'blank',
   auth: false,
   data () {
     return {

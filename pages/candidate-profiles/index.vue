@@ -1,13 +1,13 @@
 <template>
-  <ListTemplate />
+  <ListCandidateProfiles />
 </template>
 
 <script>
 
-import ListTemplate from '~/components/email/template/ListTemplate'
+import ListCandidateProfiles from '~/components/ListCandidateProfiles'
 export default {
   name: 'Index',
-  components: { ListTemplate },
+  components: { ListCandidateProfiles },
   beforeCreate () {
     if (this.$auth.user.role_id !== 1) {
       alert('You dont have permission !')

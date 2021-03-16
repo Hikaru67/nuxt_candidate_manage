@@ -12,7 +12,7 @@
     />
     <CHeaderBrand
       class="mx-auto d-lg-none"
-      src="img/brand/coreui-vue-logo.svg"
+      src=""
       width="190"
       height="46"
       alt="CoreUI Logo"
@@ -52,9 +52,9 @@
       </CHeaderNavItem>
       <TheHeaderDropdownAccnt />
     </CHeaderNav>
-    <CSubheader class="px-3">
+    <!--    <CSubheader class="px-3">
       <CBreadcrumbRouter class="border-0" />
-    </CSubheader>
+    </CSubheader>-->
   </CHeader>
 </template>
 

@@ -64,14 +64,14 @@
         <!-- convertData source_id -->
         <template #source_id="{ item }">
           <td>
-           <span class="test2"> {{ convertSource(item.source_id) }}</span>
+            <span class="test2"> {{ convertSource(item.source_id) }}</span>
           </td>
         </template>
 
         <!-- convertData filtered_result -->
         <template #filtered_result="{ item }">
           <td>
-           <span class="test2"> {{ convertFilteredResult(item.filtered_result) }}</span>
+            <span class="test2"> {{ convertFilteredResult(item.filtered_result) }}</span>
           </td>
         </template>
 
@@ -107,68 +107,67 @@
 </template>
 
 <script>
-import { freeSet } from "@coreui/icons";
-import axios from "axios";
+import { freeSet } from '@coreui/icons'
+import axios from 'axios'
 
-const urlSources = "http://candidate-manage.herokuapp.com/api/sources";
-const urlPositions = "http://candidate-manage.herokuapp.com/api/positions";
+const urlSources = 'http://candidate-manage.herokuapp.com/api/sources'
+const urlPositions = 'http://candidate-manage.herokuapp.com/api/positions'
 const urlCandidatesProfiles =
-  "http://candidate-manage.herokuapp.com/api/candidates-profiles";
+  'http://candidate-manage.herokuapp.com/api/candidates-profiles'
 
 export default {
-  name: "ListTemplate",
+  name: 'ListTemplate',
   freeSet,
-  data() {
+  data () {
     return {
       fields: [
-        "id",
-        "first_name",
-        "last_name",
-        "position_id",
-        "source_id",
-        "received_date",
-        "filtered_result",
-        "interview_date",
-        "feedback",
-        "interview_result",
-        "cv_link",
-        "note",
-        "created_at",
-        "updated_at",
+        'id',
+        'first_name',
+        'last_name',
+        'position_id',
+        'source_id',
+        'received_date',
+        'filtered_result',
+        'interview_date',
+        'feedback',
+        'interview_result',
+        'cv_link',
+        'note',
+        'created_at',
         {
-          key: "action",
-          label: "",
-        },
+          key: 'action',
+          label: ''
+        }
       ],
       items: [],
       positions: [],
       sources: [],
       filtered_results: [
-        { value: 0, text: "Pending" },
-        { value: 1, text: "Pass" },
+        { value: 0, text: 'Pending' },
+        { value: 1, text: 'Pass' }
       ],
       interview_results: [
-        { value: 0, text: "Pending" },
-        { value: 1, text: "Pass" },
-      ],
-    };
+        { value: 0, text: 'Pending' },
+        { value: 1, text: 'Pass' }
+      ]
+    }
   },
 
-  mounted() {
+  mounted () {
     //   get data to items
     axios.get(urlCandidatesProfiles).then((response) => {
-      this.items = response.data;
-    });
+      this.items = response.data
+    })
 
     //   get data to position
     axios.get(urlPositions).then((response) => {
-      this.positions = response.data;
-    });
+      this.positions = response.data
+    })
 
     //   get data to position
     axios.get(urlSources).then((response) => {
-      this.sources = response.data;
-    });
+      this.sources = response.data
+    })
   },
 
   methods: {
@@ -176,80 +175,80 @@ export default {
      * `convertDate` will convert format date
      * @param date String
      */
-    convertDate(date) {
-      date = new Date(date);
-      return date.getDate() + "-" + date.getMonth() + "-" + date.getFullYear();
+    convertDate (date) {
+      date = new Date(date)
+      return date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear()
     },
 
     /**
      * `convertPosition` will convert from position id to position name
      * @param id Integer
      */
-    convertPosition(id) {
-      let result = this.positions.find((item) => {
-        return item.id === id;
-      });
-      return result ? result.name : "";
+    convertPosition (id) {
+      const result = this.positions.find((item) => {
+        return item.id === id
+      })
+      return result ? result.name : ''
     },
 
     /**
      * `convertSource` will convert from source id to source name
      * @param id Integer
      */
-    convertSource(id) {
-      let result = this.sources.find((item) => {
-        return item.id === id;
-      });
-      return result ? result.name : "";
+    convertSource (id) {
+      const result = this.sources.find((item) => {
+        return item.id === id
+      })
+      return result ? result.name : ''
     },
 
     /**
      * `convertFilteredResult` will convert from value to text of FilteredResult
      * @param value Integer
      */
-    convertFilteredResult(value) {
-      let result = this.filtered_results.find((item) => {
-        return item.value === value;
-      });
-      return result ? result.text : "";
+    convertFilteredResult (value) {
+      const result = this.filtered_results.find((item) => {
+        return item.value === value
+      })
+      return result ? result.text : ''
     },
 
     /**
      * `convertInterviewResult` will convert from value to text of InterviewResult
      * @param value Integer
      */
-    convertInterviewResult(value) {
-      let result = this.interview_results.find((item) => {
-        return item.value === value;
-      });
-      return result ? result.text : "";
+    convertInterviewResult (value) {
+      const result = this.interview_results.find((item) => {
+        return item.value === value
+      })
+      return result ? result.text : ''
     },
 
     /**
      * `editData` will redirect to edit data page
      * @param id String
      */
-    editData(id) {
-      window.location.href = "./templates/" + id;
+    editData (id) {
+      window.location.href = './profiles/' + id
     },
 
     /**
      * `deleteData` will delete data by id
      * @param id String
      */
-    deleteData(id) {
+    deleteData (id) {
       axios
         .delete(this.url + id)
         .then((res) => {
-          alert("Delete data success");
-          window.location.href = "./";
+          alert('Delete data success')
+          window.location.href = './'
         })
         .catch(function (error) {
-          alert(error);
-        });
-    },
-  },
-};
+          alert(error)
+        })
+    }
+  }
+}
 </script>
 
 <style  scoped>

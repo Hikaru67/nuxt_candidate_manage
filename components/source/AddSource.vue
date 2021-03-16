@@ -2,10 +2,10 @@
   <CCard>
     <CCardHeader class="center">
       <h3 v-if="id">
-        Edit Email Template
+        Edit Source
       </h3>
       <h3 v-else>
-        Create Email Template
+        Create Source
       </h3>
     </CCardHeader>
     <CCardBody>
@@ -19,17 +19,17 @@
           <CInput
             v-model="data.name"
             label="Name"
-            placeholder="Enter email name"
+            placeholder="Enter source name"
             horizontal
           />
         </CCol>
       </CRow>
-      <CRow>
+      <!--      <CRow>
         <CCol sm="10">
           <CInput
             v-model="data.title"
             label="Title"
-            placeholder="Enter email title"
+            placeholder="Enter source title"
             horizontal
           />
         </CCol>
@@ -40,11 +40,11 @@
             v-model="data.content"
             label="Content"
             rows="10"
-            placeholder="Enter email content"
+            placeholder="Enter source content"
             horizontal
           />
         </CCol>
-      </CRow>
+      </CRow>-->
     </CCardBody>
     <CCardFooter>
       <div class="center">
@@ -67,18 +67,16 @@
 <script>
 import axios from 'axios'
 
-const url = 'http://candidate-manage.herokuapp.com/api/email-templates'
+const url = 'http://candidate-manage.herokuapp.com/api/sources'
 export default {
-  name: 'AddTemplate',
+  name: 'AddSource',
   data () {
     return {
       url,
       id: '',
       errors: [],
       data: {
-        name: '',
-        title: '',
-        content: ''
+        name: ''
       }
     }
   },
@@ -125,7 +123,7 @@ export default {
      */
     updateData () {
       if (this.validate()) {
-        axios.put(this.url + this.id, this.data)
+        axios.put(this.url + '/' + this.id, this.data)
           .then((res) => {
             alert('Update data success')
             window.location.href = './'
@@ -145,13 +143,7 @@ export default {
       this.errors = []
 
       if (!this.data.name) {
-        this.errors.push('Email name required.')
-      }
-      if (!this.data.title) {
-        this.errors.push('Email title required.')
-      }
-      if (!this.data.content) {
-        this.errors.push('Email content required.')
+        this.errors.push('source name required.')
       }
 
       return !this.errors.length

@@ -8,9 +8,9 @@
     <template #toggler>
       <CHeaderNavLink>
         <div class="c-avatar">
-          {{ $auth.user.name }}
+          {{ $auth.user.username }}
           <img
-            src=""
+            src="https://i.pinimg.com/originals/cf/83/ee/cf83ee36ec9eeea1fda7566c3071da24.jpg"
             class="c-avatar-img "
           >
         </div>
@@ -73,7 +73,9 @@
       <CIcon name="cil-shield-alt" /> Lock Account
     </CDropdownItem>
     <CDropdownItem>
-      <CIcon name="cil-lock-locked" @click="logout" /> Logout
+      <div @click="logout()">
+        <CIcon name="cil-lock-locked" /> Logout
+      </div>
     </CDropdownItem>
   </CDropdown>
 </template>
@@ -88,6 +90,7 @@ export default {
   },
   methods: {
     logout () {
+      console.warn('1111111111111111111111')
       this.$auth.logout()
     }
   }

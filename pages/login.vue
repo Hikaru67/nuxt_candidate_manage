@@ -76,26 +76,27 @@
 </template>
 
 <script>
+// eslint-disable-next-line no-unused-vars
 import axios from 'axios'
 
 export default {
   name: 'Login',
   auth: false,
-  layout: 'empty',
+  layout: 'blank',
   data () {
     return {
       userForm: {
         username: '',
         password: ''
-      },
-      data: ''
+      }
     }
   },
   created () {
     // eslint-disable-next-line no-console
     console.log(this.$auth.user)
-    alert(this.$auth.user)
+    // alert(this.$auth.user)
     if (this.$auth.$state.loggedIn) {
+      this.$auth.logout()
       // this.$router.push('/')
     }
   },
@@ -106,22 +107,26 @@ export default {
           .loginWith('local', {
             data: this.userForm
           })
-          .then(() => this.$router.push('/'))
+          .then(function () {
+            alert('Login success !')
+            // this.$router.push('/')
+            window.location.href = '/'
+          })
       } catch (er) {
         alert(er)
       }
     },
-
-    login2 () {
-      axios.post('http://127.0.0.1:8000/api/auth/login', this.userForm)
-        .then((res) => {
-          alert(res.statusText)
-        })
-    },
-
     logout () {
       this.$auth.logout()
     }
+    // async logout () {
+    //   try {
+    //     await this.$auth.logout()
+    //       .then(() => this.$router.push('/'))
+    //   } catch (er) {
+    //     alert(er)
+    //   }
+    // }
   }
 }
 </script>

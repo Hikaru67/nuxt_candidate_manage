@@ -75,8 +75,9 @@ export default {
   },
   auth: {
     redirect: {
-      callback: '/dashboard', // sau khi login sẽ chuyển hướng về đây
+      callback: 'dashboard/dashboard', // sau khi login sẽ chuyển hướng về đây
       login: '/login',
+      logout: '/',
       home: '/'
     },
     strategies: {
@@ -86,7 +87,7 @@ export default {
           // propertyName: kết quả từ API trả về, nhớ xem kết quả để đặt key cho đúng
           login: { url: '/login', method: 'post', propertyName: 'meta.token' },
           user: { url: '/user', method: 'get', propertyName: 'data' },
-          logout: false
+          logout: false // { url: '/auth/logout', method: 'get', propertyName: 'data' }
         }
       }
     }

@@ -2,7 +2,7 @@
   <div>
     <WidgetsDropdown />
     <CCard>
-      <CCardBody>
+      <!--      <CCardBody>
         <CRow>
           <CCol sm="5">
             <h4 id="traffic" class="card-title mb-0">
@@ -31,8 +31,8 @@
           </CCol>
         </CRow>
         <MainChartExample style="height:300px;margin-top:40px;" />
-      </CCardBody>
-      <CCardFooter>
+      </CCardBody>-->
+      <!--      <CCardFooter>
         <CRow class="text-center">
           <CCol md sm="12" class="mb-sm-2 mb-0">
             <div class="text-muted">
@@ -94,10 +94,10 @@
             />
           </CCol>
         </CRow>
-      </CCardFooter>
+      </CCardFooter>-->
     </CCard>
-    <WidgetsBrand />
-    <CRow>
+    <!-- <WidgetsBrand /> -->
+    <!--    <CRow>
       <CCol md="12">
         <CCard>
           <CCardHeader>
@@ -465,20 +465,23 @@
           </CCardBody>
         </CCard>
       </CCol>
-    </CRow>
+    </CRow>-->
   </div>
 </template>
 
 <script>
-import MainChartExample from './charts/MainChartExample'
-import WidgetsDropdown from './widgets/WidgetsDropdown'
-import WidgetsBrand from './widgets/WidgetsBrand'
+import MainChartExample from '../charts/MainChartExample'
+import WidgetsDropdown from '../widgets/WidgetsDropdown'
+import WidgetsBrand from '../widgets/WidgetsBrand'
 
 export default {
-  name: 'Dashboard',
+  name: 'Index',
+  middleware: 'auth',
   components: {
+    // eslint-disable-next-line vue/no-unused-components
     MainChartExample,
     WidgetsDropdown,
+    // eslint-disable-next-line vue/no-unused-components
     WidgetsBrand
   },
   data () {
@@ -544,6 +547,13 @@ export default {
       ]
     }
   },
+  /* beforeCreate () {
+    // eslint-disable-next-line no-console
+    console.log(this.$auth.user)
+    if (!this.$auth.$state.loggedIn) {
+      this.$router.push('/login')
+    }
+  }, */
   methods: {
     color (value) {
       let $color
