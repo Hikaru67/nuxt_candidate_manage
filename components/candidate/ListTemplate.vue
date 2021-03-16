@@ -180,7 +180,7 @@
                   'btn m-2 btn-danger btn-square') ||
                 (item.filtered_result === 1 &&
                   'btn m-2 btn-success btn-square') ||
-                (item.filtered_result === 0 && 'btn m-2 btn-warning btn-square')
+                (item.filtered_result === 3 && 'btn m-2 btn-warning btn-square')
               "
               :value="convertFilteredResult(item.filtered_result)"
               @click="
@@ -201,7 +201,7 @@
                   'btn m-2 btn-danger btn-square') ||
                 (item.interview_result === 1 &&
                   'btn m-2 btn-success btn-square') ||
-                (item.interview_result === 0 &&
+                (item.interview_result === 3 &&
                   'btn m-2 btn-warning btn-square')
               "
               :value="convertInterviewResult(item.interview_result)"
@@ -388,8 +388,9 @@ export default {
      * @param id String
      */
     deleteData(id) {
+      console.log(id);
       axios
-        .delete(this.urlCandidatesProfiles + id)
+        .delete(this.urlCandidatesProfiles + "/" + id)
         .then((res) => {
           alert("Delete data success");
           window.location.href = "./";
@@ -409,8 +410,8 @@ export default {
 
       // id increase
       id += 1;
-      if (id > 2) {
-        id = 0;
+      if (id > 3) {
+        id = 1;
       }
 
       // find item update
@@ -443,8 +444,8 @@ export default {
 
       // id increase
       id += 1;
-      if (id > 2) {
-        id = 0;
+      if (id > 3) {
+        id = 1;
       }
 
       // find item update
