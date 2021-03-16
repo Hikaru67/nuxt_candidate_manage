@@ -3,6 +3,7 @@
 </template>
 
 <script>
+//
 import AddTemplate from "../../../components/candidate/CreateEditTemplate.vue";
 
 export default {

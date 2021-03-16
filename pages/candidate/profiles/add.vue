@@ -4,8 +4,6 @@
 
 <script>
 
-import axios from "axios";
-
 import AddTemplate from "../../../components/candidate/CreateEditTemplate";
 export default {
   name: "Add",
