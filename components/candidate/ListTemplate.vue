@@ -4,7 +4,7 @@
       <h3>List Profile</h3>
     </CCardHeader>
 
-    <CCardBody v-if="$auth.user.role_id === 1">
+    <CCardBody>
       <CDataTable
         :items="items"
         :fields="fields"
@@ -72,7 +72,8 @@
         <template #filtered_result="{ item }">
           <td>
             <span class="">
-              {{ convertFilteredResult(item.filtered_result) }}</span>
+              {{ convertFilteredResult(item.filtered_result) }}</span
+            >
           </td>
         </template>
 
@@ -110,7 +111,7 @@
       </CDataTable>
     </CCardBody>
 
-    <CCardBody v-else-if="$auth.user.role_id === 2">
+    <CCardBody>
       <CDataTable
         :items="items"
         :fields="fields"
@@ -178,15 +179,15 @@
         <template #filtered_result="{ item }">
           <td>
             <input
-              id="filtered_result-button"
               type="button"
+              id="filtered_result-button"
               :value="convertFilteredResult(item.filtered_result)"
               @click="transformButton(item.id, item.filtered_result)"
               @load="
                 buttonComponent(convertFilteredResult(item.filtered_result))
               "
-            >
-            <slot />
+            />
+            <slot></slot>
           </td>
         </template>
 
@@ -229,70 +230,70 @@
 </template>
 
 <script>
-import { freeSet } from '@coreui/icons'
-import axios from 'axios'
+import { freeSet } from "@coreui/icons";
+import axios from "axios";
 
-const urlSources = 'http://candidate-manage.herokuapp.com/api/sources'
-const urlPositions = 'http://candidate-manage.herokuapp.com/api/positions'
+const urlSources = "http://candidate-manage.herokuapp.com/api/sources";
+const urlPositions = "http://candidate-manage.herokuapp.com/api/positions";
 const urlCandidatesProfiles =
-  'http://candidate-manage.herokuapp.com/api/candidates-profiles'
+  "http://candidate-manage.herokuapp.com/api/candidates-profiles";
 
 export default {
-  name: 'ListTemplate',
+  name: "ListTemplate",
   freeSet,
-  data () {
+  data() {
     return {
       fields: [
-        'id',
-        'first_name',
-        'last_name',
-        'position_id',
-        'source_id',
-        'received_date',
-        'filtered_result',
-        'interview_date',
-        'feedback',
-        'interview_result',
-        'cv_link',
-        'note',
-        'created_at',
-        'updated_at',
+        "id",
+        "first_name",
+        "last_name",
+        "position_id",
+        "source_id",
+        "received_date",
+        "filtered_result",
+        "interview_date",
+        "feedback",
+        "interview_result",
+        "cv_link",
+        "note",
+        "created_at",
+        "updated_at",
         {
-          key: 'action',
-          label: ''
-        }
+          key: "action",
+          label: "",
+        },
       ],
       items: [],
       positions: [],
       sources: [],
       filtered_results: [
-        { value: 0, text: 'Pending' },
-        { value: 1, text: 'Pass' },
-        { value: 2, text: 'Fail' }
+        { value: 0, text: "Pending" },
+        { value: 1, text: "Pass" },
+        { value: 2, text: "Fail" },
       ],
       interview_results: [
-        { value: 0, text: 'Pending' },
-        { value: 2, text: 'Fail' },
-        { value: 1, text: 'Pass' }
-      ]
-    }
+        { value: 0, text: "Pending" },
+        { value: 2, text: "Fail" },
+        { value: 1, text: "Pass" },
+      ],
+    };
   },
 
-  mounted () {
+  mounted() {
     //   get data to items
     axios.get(urlCandidatesProfiles).then((response) => {
-      this.items = response.data
-    })
+      this.items = response.data;
+    });
 
     //   get data to position
     axios.get(urlPositions).then((response) => {
-      this.positions = response.data
-    })
+      this.positions = response.data;
+    });
 
     //   get data to position
     axios.get(urlSources).then((response) => {
-      this.sources = response.data
-    })
+      this.sources = response.data;
+    });
   },
 
   methods: {
@@ -300,128 +301,128 @@ export default {
      * `convertDate` will convert format date
      * @param date String
      */
-    convertDate (date) {
-      date = new Date(date)
-      return date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear()
+    convertDate(date) {
+      date = new Date(date);
+      return date.getDate() + "-" + date.getMonth() + "-" + date.getFullYear();
     },
 
     /**
      * `convertPosition` will convert from position id to position name
      * @param id Integer
      */
-    convertPosition (id) {
-      const result = this.positions.find((item) => {
-        return item.id === id
-      })
-      return result ? result.name : ''
+    convertPosition(id) {
+      let result = this.positions.find((item) => {
+        return item.id === id;
+      });
+      return result ? result.name : "";
     },
 
     /**
      * `convertSource` will convert from source id to source name
      * @param id Integer
      */
-    convertSource (id) {
-      const result = this.sources.find((item) => {
-        return item.id === id
-      })
-      return result ? result.name : ''
+    convertSource(id) {
+      let result = this.sources.find((item) => {
+        return item.id === id;
+      });
+      return result ? result.name : "";
     },
 
     /**
      * `convertFilteredResult` will convert from value to text of FilteredResult
      * @param value Integer
      */
-    convertFilteredResult (value) {
-      const result = this.filtered_results.find((item) => {
-        return item.value === value
-      })
-      const temp = result ? result.text : ''
+    convertFilteredResult(value) {
+      let result = this.filtered_results.find((item) => {
+        return item.value === value;
+      });
+      let temp = result ? result.text : "";
       // let buttonComponent = document.querySelector("#filtered_result-button");
       // // if(!buttonComponent) return buttonComponent
       // console.log("ádfjkhsdjfk"+buttonComponent);
       // this.convertClassButton(buttonComponent, temp);
 
-      return temp
+      return temp;
     },
 
     /**
      * `convertInterviewResult` will convert from value to text of InterviewResult
      * @param value Integer
      */
-    convertInterviewResult (value) {
-      const result = this.interview_results.find((item) => {
-        return item.value === value
-      })
-      return result ? result.text : ''
+    convertInterviewResult(value) {
+      let result = this.interview_results.find((item) => {
+        return item.value === value;
+      });
+      return result ? result.text : "";
     },
 
     /**
      * `editData` will redirect to edit data page
      * @param id String
      */
-    editData (id) {
-      window.location.href = './' + id
+    editData(id) {
+      window.location.href = "./" + id;
     },
 
     /**
      * `deleteData` will delete data by id
      * @param id String
      */
-    deleteData (id) {
+    deleteData(id) {
       axios
         .delete(this.urlCandidatesProfiles + id)
         .then((res) => {
-          alert('Delete data success')
-          window.location.href = './'
+          alert("Delete data success");
+          window.location.href = "./";
         })
         .catch(function (error) {
-          alert(error)
-        })
+          alert(error);
+        });
     },
 
-    transformButton (idComponent, id) {
-      const buttonComponent = document.querySelector('#filtered_result-button')
-      console.log('idComponent ' + idComponent)
+    transformButton(idComponent, id) {
+      let buttonComponent = document.querySelector("#filtered_result-button");
+      console.log("idComponent " + idComponent);
 
       // id increase
-      id += 1
+      id += 1;
       if (id > 2) {
-        id = 0
+        id = 0;
       }
 
       // find item update
-      const item = this.items.find(e => e.id === idComponent)
+      let item = this.items.find((e) => e.id === idComponent);
       if (item) {
-        item.filtered_result = id
+        item.filtered_result = id;
       }
 
-      // update item
+      //update item
       axios
-        .put(urlCandidatesProfiles + '/' + idComponent, item)
+        .put(urlCandidatesProfiles + "/" + idComponent, item)
         .then((res) => {})
         .catch(function (error) {
-          console.log(error)
-        })
+          console.log(error);
+        });
 
       // convert class button
-      console.log(buttonComponent)
+      console.log(buttonComponent);
       if (buttonComponent) {
-        this.convertClassButton(buttonComponent, buttonComponent.value)
-      } else { return '' }
+        this.convertClassButton(buttonComponent, buttonComponent.value);
+      } else return "";
     },
 
     //
-    convertClassButton (Component, value) {
-      if (value === 'Pending') {
-        Component.classList.add('btn', 'm-2', 'btn-warning', 'btn-square')
-      } else if (value === 'Pass') {
-        Component.classList.add('btn', 'm-2', 'btn-success', 'btn-square')
-      } else if (value === 'Fail') {
-        Component.classList.add('btn', 'm-2', 'btn-danger', 'btn-square')
-      } else { return '' }
-    }
-  }
-}
+    convertClassButton(Component, value) {
+      if (value === "Pending") {
+        Component.classList.add("btn", "m-2", "btn-warning", "btn-square");
+      } else if (value === "Pass") {
+        Component.classList.add("btn", "m-2", "btn-success", "btn-square");
+      } else if (value === "Fail") {
+        Component.classList.add("btn", "m-2", "btn-danger", "btn-square");
+      } else return "";
+    },
+  },
+};
 </script>
 
 <style  scoped>
