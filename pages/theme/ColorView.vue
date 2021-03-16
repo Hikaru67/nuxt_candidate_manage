@@ -6,7 +6,7 @@
           HEX:
         </td>
         <td class="font-weight-bold">
-          {{ this.hexColor }}
+          {{ hexColor }}
         </td>
       </tr>
       <tr>
@@ -14,7 +14,7 @@
           RGB:
         </td>
         <td class="font-weight-bold">
-          {{ this.bgColor }}
+          {{ bgColor }}
         </td>
       </tr>
     </tbody>

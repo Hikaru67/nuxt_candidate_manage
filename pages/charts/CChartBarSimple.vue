@@ -19,6 +19,7 @@ export default {
       type: String,
       default: 'rgba(0,0,0,.2)'
     },
+    // eslint-disable-next-line vue/require-default-prop
     pointHoverBackgroundColor: String,
     dataPoints: {
       type: Array,

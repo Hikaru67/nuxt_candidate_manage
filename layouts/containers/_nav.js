@@ -30,6 +30,22 @@ export default [
       },
       {
         _name: 'CSidebarNavTitle',
+        _children: ['Candidate Profiles']
+      },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'New candidate profiles',
+        to: '/candidate-profiles/add',
+        icon: 'cil-pencil'
+      },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'List candidate profiles',
+        to: '/candidate-profiles/',
+        icon: 'cil-drop'
+      },
+      {
+        _name: 'CSidebarNavTitle',
         _children: ['Theme']
       },
       {

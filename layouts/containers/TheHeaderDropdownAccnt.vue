@@ -8,8 +8,9 @@
     <template #toggler>
       <CHeaderNavLink>
         <div class="c-avatar">
+          {{ $auth.user.name }}
           <img
-            src="img/avatars/6.jpg"
+            src=""
             class="c-avatar-img "
           >
         </div>
@@ -18,7 +19,7 @@
     <CDropdownHeader tag="div" class="text-center" color="light">
       <strong>Account</strong>
     </CDropdownHeader>
-    <CDropdownItem>
+    <!--    <CDropdownItem>
       <CIcon name="cil-bell" /> Updates
       <CBadge color="info" class="ml-auto">
         {{ itemsCount }}
@@ -41,7 +42,7 @@
       <CBadge color="warning" class="ml-auto">
         {{ itemsCount }}
       </CBadge>
-    </CDropdownItem>
+    </CDropdownItem>-->
     <CDropdownHeader
       tag="div"
       class="text-center"
@@ -55,7 +56,7 @@
     <CDropdownItem>
       <CIcon name="cil-settings" /> Settings
     </CDropdownItem>
-    <CDropdownItem>
+    <!--    <CDropdownItem>
       <CIcon name="cil-dollar" /> Payments
       <CBadge color="secondary" class="ml-auto">
         {{ itemsCount }}
@@ -66,13 +67,13 @@
       <CBadge color="primary" class="ml-auto">
         {{ itemsCount }}
       </CBadge>
-    </CDropdownItem>
+    </CDropdownItem>-->
     <CDropdownDivider />
     <CDropdownItem>
       <CIcon name="cil-shield-alt" /> Lock Account
     </CDropdownItem>
     <CDropdownItem>
-      <CIcon name="cil-lock-locked" /> Logout
+      <CIcon name="cil-lock-locked" @click="logout" /> Logout
     </CDropdownItem>
   </CDropdown>
 </template>
@@ -83,6 +84,11 @@ export default {
   data () {
     return {
       itemsCount: 42
+    }
+  },
+  methods: {
+    logout () {
+      this.$auth.logout()
     }
   }
 }

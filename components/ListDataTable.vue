@@ -50,6 +50,13 @@ export default {
     }
   },
   mounted () {
+    /* fetch('http://candidate-manage.herokuapp.com/api/email-templates')
+      .then(response => response.json())
+      .then(function test (data) {
+        // eslint-disable-next-line no-console
+        console.log(data)
+        this.items = data
+      }) */
     axios.get(this.url)
       .then((response) => {
         this.items = response.data
@@ -70,7 +77,7 @@ export default {
      * @param id String
      */
     editData (id) {
-      window.location.href = './' + id
+      this.$router.push(this.$route.path + '/' + id)
     },
 
     /**
@@ -78,7 +85,7 @@ export default {
      * @param id String
      */
     deleteData (id) {
-      axios.delete(this.url + id)
+      axios.delete(this.url + '/' + id)
         .then((res) => {
           alert('Delete data success')
           window.location.href = './'

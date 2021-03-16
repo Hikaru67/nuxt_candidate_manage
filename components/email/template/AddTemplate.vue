@@ -62,7 +62,7 @@
 <script>
 import axios from 'axios'
 
-const url = 'http://127.0.0.1:8000/api/email-templates/'
+const url = 'http://candidate-manage.herokuapp.com/api/email-templates'
 export default {
   name: 'AddTemplate',
   data () {
@@ -92,7 +92,7 @@ export default {
      * `getData` will get data by id
      */
     getData () {
-      this.data = axios.get(this.url + this.id)
+      this.data = axios.get(this.url + '/' + this.id)
         .then((res) => {
           this.data = res.data
         })

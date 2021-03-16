@@ -15,6 +15,7 @@ export default {
   name: 'ColorTheme',
   components: { ColorView },
   props: {
+    // eslint-disable-next-line vue/require-default-prop
     color: String
   }
 }

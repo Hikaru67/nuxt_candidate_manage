@@ -476,7 +476,7 @@
               </template>
               <template #size_prop="{item}">
                 <td>
-                  <span v-html="item.size_prop" />
+                  <span :v-html="item.size_prop" />
                 </td>
               </template>
             </CDataTable>

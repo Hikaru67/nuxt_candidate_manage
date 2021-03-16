@@ -34,6 +34,7 @@
 export default {
   name: 'Table',
   props: {
+    // eslint-disable-next-line vue/require-default-prop
     items: Array,
     fields: {
       type: Array,

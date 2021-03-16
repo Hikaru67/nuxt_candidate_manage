@@ -32,6 +32,7 @@ export default {
       default: 'Sales'
     },
     pointed: Boolean,
+    // eslint-disable-next-line vue/require-default-prop
     pointHoverBackgroundColor: String
   },
   computed: {

@@ -46,20 +46,22 @@ export default {
   */
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
-    '@nuxtjs/eslint-module'
+    // '@nuxtjs/eslint-module'
   ],
   /*
   ** Nuxt.js modules
   */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/auth'
   ],
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
+    baseURL: 'http://127.0.0.1:8000/api'
   },
   /*
   ** Build configuration
@@ -70,5 +72,27 @@ export default {
     */
     extend (config, ctx) {
     }
+  },
+  auth: {
+    redirect: {
+      callback: '/dashboard', // sau khi login sẽ chuyển hướng về đây
+      login: '/login',
+      home: '/'
+    },
+    strategies: {
+      local: {
+        endpoints: {
+          // các đường dẫn đến API
+          // propertyName: kết quả từ API trả về, nhớ xem kết quả để đặt key cho đúng
+          login: { url: '/login', method: 'post', propertyName: 'meta.token' },
+          user: { url: '/user', method: 'get', propertyName: 'data' },
+          logout: false
+        }
+      }
+    }
+  },
+  // dùng cái này để sử dụng middleware xác thực người dùng cho mọi route, tương tự middleware trong Laravel
+  router: {
+    middleware: ['auth']
   }
 }
