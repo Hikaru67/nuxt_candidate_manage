@@ -90,16 +90,10 @@
 
         <template #action="{ item }">
           <td class="row">
-            <CButton
-              class="col-3"
-              color="primary"
-              variant="ghost"
-              @click="editData(item.id)"
-            >
+            <CButton color="primary" variant="ghost" @click="editData(item.id)">
               <CIcon :content="$options.freeSet.cilPencil" />
             </CButton>
             <CButton
-              class="col-3"
               color="danger"
               variant="ghost"
               @click="deleteData(item.id)"
@@ -181,38 +175,51 @@
             <input
               type="button"
               id="filtered_result-button"
+              :class="
+                (item.filtered_result === 2 &&
+                  'btn m-2 btn-danger btn-square') ||
+                (item.filtered_result === 1 &&
+                  'btn m-2 btn-success btn-square') ||
+                (item.filtered_result === 0 && 'btn m-2 btn-warning btn-square')
+              "
               :value="convertFilteredResult(item.filtered_result)"
-              @click="transformButton(item.id, item.filtered_result)"
-              @load="
-                buttonComponent(convertFilteredResult(item.filtered_result))
+              @click="
+                transformButtonFilteredResult(item.id, item.filtered_result)
               "
             />
-            <slot></slot>
           </td>
         </template>
 
         <!-- convertData interview_result -->
         <template #interview_result="{ item }">
           <td>
-            <span class="">{{
-              convertInterviewResult(item.interview_result)
-            }}</span>
+            <input
+              type="button"
+              id="interview_result-button"
+              :class="
+                (item.interview_result === 2 &&
+                  'btn m-2 btn-danger btn-square') ||
+                (item.interview_result === 1 &&
+                  'btn m-2 btn-success btn-square') ||
+                (item.interview_result === 0 &&
+                  'btn m-2 btn-warning btn-square')
+              "
+              :value="convertInterviewResult(item.interview_result)"
+              @click="
+                transformButtonInterviewResult(item.id, item.interview_result)
+              "
+            />
           </td>
         </template>
 
-        {{ $route.fullPath }}
+        {{ $route.Path }}
 
         <template #action="{ item }">
           <td class="row">
             <!-- <CButton color="secondary" variant="ghost">
               <CIcon :content="$options.freeSet.cilPencil" />
             </CButton> -->
-            <CButton
-              class="col-1"
-              color="primary"
-              variant="ghost"
-              @click="editData(item.id)"
-            >
+            <CButton color="primary" variant="ghost" @click="editData(item.id)">
               <CIcon :content="$options.freeSet.cilPencil" />
             </CButton>
             <CButton
@@ -244,11 +251,26 @@ export default {
   data() {
     return {
       fields: [
-        "id",
-        "first_name",
-        "last_name",
-        "position_id",
-        "source_id",
+        {
+          key: "id",
+          label: "ID",
+        },
+        {
+          key: "first_name",
+          label: "First Name",
+        },
+        {
+          key: "last_name",
+          label: "Last Name",
+        },
+        {
+          key: "position_id",
+          label: "Position",
+        },
+        {
+          key: "source_id",
+          label: "Source",
+        },
         "received_date",
         "filtered_result",
         "interview_date",
@@ -256,8 +278,6 @@ export default {
         "interview_result",
         "cv_link",
         "note",
-        "created_at",
-        "updated_at",
         {
           key: "action",
           label: "",
@@ -380,9 +400,8 @@ export default {
         });
     },
 
-    transformButton(idComponent, id) {
+    transformButtonFilteredResult(idComponent, id) {
       let buttonComponent = document.querySelector("#filtered_result-button");
-      console.log("idComponent " + idComponent);
 
       // id increase
       id += 1;
@@ -405,13 +424,41 @@ export default {
         });
 
       // convert class button
-      console.log(buttonComponent);
       if (buttonComponent) {
         this.convertClassButton(buttonComponent, buttonComponent.value);
       } else return "";
     },
 
-    // 
+    transformButtonInterviewResult(idComponent, id) {
+      let buttonComponent = document.querySelector("#interview_result-button");
+
+      // id increase
+      id += 1;
+      if (id > 2) {
+        id = 0;
+      }
+
+      // find item update
+      let item = this.items.find((e) => e.id === idComponent);
+      if (item) {
+        item.interview_result = id;
+      }
+
+      //update item
+      axios
+        .put(urlCandidatesProfiles + "/" + idComponent, item)
+        .then((res) => {})
+        .catch(function (error) {
+          console.log(error);
+        });
+
+      // convert class button
+      if (buttonComponent) {
+        this.convertClassButton(buttonComponent, buttonComponent.value);
+      } else return "";
+    },
+
+    //
     convertClassButton(Component, value) {
       if (value === "Pending") {
         Component.classList.add("btn", "m-2", "btn-warning", "btn-square");
