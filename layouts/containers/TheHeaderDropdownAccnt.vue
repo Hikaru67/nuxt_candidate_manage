@@ -90,8 +90,8 @@ export default {
   },
   methods: {
     logout () {
-      console.warn('1111111111111111111111')
       this.$auth.logout()
+      window.location.href = '/'
     }
   }
 }

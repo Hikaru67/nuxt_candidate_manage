@@ -4,11 +4,11 @@
     :minimize="minimize"
     :show.sync="show"
   >
-    <CSidebarBrand
-      :img-full="{ width: 118, height: 46, alt: 'Logo', src: 'https://toppng.com/uploads/preview/free-icons-black-cat-icon-11553449254b2amf0pgah.png'}"
-      :img-minimized="{ width: 118, height: 46, alt: 'Logo', src: 'https://toppng.com/uploads/preview/free-icons-black-cat-icon-11553449254b2amf0pgah.png'}"
-      :wrapped-in-link="{ href: 'https://coreui.io/', target: '_blank'}"
-    />
+    <CSidebarBrand>
+      <a href="/" style="text-align: center">
+        <img class="img-thumbnail" style="width: 20%" src="https://toppng.com/uploads/preview/free-icons-black-cat-icon-11553449254b2amf0pgah.png" alt="">
+      </a>
+    </CSidebarBrand>
     <CRenderFunction v-if="!$auth.loggedIn" flat :content-to-render="nav" />
     <CRenderFunction v-else-if="$auth.user.role_id === 2" flat :content-to-render="nav" />
     <CRenderFunction v-else-if="$auth.user.role_id === 1" flat :content-to-render="nav2" />

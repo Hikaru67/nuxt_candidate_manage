@@ -18,14 +18,14 @@ export default [
       },
       {
         _name: 'CSidebarNavItem',
-        name: 'New candidate profiles',
-        to: '/candidate/profiles/add',
+        name: 'New candidate profile',
+        to: '/candidate/template/add',
         icon: 'cil-pencil'
       },
       {
         _name: 'CSidebarNavItem',
         name: 'List candidate profiles',
-        to: '/candidate/profiles/',
+        to: '/candidate/template',
         icon: 'cil-drop'
       },
       {
@@ -40,7 +40,7 @@ export default [
       },
       {
         _name: 'CSidebarNavItem',
-        name: 'List email profiles',
+        name: 'List email template',
         to: '/email/templates',
         icon: 'cil-drop'
       },

@@ -229,7 +229,7 @@ export default {
      * @param id String
      */
     editData (id) {
-      window.location.href = './profiles/' + id
+      window.location.href = './template/' + id
     },
 
     /**

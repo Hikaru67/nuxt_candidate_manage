@@ -18,8 +18,8 @@ export default [
       },
       {
         _name: 'CSidebarNavItem',
-        name: 'List candidate profiles',
-        to: '/candidate/profiles/',
+        name: 'List candidate profile',
+        to: '/candidate/template/',
         icon: 'cil-drop'
       }
     ]

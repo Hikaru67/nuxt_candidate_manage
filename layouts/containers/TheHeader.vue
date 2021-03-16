@@ -23,7 +23,7 @@
           Dashboard
         </CHeaderNavLink>
       </CHeaderNavItem>
-      <CHeaderNavItem class="px-3">
+      <!--      <CHeaderNavItem class="px-3">
         <CHeaderNavLink to="/users" exact>
           Users
         </CHeaderNavLink>
@@ -32,7 +32,7 @@
         <CHeaderNavLink>
           Settings
         </CHeaderNavLink>
-      </CHeaderNavItem>
+      </CHeaderNavItem>-->
     </CHeaderNav>
     <CHeaderNav class="mr-4">
       <CHeaderNavItem class="d-md-down-none mx-2">
