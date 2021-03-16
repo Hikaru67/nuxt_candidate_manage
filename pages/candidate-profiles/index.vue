@@ -1,23 +1,13 @@
 <template>
-  <ListCandidateProfiles />
+  <ListTemplate />
 </template>
 
 <script>
-
-import ListCandidateProfiles from '~/components/ListCandidateProfiles'
+import ListTemplate from "../../components/candidate/ListTemplate"
 export default {
-  name: 'Index',
-  components: { ListCandidateProfiles },
-  beforeCreate () {
-    if (this.$auth.user.role_id !== 1) {
-      alert('You dont have permission !')
-      // eslint-disable-next-line nuxt/no-globals-in-created
-      window.location.href = '/dashboard'
-    }
-  }
-}
+  name: "Index",
+  components: { ListTemplate }
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
