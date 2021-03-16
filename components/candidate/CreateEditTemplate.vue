@@ -193,7 +193,7 @@ const urlEmailTemplates =
 const urlSources = "http://candidate-manage.herokuapp.com/api/sources";
 const urlPositions = "http://candidate-manage.herokuapp.com/api/positions";
 const urlCandidatesProfiles =
-  "http://candidate-manage.herokuapp.com/api/candidates-profiles/";
+  "http://candidate-manage.herokuapp.com/api/candidates-profiles";
 
 export default {
   data() {
@@ -240,7 +240,7 @@ export default {
      */
     getData() {
       this.data = axios
-        .get(this.urlCandidatesProfiles + this.id)
+        .get(this.urlCandidatesProfiles + '/' + this.id)
         // .get(this.urlCandidatesProfiles) // test
         .then((res) => {
           this.data = res.data;
@@ -253,7 +253,7 @@ export default {
     addData() {
       if (this.validate()) {
         axios
-          .post(this.url, this.data)
+          .post(this.urlCandidatesProfiles, this.data)
           .then((res) => {
             alert("Add data success");
             window.location.href = "./";
@@ -271,7 +271,7 @@ export default {
     updateData() {
       if (this.validate()) {
         axios
-          .put(this.url + this.id, this.data)
+          .put(this.urlCandidatesProfiles + '/' + this.id, this.data)
           .then((res) => {
             alert("Update data success");
             window.location.href = "./";
@@ -314,9 +314,6 @@ export default {
         this.errors.push("Interview Date required.");
       }
 
-      if (!this.data.feedback) {
-        this.errors.push("Feedback required.");
-      }
       if (!this.data.interview_result) {
         this.errors.push("Interview Result required.");
       }

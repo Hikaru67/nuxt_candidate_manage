@@ -182,7 +182,10 @@
               type="button"
               id="filtered_result-button"
               :value="convertFilteredResult(item.filtered_result)"
-              @click=" transformButton() "
+              @click="transformButton(item.id, item.filtered_result)"
+              @load="
+                buttonComponent(convertFilteredResult(item.filtered_result))
+              "
             />
             <slot></slot>
           </td>
@@ -333,7 +336,13 @@ export default {
       let result = this.filtered_results.find((item) => {
         return item.value === value;
       });
-      return result ? result.text : "";
+      let temp = result ? result.text : "";
+      // let buttonComponent = document.querySelector("#filtered_result-button");
+      // // if(!buttonComponent) return buttonComponent
+      // console.log("ádfjkhsdjfk"+buttonComponent);
+      // this.convertClassButton(buttonComponent, temp);
+
+      return temp;
     },
 
     /**
@@ -352,7 +361,7 @@ export default {
      * @param id String
      */
     editData(id) {
-      window.location.href = "./templates/" + id;
+      window.location.href = "./" + id;
     },
 
     /**
@@ -361,7 +370,7 @@ export default {
      */
     deleteData(id) {
       axios
-        .delete(this.url + id)
+        .delete(this.urlCandidatesProfiles + id)
         .then((res) => {
           alert("Delete data success");
           window.location.href = "./";
@@ -371,24 +380,47 @@ export default {
         });
     },
 
-    transformButton(name) {
-      let buttonComponent = document.querySelector("#filtered_result-button")
+    transformButton(idComponent, id) {
+      let buttonComponent = document.querySelector("#filtered_result-button");
+      console.log("idComponent " + idComponent);
 
-      console.log(buttonComponent);
-      if(name & buttonComponent){
-        if(buttonComponent.value === "Pending") {
-          buttonComponent.classList.add("btn m-2 btn-warning btn-square")
-        }
-        else if(buttonComponent.value === "Pass") {
-          buttonComponent.classList.add("btn m-2 btn-success btn-square")
-        } 
-        else if(buttonComponent.value === "Fail") {
-          buttonComponent.classList.add("btn m-2 btn-danger btn-square")
-        }
-        else return "" 
+      // id increase
+      id += 1;
+      if (id > 2) {
+        id = 0;
       }
-      else return ""
-    }
+
+      // find item update
+      let item = this.items.find((e) => e.id === idComponent);
+      if (item) {
+        item.filtered_result = id;
+      }
+
+      //update item
+      axios
+        .put(urlCandidatesProfiles + "/" + idComponent, item)
+        .then((res) => {})
+        .catch(function (error) {
+          console.log(error);
+        });
+
+      // convert class button
+      console.log(buttonComponent);
+      if (buttonComponent) {
+        this.convertClassButton(buttonComponent, buttonComponent.value);
+      } else return "";
+    },
+
+    // 
+    convertClassButton(Component, value) {
+      if (value === "Pending") {
+        Component.classList.add("btn", "m-2", "btn-warning", "btn-square");
+      } else if (value === "Pass") {
+        Component.classList.add("btn", "m-2", "btn-success", "btn-square");
+      } else if (value === "Fail") {
+        Component.classList.add("btn", "m-2", "btn-danger", "btn-square");
+      } else return "";
+    },
   },
 };
 </script>
