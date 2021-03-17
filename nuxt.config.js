@@ -46,7 +46,19 @@ export default {
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
     // '@nuxtjs/eslint-module'
+    ['nuxt-mail', {
+      smtp: {
+        host: 'smtp.example.com',
+        port: 587
+      }
+    }]
   ],
+  mail: {
+    smtp: {
+      host: 'smtp.example.com',
+      port: 587
+    }
+  },
   /*
      ** Nuxt.js modules
      */

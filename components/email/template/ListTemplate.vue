@@ -29,6 +29,9 @@
 
         <template #action="{ item }">
           <td style="max-width: 90px">
+            <CButton color="primary" variant="ghost" @click="toSendPage(item.id)">
+              <CIcon :content="$options.freeSet.cilBook" />
+            </CButton>
             <CButton color="primary" variant="ghost" @click="toEditPage(item.id)">
               <CIcon :content="$options.freeSet.cilPencil" />
             </CButton>
@@ -72,6 +75,14 @@ export default {
     convertDate (date) {
       date = new Date(date)
       return date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear()
+    },
+
+    /**
+     * `editData` will redirect to edit data page
+     * @param id String
+     */
+    toSendPage (id) {
+      this.$router.push(this.$route.path + '/send')
     },
 
     /**
