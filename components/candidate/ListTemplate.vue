@@ -193,13 +193,27 @@
                   'btn m-2 btn-danger btn-square') ||
                   (item.filtered_result === 1 &&
                     'btn m-2 btn-success btn-square') ||
-                  (item.filtered_result === 3 && 'btn m-2 btn-warning btn-square')
+                  (item.filtered_result === 0 && 'btn m-2 btn-warning btn-square')
               "
               :value="convertFilteredResult(item.filtered_result)"
               @click="
                 transformButtonFilteredResult(item.id, item.filtered_result)
               "
             >
+          </td>
+        </template>
+
+        <!-- feedback -->
+        <template #feedback="{ item }">
+          <td>
+            {{ item.feedback }}
+          </td>
+        </template>
+
+        <!-- note -->
+        <template #note="{ item }">
+          <td>
+            {{ item.note }}
           </td>
         </template>
 
@@ -214,7 +228,7 @@
                   'btn m-2 btn-danger btn-square') ||
                   (item.interview_result === 1 &&
                     'btn m-2 btn-success btn-square') ||
-                  (item.interview_result === 3 &&
+                  (item.interview_result === 0 &&
                     'btn m-2 btn-warning btn-square')
               "
               :value="convertInterviewResult(item.interview_result)"
@@ -400,6 +414,7 @@ export default {
           alert(error)
         })
     },
+
     /**
      * `transformButtonFilteredResult` update status of FilteredResult
      * @param id String
@@ -409,7 +424,7 @@ export default {
       const buttonComponent = document.querySelector('#filtered_result-button')
       // id increase
       id += 1
-      if (id > 3) {
+      if (id > 2) {
         id = 1
       }
       // find item update
@@ -430,6 +445,7 @@ export default {
         this.convertClassButton(buttonComponent, buttonComponent.value)
       } else { return '' }
     },
+
     /**
      * `transformButtonInterviewResult` update status of InterviewResult
      * @param id String
@@ -439,7 +455,7 @@ export default {
       const buttonComponent = document.querySelector('#interview_result-button')
       // id increase
       id += 1
-      if (id > 3) {
+      if (id > 2) {
         id = 1
       }
       // find item update
@@ -460,6 +476,7 @@ export default {
         this.convertClassButton(buttonComponent, buttonComponent.value)
       } else { return '' }
     },
+
     /**
      * `transformButtonInterviewResult` update status of InterviewResult
      * @param Component Object

@@ -40,7 +40,6 @@
         </CCol>
       </CRow>
 
-      <!-- position_id -->
       <CRow>
         <CCol sm="2">
           <label for="position">Position:</label>
@@ -51,7 +50,6 @@
             id="position"
             v-model="data.position_id"
             class="form-control"
-            horizontal
           >
             <option
               v-for="(item, index) in positions"
@@ -62,6 +60,10 @@
             </option>
           </select>
         </CCol>
+      </CRow>
+
+      <!-- position_id -->
+      <CRow>
         <CCol sm="2">
           <label for="source">Source:</label>
         </CCol>
@@ -71,7 +73,6 @@
             id="source"
             v-model="data.source_id"
             class="form-control"
-            horizontal
           >
             <option
               v-for="(item, index) in sources"
@@ -86,8 +87,18 @@
 
       <!-- received_date -->
       <CRow>
+        <CCol sm="10">
+          <CInput
+            v-model="data.received_date"
+            label="Received Date"
+            type="date"
+            horizontal
+          />
+        </CCol>
+      </CRow>
+      <!--      <CRow>
         <CCol sm="2">
-          <label for="received_date">Received Date:</label>
+          <label for="received_date">Received Date</label>
         </CCol>
 
         <CCol sm="4">
@@ -98,12 +109,25 @@
             type="date"
           >
         </CCol>
+      </CRow>-->
 
-        <CCol sm="2">
+      <CRow>
+        <CCol v-if="data.filtered_result===1" sm="10">
+          <CInput
+            v-model="data.interview_date"
+            label="Interview Date"
+            type="date"
+            horizontal
+          />
+        </CCol>
+      </CRow>
+
+      <!--      <CRow>
+        <CCol v-if="data.filtered_result===1" sm="2">
           <label for="interview_date">Interview Date:</label>
         </CCol>
 
-        <CCol sm="4">
+        <CCol v-if="data.filtered_result===1" sm="4">
           <input
             id="interview_date"
             v-model="data.interview_date"
@@ -111,7 +135,7 @@
             type="date"
           >
         </CCol>
-      </CRow>
+      </CRow>-->
 
       <!-- feedback -->
       <CRow>
@@ -128,7 +152,7 @@
       <!-- cv_link -->
       <CRow>
         <CCol sm="10">
-          <CInput
+          <CTextarea
             v-model="data.cv_link"
             label="CV Link"
             placeholder="Enter link my cv"
@@ -140,7 +164,7 @@
       <!-- note -->
       <CRow>
         <CCol sm="10">
-          <CInput
+          <CTextarea
             v-model="data.note"
             label="Note"
             placeholder="Enter note"
@@ -203,12 +227,12 @@ export default {
         created_at: ''
       },
       filtered_results: [
-        { value: 3, text: 'Pending' },
+        { value: 0, text: 'Pending' },
         { value: 1, text: 'Pass' },
         { value: 2, text: 'Fail' }
       ],
       interview_results: [
-        { value: 3, text: 'Pending' },
+        { value: 0, text: 'Pending' },
         { value: 2, text: 'Fail' },
         { value: 1, text: 'Pass' }
       ]
@@ -316,14 +340,6 @@ export default {
 
       if (!this.data.filtered_result) {
         this.errors.push('Filtered Result required.')
-      }
-
-      if (!this.data.interview_date) {
-        this.errors.push('Interview Date required.')
-      }
-
-      if (!this.data.interview_result) {
-        this.errors.push('Interview Result required.')
       }
 
       return !this.errors.length
