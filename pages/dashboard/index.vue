@@ -1,6 +1,6 @@
 <template>
   <div>
-    <WidgetsDropdown />
+    <!--    <WidgetsDropdown />-->
     <CCard>
       <!--      <CCardBody>
         <CRow>
@@ -471,7 +471,7 @@
 
 <script>
 // import MainChartExample from '../charts/MainChartExample'
-import WidgetsDropdown from '../widgets/WidgetsDropdown'
+// import WidgetsDropdown from '../widgets/WidgetsDropdown'
 // import WidgetsBrand from '../widgets/WidgetsBrand'
 
 export default {
@@ -480,7 +480,7 @@ export default {
   components: {
     // eslint-disable-next-line vue/no-unused-components
     // MainChartExample,
-    WidgetsDropdown
+    // WidgetsDropdown
     // eslint-disable-next-line vue/no-unused-components
     // WidgetsBrand
   },

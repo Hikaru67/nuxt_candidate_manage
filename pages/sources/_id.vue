@@ -1,19 +1,31 @@
 <template>
-  <EditSource />
+  <div>
+    {{ singleSource }}
+    <AddSource :single-source="singleSource" />
+  </div>
 </template>
 
 <script>
-import EditSource from '~/components/source/AddSource'
+import AddSource from '~/components/source/AddSource'
+import { apiGetSourceById } from '~/api/baseData'
 
 export default {
   name: 'Id',
-  components: { EditSource },
+  components: { AddSource },
+  data () {
+    return {
+      singleSource: { name: '' }
+    }
+  },
   beforeCreate () {
     if (this.$auth.user.role_id !== 1) {
       alert('You dont have permission !')
       // eslint-disable-next-line nuxt/no-globals-in-created
       window.location.href = '/dashboard'
     }
+  },
+  created () {
+    this.singleSource = apiGetSourceById(this.$axios, this.$route.params.id)
   }
 }
 </script>

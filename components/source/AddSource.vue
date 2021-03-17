@@ -1,5 +1,6 @@
 <template>
   <CCard>
+    {{ data }}
     <CCardHeader class="center">
       <h3 v-if="id">
         Edit Source
@@ -24,36 +25,15 @@
           />
         </CCol>
       </CRow>
-      <!--      <CRow>
-        <CCol sm="10">
-          <CInput
-            v-model="data.title"
-            label="Title"
-            placeholder="Enter source title"
-            horizontal
-          />
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol sm="10">
-          <CTextarea
-            v-model="data.content"
-            label="Content"
-            rows="10"
-            placeholder="Enter source content"
-            horizontal
-          />
-        </CCol>
-      </CRow>-->
     </CCardBody>
     <CCardFooter>
       <div class="center">
         <a href="./">
-          <CButton v-if="id" color="primary">
+          <CButton color="primary">
             Return
           </CButton>
         </a>
-        <CButton v-if="id" color="success" @click="updateData">
+        <CButton v-if="singleSource" color="success" @click="updateData">
           Submit
         </CButton>
         <CButton v-else color="success" @click="addData">
@@ -70,8 +50,12 @@ import { URL_RESOURCES } from '~/common/constant/url'
 
 export default {
   name: 'AddSource',
-  // eslint-disable-next-line no-undef
-  props: { singleSource },
+  props: {
+    // eslint-disable-next-line vue/require-default-prop
+    singleSource: {
+      type: Object
+    }
+  },
   data () {
     return {
       id: '',
@@ -82,11 +66,12 @@ export default {
     }
   },
 
-  /**
-   * get param id from url and call method getData
-   */
-  mounted () {
-    this.data = this.singleSource
+  async created () {
+    this.id = this.$route.params.id
+    if (this.id) {
+      this.data = await this.singleSource
+    }
+    console.log(this.singleSource)
   },
   methods: {
     /**
@@ -111,7 +96,7 @@ export default {
      */
     updateData () {
       if (this.validate()) {
-        axios.put(URL_RESOURCES + '/' + this.id, this.data)
+        axios.put(URL_RESOURCES + '/' + this.$route.params.id, this.data)
           .then((res) => {
             alert('Update data success')
             window.location.href = './'

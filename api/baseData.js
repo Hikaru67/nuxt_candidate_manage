@@ -28,6 +28,12 @@ export function apiGetEmailTemplates (axios) {
     .catch(xhr => xhr)
 }
 
+export function apiGetEmailTemplatesById (axios, id) {
+  return axios.get('/email-templates/' + id)
+    .then(res => res.data)
+    .catch(xhr => xhr)
+}
+
 export function apiGetCandidateProfiles (axios) {
   return axios.get('/candidates-profiles')
     .then(res => res.data)

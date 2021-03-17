@@ -4,7 +4,6 @@
 
 <script>
 import AddSource from '~/components/source/AddSource'
-import { apiGetSourceById } from '~/api/baseData'
 export default {
   name: 'Add',
   components: { AddSource },
@@ -14,9 +13,6 @@ export default {
       // eslint-disable-next-line nuxt/no-globals-in-created
       window.location.href = '/dashboard'
     }
-  },
-  async created () {
-    this.listSources = await apiGetSourceById(this.$axios, this.$route.params.id)
   }
 }
 </script>

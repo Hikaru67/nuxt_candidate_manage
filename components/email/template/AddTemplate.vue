@@ -66,13 +66,18 @@
 
 <script>
 import axios from 'axios'
+import { URL_EMAIL_TEMPLATES } from '~/common/constant/url'
 
-const url = 'http://candidate-manage.herokuapp.com/api/email-templates'
 export default {
   name: 'AddTemplate',
+  props: {
+    // eslint-disable-next-line vue/require-default-prop
+    singleTemplate: {
+      type: Object
+    }
+  },
   data () {
     return {
-      url,
       id: '',
       errors: [],
       data: {
@@ -86,29 +91,19 @@ export default {
   /**
    * get param id from url and call method getData
    */
-  mounted () {
+  async mounted () {
     this.id = this.$route.params.id
     if (this.id) {
-      this.getData()
+      this.data = await this.singleTemplate
     }
   },
   methods: {
-    /**
-     * `getData` will get data by id
-     */
-    getData () {
-      this.data = axios.get(this.url + '/' + this.id)
-        .then((res) => {
-          this.data = res.data
-        })
-    },
-
     /**
      * `addData` add a new data to database
      */
     addData () {
       if (this.validate()) {
-        axios.post(this.url, this.data)
+        axios.post(URL_EMAIL_TEMPLATES, this.data)
           .then((res) => {
             alert('Add data success')
             window.location.href = './'
@@ -125,7 +120,7 @@ export default {
      */
     updateData () {
       if (this.validate()) {
-        axios.put(this.url + this.id, this.data)
+        axios.put(URL_EMAIL_TEMPLATES + this.id, this.data)
           .then((res) => {
             alert('Update data success')
             window.location.href = './'
