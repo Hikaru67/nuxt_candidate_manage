@@ -39,7 +39,7 @@
       <!-- position_id -->
       <CRow>
         <CCol sm="2">
-          <label for="position">Position:</label>
+          <label id="label-center" for="position">Position:</label>
         </CCol>
 
         <CCol sm="4">
@@ -63,7 +63,7 @@
       <!-- source_id -->
       <CRow>
         <CCol sm="2">
-          <label for="source">Source:</label>
+          <label id="label-center" for="source">Source:</label>
         </CCol>
 
         <CCol sm="4">
@@ -87,7 +87,7 @@
       <!-- received_date -->
       <CRow>
         <CCol sm="2">
-          <label for="received_date">Received Date:</label>
+          <label id="label-center" for="received_date">Received Date:</label>
         </CCol>
 
         <CCol sm="4">
@@ -103,7 +103,7 @@
       <!-- filtered_result -->
       <CRow>
         <CCol sm="2">
-          <label for="filtered_result">Filtered Result:</label>
+          <label id="label-center" for="filtered_result">Filtered Result:</label>
         </CCol>
 
         <CCol sm="4">
@@ -127,7 +127,7 @@
       <!-- interview_date -->
       <CRow>
         <CCol sm="2">
-          <label for="interview_date">Interview Date:</label>
+          <label id="label-center" for="interview_date">Interview Date:</label>
         </CCol>
 
         <CCol sm="4">
@@ -155,7 +155,7 @@
       <!-- interview_result -->
       <CRow>
         <CCol sm="2">
-          <label for="interview_result">Interview Result:</label>
+          <label id="label-center" for="interview_result">Interview Result:</label>
         </CCol>
 
         <CCol sm="4">
@@ -400,5 +400,9 @@ export default {
   width: 150px;
   margin-left: 12%;
   margin-bottom: 5%;
+}
+
+#label-center{
+  margin-top: 4%;
 }
 </style>

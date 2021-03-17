@@ -389,8 +389,9 @@ export default {
      */
     deleteData(id) {
       console.log(id);
+          console.log(this.$store.state.url.API_CANDIDATE_PROFILES_URL + '/' + id);
       axios
-        .delete(this.urlCandidatesProfiles + "/" + id)
+        .delete(this.$store.state.url.API_CANDIDATE_PROFILES_URL + "/" + id)
         .then((res) => {
           alert("Delete data success");
           window.location.href = "./";
