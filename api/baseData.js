@@ -16,6 +16,12 @@ export function apiGetSource (axios) {
     .catch(xhr => xhr)
 }
 
+export function apiGetSourceById (axios, id) {
+  return axios.get('/sources/' + id)
+    .then(res => res.data)
+    .catch(xhr => xhr)
+}
+
 export function apiGetEmailTemplates (axios) {
   return axios.get('/email-templates')
     .then(res => res.data)
