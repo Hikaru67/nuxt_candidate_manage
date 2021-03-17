@@ -6,7 +6,7 @@
 
 import axios from "axios";
 
-import AddTemplate from "../../../components/candidate/CreateEditTemplate";
+import AddTemplate from "../../components/candidate/CreateEditProfile";
 export default {
   name: "Add",
   components: { AddTemplate }

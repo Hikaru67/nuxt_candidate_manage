@@ -180,7 +180,7 @@
                   'btn m-2 btn-danger btn-square') ||
                 (item.filtered_result === 1 &&
                   'btn m-2 btn-success btn-square') ||
-                (item.filtered_result === 0 && 'btn m-2 btn-warning btn-square')
+                (item.filtered_result === 3 && 'btn m-2 btn-warning btn-square')
               "
               :value="convertFilteredResult(item.filtered_result)"
               @click="
@@ -201,7 +201,7 @@
                   'btn m-2 btn-danger btn-square') ||
                 (item.interview_result === 1 &&
                   'btn m-2 btn-success btn-square') ||
-                (item.interview_result === 0 &&
+                (item.interview_result === 3 &&
                   'btn m-2 btn-warning btn-square')
               "
               :value="convertInterviewResult(item.interview_result)"
@@ -216,9 +216,6 @@
 
         <template #action="{ item }">
           <td class="row">
-            <!-- <CButton color="secondary" variant="ghost">
-              <CIcon :content="$options.freeSet.cilPencil" />
-            </CButton> -->
             <CButton color="primary" variant="ghost" @click="editData(item.id)">
               <CIcon :content="$options.freeSet.cilPencil" />
             </CButton>
@@ -287,12 +284,12 @@ export default {
       positions: [],
       sources: [],
       filtered_results: [
-        { value: 0, text: "Pending" },
+        { value: 3, text: "Pending" },
         { value: 1, text: "Pass" },
         { value: 2, text: "Fail" },
       ],
       interview_results: [
-        { value: 0, text: "Pending" },
+        { value: 3, text: "Pending" },
         { value: 2, text: "Fail" },
         { value: 1, text: "Pass" },
       ],
@@ -300,17 +297,23 @@ export default {
   },
 
   mounted() {
-    //   get data to items
+    /**
+     * get data to items
+     */
     axios.get(urlCandidatesProfiles).then((response) => {
       this.items = response.data;
     });
 
-    //   get data to position
+    /**
+     * get data to position
+     */
     axios.get(urlPositions).then((response) => {
       this.positions = response.data;
     });
 
-    //   get data to position
+    /**
+     * get data to source
+     */
     axios.get(urlSources).then((response) => {
       this.sources = response.data;
     });
@@ -357,10 +360,6 @@ export default {
         return item.value === value;
       });
       let temp = result ? result.text : "";
-      // let buttonComponent = document.querySelector("#filtered_result-button");
-      // // if(!buttonComponent) return buttonComponent
-      // console.log("ádfjkhsdjfk"+buttonComponent);
-      // this.convertClassButton(buttonComponent, temp);
 
       return temp;
     },
@@ -389,8 +388,9 @@ export default {
      * @param id String
      */
     deleteData(id) {
+      console.log(id);
       axios
-        .delete(this.urlCandidatesProfiles + id)
+        .delete(this.urlCandidatesProfiles + "/" + id)
         .then((res) => {
           alert("Delete data success");
           window.location.href = "./";
@@ -400,13 +400,18 @@ export default {
         });
     },
 
+    /**
+     * `transformButtonFilteredResult` update status of FilteredResult
+     * @param id String
+     * @param idComponent String
+     */
     transformButtonFilteredResult(idComponent, id) {
       let buttonComponent = document.querySelector("#filtered_result-button");
 
       // id increase
       id += 1;
-      if (id > 2) {
-        id = 0;
+      if (id > 3) {
+        id = 1;
       }
 
       // find item update
@@ -429,13 +434,18 @@ export default {
       } else return "";
     },
 
+    /**
+     * `transformButtonInterviewResult` update status of InterviewResult
+     * @param id String
+     * @param idComponent String
+     */
     transformButtonInterviewResult(idComponent, id) {
       let buttonComponent = document.querySelector("#interview_result-button");
 
       // id increase
       id += 1;
-      if (id > 2) {
-        id = 0;
+      if (id > 3) {
+        id = 1;
       }
 
       // find item update
@@ -458,7 +468,11 @@ export default {
       } else return "";
     },
 
-    //
+    /**
+     * `transformButtonInterviewResult` update status of InterviewResult
+     * @param Component Object
+     * @param value String
+     */
     convertClassButton(Component, value) {
       if (value === "Pending") {
         Component.classList.add("btn", "m-2", "btn-warning", "btn-square");

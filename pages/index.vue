@@ -6,7 +6,7 @@
 import Dashboard from './dashboard'
 
 export default {
-  middleware: 'auth',
+  // middleware: 'auth',
   components: {
     Dashboard
   }

@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import AddTemplate from "../../../components/candidate/CreateEditTemplate.vue";
+import AddTemplate from "../../components/candidate/CreateEditProfile";
 
 export default {
   name: "Id",
