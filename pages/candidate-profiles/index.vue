@@ -1,12 +1,12 @@
 <template>
-  <ListProfile />
+  <ListTemplate />
 </template>
 
 <script>
-import ListProfile from '~/components/candidate/ListProfile'
+import ListTemplate from '../../components/candidate/ListTemplate'
 export default {
   name: 'Index',
-  components: { ListProfile }
+  components: { ListTemplate }
 }
 </script>
 
