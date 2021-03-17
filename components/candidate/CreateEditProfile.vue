@@ -177,6 +177,11 @@
     <!-- button -->
     <CCardFooter>
       <div class="center">
+        <a href="./">
+          <CButton color="primary">
+            Return
+          </CButton>
+        </a>
         <CButton v-if="id" color="success" @click="updateData">
           Update
         </CButton>
@@ -268,7 +273,6 @@ export default {
     getData () {
       this.data = axios
         .get(this.urlCandidatesProfiles + '/' + this.id)
-        // .get(this.urlCandidatesProfiles) // test
         .then((res) => {
           this.data = res.data
         })
@@ -338,15 +342,7 @@ export default {
         this.errors.push('Received Date required.')
       }
 
-      if (!this.data.filtered_result) {
-        this.errors.push('Filtered Result required.')
-      }
-
       return !this.errors.length
-    },
-
-    test (input) {
-      console.log(input)
     }
   }
 }

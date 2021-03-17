@@ -49,7 +49,7 @@
     <CCardFooter>
       <div class="center">
         <a href="./">
-          <CButton v-if="id" color="primary">
+          <CButton color="primary">
             Return
           </CButton>
         </a>

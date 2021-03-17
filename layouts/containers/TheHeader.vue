@@ -23,16 +23,6 @@
           Dashboard
         </CHeaderNavLink>
       </CHeaderNavItem>
-      <!--      <CHeaderNavItem class="px-3">
-        <CHeaderNavLink to="/users" exact>
-          Users
-        </CHeaderNavLink>
-      </CHeaderNavItem>-->
-      <!--      <CHeaderNavItem class="center">
-        <CHeaderNavLink>
-          {{ $auth.user.role_id }}
-        </CHeaderNavLink>
-      </CHeaderNavItem>-->
     </CHeaderNav>
     <CHeaderNav class="mr-4">
       <CHeaderNavItem class="d-md-down-none mx-2">
@@ -42,7 +32,6 @@
       </CHeaderNavItem>
       <CHeaderNavItem class="d-md-down-none mx-2">
         <CHeaderNavLink>
-          <!--          <CIcon :content="$options.freeSet.cilList" />-->
           <span style="text-transform: uppercase">{{ roles[$auth.user.role_id-1] }}</span>
         </CHeaderNavLink>
       </CHeaderNavItem>

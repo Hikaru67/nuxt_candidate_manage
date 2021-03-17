@@ -90,7 +90,7 @@ export default {
   methods: {
     logout () {
       this.$auth.logout()
-      window.location.href = '/'
+      window.location.href = '/login'
     }
   }
 }

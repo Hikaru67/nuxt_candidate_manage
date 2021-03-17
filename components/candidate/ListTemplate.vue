@@ -395,7 +395,8 @@ export default {
      * @param id String
      */
     editData (id) {
-      this.$router.push(this.$route.path + '/' + id)
+      // this.$router.push(this.$route.path + '/' + id)
+      window.location.href = './' + id
     },
     /**
      * `deleteData` will delete data by id
@@ -405,7 +406,7 @@ export default {
       // eslint-disable-next-line no-console
       console.log(id)
       axios
-        .delete(this.urlCandidatesProfiles + '/' + id)
+        .delete(this.$store.state.url.API_CANDIDATE_PROFILES_URL + '/' + id)
         .then((res) => {
           alert('Delete data success')
           window.location.href = './'
