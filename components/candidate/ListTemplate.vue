@@ -280,14 +280,19 @@ export default {
           label: "",
         },
       ],
+
       items: [],
+
       positions: [],
+
       sources: [],
+
       filtered_results: [
         { value: 3, text: "Pending" },
         { value: 1, text: "Pass" },
         { value: 2, text: "Fail" },
       ],
+      
       interview_results: [
         { value: 3, text: "Pending" },
         { value: 2, text: "Fail" },
