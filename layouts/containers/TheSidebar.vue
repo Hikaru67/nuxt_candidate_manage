@@ -9,9 +9,9 @@
         <img class="img-thumbnail" style="width: 20%" src="https://toppng.com/uploads/preview/free-icons-black-cat-icon-11553449254b2amf0pgah.png" alt="">
       </a>
     </CSidebarBrand>
-    <CRenderFunction v-if="!$auth.loggedIn" flat :content-to-render="nav" />
-    <CRenderFunction v-else-if="$auth.user.role_id === 2" flat :content-to-render="nav" />
-    <CRenderFunction v-else-if="$auth.user.role_id === 1" flat :content-to-render="nav2" />
+    <CRenderFunction v-if="!$auth.loggedIn" flat />
+    <CRenderFunction v-else-if="$auth.user.role_id === 2" flat :content-to-render="nav2" />
+    <CRenderFunction v-else-if="$auth.user.role_id === 1" flat :content-to-render="nav" />
     <CSidebarMinimizer
       class="d-md-down-none"
       @click.native="minimize = !minimize"

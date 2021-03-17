@@ -8,7 +8,6 @@
     <template #toggler>
       <CHeaderNavLink>
         <div class="c-avatar">
-          {{ $auth.user ? $auth.user.username : '' }}
           <img
             src="https://i.pinimg.com/originals/cf/83/ee/cf83ee36ec9eeea1fda7566c3071da24.jpg"
             class="c-avatar-img "

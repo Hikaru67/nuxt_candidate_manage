@@ -85,6 +85,20 @@
           </td>
         </template>
 
+        <!-- feedback -->
+        <template #feedback="{ item }">
+          <td>
+            {{ item.feedback }}
+          </td>
+        </template>
+
+        <!-- note -->
+        <template #note="{ item }">
+          <td>
+            {{ item.note }}
+          </td>
+        </template>
+
         {{ $route.fullPath }}
 
         <template #action="{ item }">
@@ -281,12 +295,12 @@ export default {
       positions: [],
       sources: [],
       filtered_results: [
-        { value: 3, text: 'Pending' },
+        { value: 0, text: 'Pending' },
         { value: 1, text: 'Pass' },
         { value: 2, text: 'Fail' }
       ],
       interview_results: [
-        { value: 3, text: 'Pending' },
+        { value: 0, text: 'Pending' },
         { value: 2, text: 'Fail' },
         { value: 1, text: 'Pass' }
       ]
@@ -367,7 +381,7 @@ export default {
      * @param id String
      */
     editData (id) {
-      window.location.href = './' + id
+      this.$router.push(this.$route.path + '/' + id)
     },
     /**
      * `deleteData` will delete data by id

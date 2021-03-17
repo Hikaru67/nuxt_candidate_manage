@@ -62,10 +62,6 @@
             </option>
           </select>
         </CCol>
-      </CRow>
-
-      <!-- source_id -->
-      <CRow>
         <CCol sm="2">
           <label for="source">Source:</label>
         </CCol>
@@ -102,34 +98,7 @@
             type="date"
           >
         </CCol>
-      </CRow>
 
-      <!-- filtered_result -->
-      <CRow>
-        <CCol sm="2">
-          <label for="filtered_result">Filtered Result:</label>
-        </CCol>
-
-        <CCol sm="4">
-          <select
-            id="filtered_result"
-            v-model="data.filtered_result"
-            class="form-control"
-            horizontal
-          >
-            <option
-              v-for="(item, index) in filtered_results"
-              :key="index"
-              :value="item.value"
-            >
-              {{ item.text }}
-            </option>
-          </select>
-        </CCol>
-      </CRow>
-
-      <!-- interview_date -->
-      <CRow>
         <CCol sm="2">
           <label for="interview_date">Interview Date:</label>
         </CCol>
@@ -153,30 +122,6 @@
             placeholder="Enter feedback"
             horizontal
           />
-        </CCol>
-      </CRow>
-
-      <!-- interview_result -->
-      <CRow>
-        <CCol sm="2">
-          <label for="interview_result">Interview Result:</label>
-        </CCol>
-
-        <CCol sm="4">
-          <select
-            id="interview_result"
-            v-model="data.interview_result"
-            class="form-control"
-            horizontal
-          >
-            <option
-              v-for="(item, index) in interview_results"
-              :key="index"
-              :value="item.value"
-            >
-              {{ item.text }}
-            </option>
-          </select>
         </CCol>
       </CRow>
 

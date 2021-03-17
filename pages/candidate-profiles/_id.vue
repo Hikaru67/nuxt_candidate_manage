@@ -1,13 +1,13 @@
 <template>
-  <AddTemplate />
+  <EditProfile />
 </template>
 
 <script>
 
-import AddTemplate from '../../components/candidate/CreateEditProfile'
+import EditProfile from '../../components/candidate/CreateEditProfile'
 export default {
   name: 'Id',
-  components: { AddTemplate }
+  components: { EditProfile }
 }
 </script>
 
