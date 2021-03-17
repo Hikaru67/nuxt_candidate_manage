@@ -116,7 +116,7 @@ const urlCandidatesProfiles =
   'http://candidate-manage.herokuapp.com/api/candidates-profiles'
 
 export default {
-  name: 'ListTemplate',
+  name: 'ListProfile',
   freeSet,
   data () {
     return {

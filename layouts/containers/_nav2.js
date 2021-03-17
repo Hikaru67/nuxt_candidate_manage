@@ -19,13 +19,13 @@ export default [
       {
         _name: 'CSidebarNavItem',
         name: 'New candidate profile',
-        to: '/candidate/template/add',
+        to: '/candidate-profiles/add',
         icon: 'cil-pencil'
       },
       {
         _name: 'CSidebarNavItem',
         name: 'List candidate profiles',
-        to: '/candidate/template',
+        to: '/candidate-profiles',
         icon: 'cil-drop'
       },
       {

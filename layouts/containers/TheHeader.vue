@@ -27,27 +27,28 @@
         <CHeaderNavLink to="/users" exact>
           Users
         </CHeaderNavLink>
-      </CHeaderNavItem>
-      <CHeaderNavItem class="px-3">
+      </CHeaderNavItem>-->
+      <!--      <CHeaderNavItem class="center">
         <CHeaderNavLink>
-          Settings
+          {{ $auth.user.role_id }}
         </CHeaderNavLink>
       </CHeaderNavItem>-->
     </CHeaderNav>
     <CHeaderNav class="mr-4">
       <CHeaderNavItem class="d-md-down-none mx-2">
         <CHeaderNavLink>
-          <CIcon name="cil-bell" />
+          <CIcon :content="$options.freeSet.cilBell" />
         </CHeaderNavLink>
       </CHeaderNavItem>
       <CHeaderNavItem class="d-md-down-none mx-2">
         <CHeaderNavLink>
-          <CIcon name="cil-list" />
+          <!--          <CIcon :content="$options.freeSet.cilList" />-->
+          <span style="text-transform: uppercase">{{ roles[$auth.user.role_id-1] }}</span>
         </CHeaderNavLink>
       </CHeaderNavItem>
       <CHeaderNavItem class="d-md-down-none mx-2">
         <CHeaderNavLink>
-          <CIcon name="cil-envelope-open" />
+          {{ $auth.user.username }}
         </CHeaderNavLink>
       </CHeaderNavItem>
       <TheHeaderDropdownAccnt />
@@ -59,12 +60,19 @@
 </template>
 
 <script>
+import { freeSet } from '@coreui/icons'
 import TheHeaderDropdownAccnt from './TheHeaderDropdownAccnt'
 
 export default {
   name: 'TheHeader',
+  freeSet,
   components: {
     TheHeaderDropdownAccnt
+  },
+  data () {
+    return {
+      roles: ['Human Resources', 'Interviewer']
+    }
   }
 }
 </script>

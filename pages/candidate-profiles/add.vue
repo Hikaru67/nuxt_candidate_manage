@@ -4,13 +4,11 @@
 
 <script>
 
-import axios from "axios";
-
-import AddTemplate from "../../../components/candidate/CreateEditTemplate";
+import AddTemplate from '../../components/candidate/CreateEditTemplate'
 export default {
-  name: "Add",
+  name: 'Add',
   components: { AddTemplate }
-};
+}
 </script>
 
 <style scoped></style>
