@@ -1,8 +1,12 @@
 <template>
   <CCard>
     <CCardHeader class="center">
-      <h3 v-if="id">Edit Candidate Profile</h3>
-      <h3 v-else>Create Candidate Profile</h3>
+      <h3 v-if="id">
+        Edit Candidate Profile
+      </h3>
+      <h3 v-else>
+        Create Candidate Profile
+      </h3>
     </CCardHeader>
 
     <CCardBody>
@@ -45,14 +49,14 @@
         <CCol sm="4">
           <select
             id="position"
-            class="form-control"
             v-model="data.position_id"
+            class="form-control"
             horizontal
           >
             <option
               v-for="(item, index) in positions"
-              :value="item.id"
               :key="index"
+              :value="item.id"
             >
               {{ item.name }}
             </option>
@@ -69,14 +73,14 @@
         <CCol sm="4">
           <select
             id="source"
-            class="form-control"
             v-model="data.source_id"
+            class="form-control"
             horizontal
           >
             <option
               v-for="(item, index) in sources"
-              :value="item.id"
               :key="index"
+              :value="item.id"
             >
               {{ item.name }}
             </option>
@@ -92,11 +96,11 @@
 
         <CCol sm="4">
           <input
-            class="form-control"
-            id="source"
-            type="date"
+            id="received_date"
             v-model="data.received_date"
-          />
+            class="form-control"
+            type="date"
+          >
         </CCol>
       </CRow>
 
@@ -108,15 +112,15 @@
 
         <CCol sm="4">
           <select
-            id="source"
-            class="form-control"
+            id="filtered_result"
             v-model="data.filtered_result"
+            class="form-control"
             horizontal
           >
             <option
               v-for="(item, index) in filtered_results"
-              :value="item.value"
               :key="index"
+              :value="item.value"
             >
               {{ item.text }}
             </option>
@@ -132,11 +136,11 @@
 
         <CCol sm="4">
           <input
-            class="form-control"
-            id="source"
-            type="date"
+            id="interview_date"
             v-model="data.interview_date"
-          />
+            class="form-control"
+            type="date"
+          >
         </CCol>
       </CRow>
 
@@ -160,9 +164,9 @@
 
         <CCol sm="4">
           <select
-            id="source"
-            class="form-control"
+            id="interview_result"
             v-model="data.interview_result"
+            class="form-control"
             horizontal
           >
             <option
@@ -207,25 +211,27 @@
         <CButton v-if="id" color="success" @click="updateData">
           Update
         </CButton>
-        <CButton v-else color="success" @click="addData"> Create </CButton>
+        <CButton v-else color="success" @click="addData">
+          Create
+        </CButton>
       </div>
     </CCardFooter>
   </CCard>
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios'
 
-const urlRoles = "https://candidate-manage.herokuapp.com/api/roles";
+const urlRoles = 'https://candidate-manage.herokuapp.com/api/roles'
 const urlEmailTemplates =
-  "http://candidate-manage.herokuapp.com/api/email-templates";
-const urlSources = "http://candidate-manage.herokuapp.com/api/sources";
-const urlPositions = "http://candidate-manage.herokuapp.com/api/positions";
+  'http://candidate-manage.herokuapp.com/api/email-templates'
+const urlSources = 'http://candidate-manage.herokuapp.com/api/sources'
+const urlPositions = 'http://candidate-manage.herokuapp.com/api/positions'
 const urlCandidatesProfiles =
-  "http://candidate-manage.herokuapp.com/api/candidates-profiles";
+  'http://candidate-manage.herokuapp.com/api/candidates-profiles'
 
 export default {
-  data() {
+  data () {
     return {
       urlRoles,
       urlEmailTemplates,
@@ -233,156 +239,156 @@ export default {
       urlPositions,
       urlCandidatesProfiles,
 
-      id: "",
+      id: '',
       errors: [],
       positions: [],
       sources: [],
       data: {
-        first_name: "",
-        last_name: "",
+        first_name: '',
+        last_name: '',
         position_id: 0,
         source_id: 0,
-        received_date: "",
+        received_date: '',
         filtered_result: 0,
-        interview_date: "",
-        feedback: "",
+        interview_date: '',
+        feedback: '',
         interview_result: 0,
-        cv_link: "",
-        note: "",
-        created_at: "",
+        cv_link: '',
+        note: '',
+        created_at: ''
       },
       filtered_results: [
-        { value: 3, text: "Pending" },
-        { value: 1, text: "Pass" },
-        { value: 2, text: "Fail" },
+        { value: 3, text: 'Pending' },
+        { value: 1, text: 'Pass' },
+        { value: 2, text: 'Fail' }
       ],
       interview_results: [
-        { value: 3, text: "Pending" },
-        { value: 2, text: "Fail" },
-        { value: 1, text: "Pass" },
-      ],
-    };
+        { value: 3, text: 'Pending' },
+        { value: 2, text: 'Fail' },
+        { value: 1, text: 'Pass' }
+      ]
+    }
   },
 
-  mounted() {
-    this.id = this.$route.params.id;
+  mounted () {
+    this.id = this.$route.params.id
     if (this.id) {
-      this.getData();
+      this.getData()
     }
 
     /**
      * get data to position
      */
     axios.get(urlPositions).then((response) => {
-      this.positions = response.data;
-      console.log(this.positions);
-    });
+      this.positions = response.data
+      console.log(this.positions)
+    })
 
     /**
      * get data to source
      */
     axios.get(urlSources).then((response) => {
-      this.sources = response.data;
-    });
+      this.sources = response.data
+    })
   },
 
   methods: {
     /**
      * `getData` will get data by id
      */
-    getData() {
+    getData () {
       this.data = axios
-        .get(this.urlCandidatesProfiles + "/" + this.id)
+        .get(this.urlCandidatesProfiles + '/' + this.id)
         // .get(this.urlCandidatesProfiles) // test
         .then((res) => {
-          this.data = res.data;
-        });
+          this.data = res.data
+        })
     },
 
     /**
      * `addData` add a new data to database
      */
-    addData() {
+    addData () {
       if (this.validate()) {
         axios
           .post(this.urlCandidatesProfiles, this.data)
           .then((res) => {
-            alert("Add data success");
-            window.location.href = "./";
+            alert('Add data success')
+            window.location.href = './'
           })
           .catch(function (error) {
-            alert(error);
-          });
+            alert(error)
+          })
       }
-      window.scrollTo(0, 0);
+      window.scrollTo(0, 0)
 
-      console.log(this.data);
+      console.log(this.data)
     },
 
     /**
      * `updateData` update current data by id
      */
-    updateData() {
+    updateData () {
       if (this.validate()) {
         axios
-          .put(this.urlCandidatesProfiles + "/" + this.id, this.data)
+          .put(this.urlCandidatesProfiles + '/' + this.id, this.data)
           .then((res) => {
-            alert("Update data success");
-            window.location.href = "./";
+            alert('Update data success')
+            window.location.href = './'
           })
           .catch(function (error) {
-            alert(error);
-          });
+            alert(error)
+          })
       }
-      window.scrollTo(0, 0);
+      window.scrollTo(0, 0)
     },
 
     /**
      * `validate` update current data by id
      */
-    validate() {
-      this.errors = [];
+    validate () {
+      this.errors = []
 
       if (!this.data.first_name) {
-        this.errors.push("First Name required.");
+        this.errors.push('First Name required.')
       }
 
       if (!this.data.last_name) {
-        this.errors.push("Last Name required.");
+        this.errors.push('Last Name required.')
       }
 
       if (!this.data.position_id) {
-        this.errors.push("Position required.");
+        this.errors.push('Position required.')
       }
 
       if (!this.data.source_id) {
-        this.errors.push("Source required.");
+        this.errors.push('Source required.')
       }
 
       if (!this.data.received_date) {
-        this.errors.push("Received Date required.");
+        this.errors.push('Received Date required.')
       }
 
       if (!this.data.filtered_result) {
-        this.errors.push("Filtered Result required.");
+        this.errors.push('Filtered Result required.')
       }
 
       if (!this.data.interview_date) {
-        this.errors.push("Interview Date required.");
+        this.errors.push('Interview Date required.')
       }
 
       if (!this.data.interview_result) {
-        this.errors.push("Interview Result required.");
+        this.errors.push('Interview Result required.')
       }
 
-      return !this.errors.length;
+      return !this.errors.length
     },
 
-    test(input) {
-      console.log(input);
-    },
-  },
-};
+    test (input) {
+      console.log(input)
+    }
+  }
+}
 </script>
 
 <style>
