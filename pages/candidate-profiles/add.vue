@@ -7,7 +7,14 @@
 import AddTemplate from '../../components/candidate/CreateEditProfile'
 export default {
   name: 'Add',
-  components: { AddTemplate }
+  components: { AddTemplate },
+  beforeCreate () {
+    if (this.$auth.user.role_id !== 1) {
+      alert('You dont have permission !')
+      // eslint-disable-next-line nuxt/no-globals-in-created
+      window.location.href = '/dashboard'
+    }
+  }
 }
 </script>
 

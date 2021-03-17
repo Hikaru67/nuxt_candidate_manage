@@ -121,7 +121,7 @@
     <CCardBody v-else-if="$auth.user.role_id === 2">
       <CDataTable
         :items="items"
-        :fields="fields"
+        :fields="fields.slice(0, fields.length-1)"
         items-per-page-select
         pagination
         responsive
@@ -219,7 +219,7 @@
 
         <!-- convertData interview_result -->
         <template #interview_result="{ item }">
-          <td>
+          <td v-if="item.filtered_result === 1">
             <input
               id="interview_result-button"
               type="button"
@@ -237,13 +237,16 @@
               "
             >
           </td>
+          <td v-else>
+            <span class="">{{ convertInterviewResult(item.interview_result) }}</span>
+          </td>
         </template>
 
         {{ $route.Path }}
 
-        <template #action="{ item }">
+        <!--        <template #action="{ item }">
           <td class="row">
-            <CButton color="primary" variant="ghost" @click="editData(item.id)">
+            &lt;!&ndash;            <CButton color="primary" variant="ghost" @click="editData(item.id)">
               <CIcon :content="$options.freeSet.cilPencil" />
             </CButton>
             <CButton
@@ -252,9 +255,9 @@
               @click="deleteData(item.id)"
             >
               <CIcon :content="$options.freeSet.cilTrash" />
-            </CButton>
+            </CButton>&ndash;&gt;
           </td>
-        </template>
+        </template>-->
       </CDataTable>
     </CCardBody>
   </CCard>
@@ -263,10 +266,10 @@
 <script>
 import { freeSet } from '@coreui/icons'
 import axios from 'axios'
+
 const urlSources = 'http://candidate-manage.herokuapp.com/api/sources'
 const urlPositions = 'http://candidate-manage.herokuapp.com/api/positions'
-const urlCandidatesProfiles =
-  'http://candidate-manage.herokuapp.com/api/candidates-profiles'
+const urlCandidatesProfiles = 'http://candidate-manage.herokuapp.com/api/candidates-profiles'
 export default {
   name: 'ListTemplate',
   freeSet,
@@ -293,12 +296,12 @@ export default {
           key: 'source_id',
           label: 'Source'
         },
+        'cv_link',
         'received_date',
         'filtered_result',
         'interview_date',
         'feedback',
         'interview_result',
-        'cv_link',
         'note',
         {
           key: 'action',
@@ -327,12 +330,15 @@ export default {
     axios.get(urlCandidatesProfiles).then((response) => {
       this.items = response.data
     })
+
     /**
      * get data to position
      */
+    // get data to items
     axios.get(urlPositions).then((response) => {
       this.positions = response.data
     })
+
     /**
      * get data to source
      */
@@ -349,6 +355,7 @@ export default {
       date = new Date(date)
       return date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear()
     },
+
     /**
      * `convertPosition` will convert from position id to position name
      * @param id Integer
@@ -359,6 +366,7 @@ export default {
       })
       return result ? result.name : ''
     },
+
     /**
      * `convertSource` will convert from source id to source name
      * @param id Integer
@@ -369,6 +377,7 @@ export default {
       })
       return result ? result.name : ''
     },
+
     /**
      * `convertFilteredResult` will convert from value to text of FilteredResult
      * @param value Integer
@@ -380,6 +389,7 @@ export default {
       const temp = result ? result.text : ''
       return temp
     },
+
     /**
      * `convertInterviewResult` will convert from value to text of InterviewResult
      * @param value Integer
@@ -390,6 +400,7 @@ export default {
       })
       return result ? result.text : ''
     },
+
     /**
      * `editData` will redirect to edit data page
      * @param id String
@@ -398,6 +409,7 @@ export default {
       // this.$router.push(this.$route.path + '/' + id)
       window.location.href = './' + id
     },
+
     /**
      * `deleteData` will delete data by id
      * @param id String
@@ -428,11 +440,13 @@ export default {
       if (id > 2) {
         id = 1
       }
+
       // find item update
       const item = this.items.find(e => e.id === idComponent)
       if (item) {
         item.filtered_result = id
       }
+
       // update item
       axios
         .put(urlCandidatesProfiles + '/' + idComponent, item)
@@ -501,7 +515,7 @@ export default {
   max-width: 5000px;
 }
 .test2 {
-  max-width: 20px !important;
+  max-width: 80px !important;
   display: inline-block !important;
   overflow: hidden;
   text-overflow: ellipsis;

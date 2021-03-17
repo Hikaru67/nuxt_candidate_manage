@@ -196,19 +196,13 @@
 <script>
 import axios from 'axios'
 
-const urlRoles = 'https://candidate-manage.herokuapp.com/api/roles'
-const urlEmailTemplates =
-  'http://candidate-manage.herokuapp.com/api/email-templates'
 const urlSources = 'http://candidate-manage.herokuapp.com/api/sources'
 const urlPositions = 'http://candidate-manage.herokuapp.com/api/positions'
-const urlCandidatesProfiles =
-  'http://candidate-manage.herokuapp.com/api/candidates-profiles'
+const urlCandidatesProfiles = 'http://candidate-manage.herokuapp.com/api/candidates-profiles'
 
 export default {
   data () {
     return {
-      urlRoles,
-      urlEmailTemplates,
       urlSources,
       urlPositions,
       urlCandidatesProfiles,
@@ -245,6 +239,9 @@ export default {
   },
 
   mounted () {
+    /**
+     * call func getData if id is valid
+     */
     this.id = this.$route.params.id
     if (this.id) {
       this.getData()
@@ -255,7 +252,6 @@ export default {
      */
     axios.get(urlPositions).then((response) => {
       this.positions = response.data
-      console.log(this.positions)
     })
 
     /**
@@ -285,7 +281,7 @@ export default {
       if (this.validate()) {
         axios
           .post(this.urlCandidatesProfiles, this.data)
-          .then((res) => {
+          .then(() => {
             alert('Add data success')
             window.location.href = './'
           })
@@ -294,8 +290,6 @@ export default {
           })
       }
       window.scrollTo(0, 0)
-
-      console.log(this.data)
     },
 
     /**
@@ -305,7 +299,7 @@ export default {
       if (this.validate()) {
         axios
           .put(this.urlCandidatesProfiles + '/' + this.id, this.data)
-          .then((res) => {
+          .then(() => {
             alert('Update data success')
             window.location.href = './'
           })

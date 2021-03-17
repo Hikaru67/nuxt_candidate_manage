@@ -15,3 +15,15 @@ export function apiGetSource (axios) {
     .then(res => res.data)
     .catch(xhr => xhr)
 }
+
+export function apiGetEmailTemplates (axios) {
+  return axios.get('/email-templates')
+    .then(res => res.data)
+    .catch(xhr => xhr)
+}
+
+export function apiGetCandidateProfiles (axios) {
+  return axios.get('/candidates-profiles')
+    .then(res => res.data)
+    .catch(xhr => xhr)
+}
