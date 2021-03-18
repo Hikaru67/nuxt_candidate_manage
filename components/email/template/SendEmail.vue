@@ -11,12 +11,24 @@
           {{ error }}
         </CAlert>
       </div>
+      <br>
       <CRow>
         <CCol sm="10">
           <CInput
-            v-model="data.name"
-            label="Name Sender"
-            placeholder="Enter email name"
+            v-model="data.singleProfile.receiver"
+            label="Receiver"
+            placeholder="Receiver email"
+            horizontal
+            disabled
+          />
+        </CCol>
+      </CRow>
+      <CRow>
+        <CCol sm="10">
+          <CSelect
+            :value.sync="data.singleProfile"
+            :options="formatOptionsValueName(listProfiles)"
+            label="Receiver name"
             horizontal
           />
         </CCol>
@@ -25,7 +37,7 @@
         <CCol sm="10">
           <CSelect
             :value.sync="data.singleTemplate"
-            :options="listTemplates"
+            :options="formatOptionsValue(listTemplates)"
             label="Email Template"
             horizontal
           />
@@ -50,38 +62,102 @@
             Return
           </CButton>
         </a>
-        <CButton v-if="id" color="success" @click="sendEmail">
+        <CButton color="success" @click="sendEmail">
           Submit
+        </CButton>
+        <CButton color="success" :class="colors[color]" @click="changeColor">
+          Test
         </CButton>
       </div>
     </CCardFooter>
+    {{ data }}
   </CCard>
 </template>
 
 <script>
+import axios from 'axios'
+import { URL_SEND_EMAIL, URL_CANDIDATE_PROFILES } from '~/common/constant/url'
+
 export default {
   name: 'SendEmail',
   props: {
-    // eslint-disable-next-line vue/require-default-prop
-    listTemplates: Array,
-    // eslint-disable-next-line vue/require-default-prop
-    listProfiles: Array
+    listTemplates: {
+      type: Array,
+      default: () => []
+    },
+    listProfiles: {
+      type: Array,
+      default: () => []
+    }
   },
+
   data () {
     return {
       id: '',
       errors: [],
+      listTemplatesMapped: [],
+      color: 0,
+      colors: ['btn-danger', 'btn-primary', 'btn-secondary'],
       data: {
-        name: '',
-        singleTemplate: {}
+        receiver: '',
+        receiverName: '',
+        singleTemplate: {},
+        singleProfile: {}
       }
     }
   },
-  beforeMount () {
+  mounted () {
+    console.log(typeof (this.listTemplates))
+    console.log('haha')
     console.log(this.listTemplates)
-    this.listTemplates = this.listTemplates.map((item) => {
-      return { value: item.listTemplates, label: item.name }
-    })
+  },
+  methods: {
+    changeColor () {
+      if (this.color <= 1) { this.color++ } else { this.color = 0 }
+    },
+    sendEmail () {
+      const dataEmail = {
+        senderName: 'Me',
+        receiver: this.data.singleProfile.receiver,
+        receiverName: this.data.singleProfile.receiverName,
+        title: this.data.singleTemplate.title,
+        content: this.data.singleTemplate.content
+      }
+      axios.post(URL_SEND_EMAIL, dataEmail)
+        .then(() => {
+          alert('Send email success')
+        }).catch((err) => {
+          alert(err)
+        })
+      axios.put(URL_CANDIDATE_PROFILES + '/' + this.data.singleProfile.id,
+        { interview_result: this.data.singleTemplate.id + 2 })
+        .catch((err) => {
+          alert(err)
+        })
+    },
+    formatOptionsValue (listValue) {
+      if (listValue.length) {
+        return listValue.map((item) => {
+          return { value: { id: item.id, title: item.title, content: item.content }, label: item.name }
+        })
+      }
+      return []
+    },
+    formatOptionsValueName (listValue) {
+      if (listValue.length) {
+        return listValue.map((item) => {
+          return {
+            value: {
+              id: item.id,
+              receiver: item.email,
+              receiverName: item.first_name + ' ' + item.last_name
+            },
+            label: item.first_name + ' ' + item.last_name
+          }
+        })
+      }
+      return []
+    }
   }
 }
 </script>

@@ -73,8 +73,7 @@ export default {
      * @param date String
      */
     convertDate (date) {
-      date = new Date(date)
-      return date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear()
+      return new Date(date).toLocaleDateString()
     },
 
     /**
