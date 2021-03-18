@@ -42,7 +42,7 @@
 
       <CRow>
         <CCol sm="2">
-          <label for="position">Position:</label>
+          <label id="label-center" for="position">Position:</label>
         </CCol>
 
         <CCol sm="4">
@@ -65,7 +65,7 @@
       <!-- position_id -->
       <CRow>
         <CCol sm="2">
-          <label for="source">Source:</label>
+          <label id="label-center" for="source">Source:</label>
         </CCol>
 
         <CCol sm="4">
@@ -112,6 +112,15 @@
       </CRow>-->
 
       <CRow>
+        <!-- <CCol sm="2">
+          <label id="label-center" for="filtered_result">Filtered Result:</label>
+        </CCol>
+
+        <CCol sm="4">
+          <select
+            id="source"
+            class="form-control"
+            v-model="data.filtered_result" -->
         <CCol v-if="data.filtered_result===1" sm="10">
           <CInput
             v-model="data.interview_date"
@@ -148,6 +157,30 @@
           />
         </CCol>
       </CRow>
+
+<!-- interview_result -->
+<!--       <CRow>
+        <CCol sm="2">
+          <label id="label-center" for="interview_result">Interview Result:</label>
+        </CCol>
+
+        <CCol sm="4">
+          <select
+            id="source"
+            class="form-control"
+            v-model="data.interview_result"
+            horizontal
+          >
+            <option
+              v-for="(item, index) in interview_results"
+              :key="index"
+              :value="item.value"
+            >
+              {{ item.text }}
+            </option>
+          </select>
+        </CCol>
+      </CRow> -->
 
       <!-- cv_link -->
       <CRow>
@@ -357,5 +390,9 @@ export default {
   width: 150px;
   margin-left: 12%;
   margin-bottom: 5%;
+}
+
+#label-center{
+  margin-top: 4%;
 }
 </style>
