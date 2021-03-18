@@ -1,5 +1,5 @@
 <template>
-  <SendEmail :list-templates="listTemplates" :list-profiles="listProfiles.data" />
+  <SendEmail :list-templates="JSON.parse(JSON.stringify(listTemplates))" :list-profiles="listProfiles.data" />
 </template>
 
 <script>
@@ -12,7 +12,9 @@ export default {
   },
   data () {
     return {
-      listTemplates: [],
+      listTemplates: {
+        default: []
+      },
       listProfiles: []
     }
   },
@@ -25,6 +27,9 @@ export default {
   },
   async created () {
     this.listTemplates = await apiGetEmailTemplates(this.$axios)
+    console.log(this.listTemplates)
+    this.listTemplates = JSON.parse(JSON.stringify(this.listTemplates))
+    console.log(JSON.parse(JSON.stringify(this.listTemplates)))
     this.listProfiles = await apiGetCandidateProfiles(this.$axios)
   }
 }

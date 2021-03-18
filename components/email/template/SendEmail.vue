@@ -15,9 +15,20 @@
       <CRow>
         <CCol sm="10">
           <CInput
-            v-model="data.receiver"
+            v-model="data.singleProfile.receiver"
             label="Receiver"
-            placeholder="Enter receiver email"
+            placeholder="Receiver email"
+            horizontal
+            disabled
+          />
+        </CCol>
+      </CRow>
+      <CRow>
+        <CCol sm="10">
+          <CSelect
+            :value.sync="data.singleProfile"
+            :options="formatOptionsValueName(listProfiles)"
+            label="Receiver name"
             horizontal
           />
         </CCol>
@@ -28,16 +39,6 @@
             :value.sync="data.singleTemplate"
             :options="formatOptionsValue(listTemplates)"
             label="Email Template"
-            horizontal
-          />
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol sm="10">
-          <CSelect
-            :value.sync="data.receiverName"
-            :options="formatOptionsValueName(listProfiles)"
-            label="Receiver name"
             horizontal
           />
         </CCol>
@@ -64,6 +65,9 @@
         <CButton color="success" @click="sendEmail">
           Submit
         </CButton>
+        <CButton color="success" :class="colors[color]" @click="changeColor">
+          Test
+        </CButton>
       </div>
     </CCardFooter>
     {{ data }}
@@ -72,7 +76,7 @@
 
 <script>
 import axios from 'axios'
-import { URL_SEND_EMAIL } from '~/common/constant/url'
+import { URL_SEND_EMAIL, URL_CANDIDATE_PROFILES } from '~/common/constant/url'
 
 export default {
   name: 'SendEmail',
@@ -92,19 +96,30 @@ export default {
       id: '',
       errors: [],
       listTemplatesMapped: [],
+      color: 0,
+      colors: ['btn-danger', 'btn-primary', 'btn-secondary'],
       data: {
         receiver: '',
         receiverName: '',
-        singleTemplate: {}
+        singleTemplate: {},
+        singleProfile: {}
       }
     }
   },
+  mounted () {
+    console.log(typeof (this.listTemplates))
+    console.log('haha')
+    console.log(this.listTemplates)
+  },
   methods: {
+    changeColor () {
+      if (this.color <= 1) { this.color++ } else { this.color = 0 }
+    },
     sendEmail () {
       const dataEmail = {
         senderName: 'Me',
-        receiver: this.data.receiver,
-        receiverName: this.data.receiverName,
+        receiver: this.data.singleProfile.receiver,
+        receiverName: this.data.singleProfile.receiverName,
         title: this.data.singleTemplate.title,
         content: this.data.singleTemplate.content
       }
@@ -114,21 +129,31 @@ export default {
         }).catch((err) => {
           alert(err)
         })
+      axios.put(URL_CANDIDATE_PROFILES + '/' + this.data.singleProfile.id,
+        { interview_result: this.data.singleTemplate.id + 2 })
+        .catch((err) => {
+          alert(err)
+        })
     },
     formatOptionsValue (listValue) {
       if (listValue.length) {
         return listValue.map((item) => {
-          return { value: { title: item.title, content: item.content }, label: item.name }
+          return { value: { id: item.id, title: item.title, content: item.content }, label: item.name }
         })
       }
       return []
     },
     formatOptionsValueName (listValue) {
       if (listValue.length) {
-        console.log(listValue)
         return listValue.map((item) => {
-          console.log(item.first_name + ' ' + item.last_name)
-          return { value: item.first_name + ' ' + item.last_name, label: item.first_name + ' ' + item.last_name }
+          return {
+            value: {
+              id: item.id,
+              receiver: item.email,
+              receiverName: item.first_name + ' ' + item.last_name
+            },
+            label: item.first_name + ' ' + item.last_name
+          }
         })
       }
       return []
