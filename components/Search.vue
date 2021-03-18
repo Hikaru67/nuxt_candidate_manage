@@ -10,7 +10,7 @@
       <CRow>
         <CCol sm="6">
           <CInput
-            v-model="formSearch.name"
+            v-model="searchForm.name"
             label="Name"
             placeholder="Enter name"
             horizontal
@@ -20,7 +20,7 @@
       <CRow>
         <CCol sm="6">
           <CSelect
-            :data-sync="formSearch.position"
+            :data-sync="searchForm.position"
             :options="positions"
             label="Positions"
             horizontal
@@ -28,7 +28,7 @@
         </CCol>
         <CCol sm="6">
           <CSelect
-            :data-sync="formSearch.source"
+            :data-sync="searchForm.source"
             :options="sources"
             label="Source"
             horizontal
@@ -38,7 +38,7 @@
       <CRow>
         <CCol sm="6">
           <CInput
-            v-model="formSearch.receiverDateFrom"
+            v-model="searchForm.receiverDateFrom"
             label="From date"
             type="date"
             horizontal
@@ -46,7 +46,7 @@
         </CCol>
         <CCol sm="6">
           <CInput
-            v-model="formSearch.receiverDateTo"
+            v-model="searchForm.receiverDateTo"
             label="To date"
             type="date"
             horizontal
@@ -73,7 +73,7 @@ export default {
     return {
       positions: [],
       sources: [],
-      formSearch: {
+      searchForm: {
         name: '',
         position: '',
         source: '',
@@ -90,7 +90,7 @@ export default {
   },
   methods: {
     search () {
-      this.$emit('search', this.SearchForm)
+      this.$emit('search', this.searchForm)
     }
   }
 }

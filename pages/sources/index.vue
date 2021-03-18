@@ -4,7 +4,7 @@
       <h3>List Email Templates</h3>
     </CCardHeader>
     <CCardBody>
-      <Search @search="getSearchForm" />
+      <!--      <Search @search="getSearchForm($event)" />-->
       <br>
       <ListSource :list-sources="listSources" />
     </CCardBody>
@@ -37,10 +37,8 @@ export default {
     this.listSources = await apiGetSource(this.$axios)
   },
   methods: {
-    getSearchForm (data) {
-      this.searchForm = data
-      // eslint-disable-next-line no-console
-      console.log(this.searchForm)
+    getSearchForm (form) {
+      this.searchForm = form
     }
   }
 }
