@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import ListTemplate from "../../components/candidate/ListTemplate";
 
 export default {

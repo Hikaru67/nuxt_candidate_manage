@@ -341,23 +341,21 @@ export default {
     //   this.items = response.data;
     // });
 
-    /**
-     * get data to position
-     */
-    // get data to items
+    // get data to position
     axios.get(urlPositions).then((response) => {
       this.positions = response.data;
     })
 
-    /**
-     * get data to source
-     */
+    // get data to source
     axios.get(urlSources).then((response) => {
       this.sources = response.data;
     });
   },
   methods: {
 
+    /**
+     * get data from pages/index to component ListTemplate
+     */
     getDataFromPage() {
       this.setDataFromPage = this.DATA
     },
