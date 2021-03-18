@@ -1,5 +1,5 @@
 <template>
-  <SendEmail :list-templates="listProfiles" :list-profiles="listProfiles" />
+  <SendEmail :list-templates="listTemplates" :list-profiles="listProfiles.data" />
 </template>
 
 <script>
@@ -23,10 +23,9 @@ export default {
       window.location.href = '/dashboard'
     }
   },
-  created () {
-    this.listTemplates = apiGetEmailTemplates(this.$axios)
-    this.listProfiles = apiGetCandidateProfiles(this.$axios)
-    console.log(this.listTemplates)
+  async created () {
+    this.listTemplates = await apiGetEmailTemplates(this.$axios)
+    this.listProfiles = await apiGetCandidateProfiles(this.$axios)
   }
 }
 </script>

@@ -11,12 +11,13 @@
           {{ error }}
         </CAlert>
       </div>
+      <br>
       <CRow>
         <CCol sm="10">
           <CInput
-            v-model="data.name"
-            label="Name Sender"
-            placeholder="Enter email name"
+            v-model="data.receiver"
+            label="Receiver"
+            placeholder="Enter receiver email"
             horizontal
           />
         </CCol>
@@ -25,8 +26,18 @@
         <CCol sm="10">
           <CSelect
             :value.sync="data.singleTemplate"
-            :options="listTemplates"
+            :options="formatOptionsValue(listTemplates)"
             label="Email Template"
+            horizontal
+          />
+        </CCol>
+      </CRow>
+      <CRow>
+        <CCol sm="10">
+          <CSelect
+            :value.sync="data.receiverName"
+            :options="formatOptionsValueName(listProfiles)"
+            label="Receiver name"
             horizontal
           />
         </CCol>
@@ -50,38 +61,78 @@
             Return
           </CButton>
         </a>
-        <CButton v-if="id" color="success" @click="sendEmail">
+        <CButton color="success" @click="sendEmail">
           Submit
         </CButton>
       </div>
     </CCardFooter>
+    {{ data }}
   </CCard>
 </template>
 
 <script>
+import axios from 'axios'
+import { URL_SEND_EMAIL } from '~/common/constant/url'
+
 export default {
   name: 'SendEmail',
   props: {
-    // eslint-disable-next-line vue/require-default-prop
-    listTemplates: Array,
-    // eslint-disable-next-line vue/require-default-prop
-    listProfiles: Array
+    listTemplates: {
+      type: Array,
+      default: () => []
+    },
+    listProfiles: {
+      type: Array,
+      default: () => []
+    }
   },
+
   data () {
     return {
       id: '',
       errors: [],
+      listTemplatesMapped: [],
       data: {
-        name: '',
+        receiver: '',
+        receiverName: '',
         singleTemplate: {}
       }
     }
   },
-  beforeMount () {
-    console.log(this.listTemplates)
-    this.listTemplates = this.listTemplates.map((item) => {
-      return { value: item.listTemplates, label: item.name }
-    })
+  methods: {
+    sendEmail () {
+      const dataEmail = {
+        senderName: 'Me',
+        receiver: this.data.receiver,
+        receiverName: this.data.receiverName,
+        title: this.data.singleTemplate.title,
+        content: this.data.singleTemplate.content
+      }
+      axios.post(URL_SEND_EMAIL, dataEmail)
+        .then(() => {
+          alert('Send email success')
+        }).catch((err) => {
+          alert(err)
+        })
+    },
+    formatOptionsValue (listValue) {
+      if (listValue.length) {
+        return listValue.map((item) => {
+          return { value: { title: item.title, content: item.content }, label: item.name }
+        })
+      }
+      return []
+    },
+    formatOptionsValueName (listValue) {
+      if (listValue.length) {
+        console.log(listValue)
+        return listValue.map((item) => {
+          console.log(item.first_name + ' ' + item.last_name)
+          return { value: item.first_name + ' ' + item.last_name, label: item.first_name + ' ' + item.last_name }
+        })
+      }
+      return []
+    }
   }
 }
 </script>
