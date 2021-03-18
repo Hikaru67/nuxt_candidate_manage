@@ -4,8 +4,6 @@
       <h3>List Email Templates</h3>
     </CCardHeader>
     <CCardBody>
-      <!--      <Search @search="getSearchForm($event)" />-->
-      <br>
       <ListTemplate :list-templates="listTemplates" />
     </CCardBody>
   </CCard>
@@ -13,12 +11,11 @@
 
 <script>
 import ListTemplate from '~/components/email/template/ListTemplate'
-import Search from '~/components/Search'
 import { apiGetEmailTemplates } from '~/api/baseData'
 
 export default {
   name: 'Index',
-  components: { ListTemplate, Search },
+  components: { ListTemplate },
   data () {
     return {
       searchForm: {},
@@ -34,11 +31,6 @@ export default {
   },
   async created () {
     this.listTemplates = await apiGetEmailTemplates(this.$axios)
-  },
-  methods: {
-    getSearchForm (form) {
-      this.searchForm = form
-    }
   }
 }
 </script>
