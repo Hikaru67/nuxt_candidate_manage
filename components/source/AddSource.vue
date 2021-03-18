@@ -18,7 +18,7 @@
       <CRow>
         <CCol sm="10">
           <CInput
-            v-model="data.name"
+            v-model="singleSource.name"
             label="Name"
             placeholder="Enter source name"
             horizontal
@@ -53,7 +53,12 @@ export default {
   props: {
     // eslint-disable-next-line vue/require-default-prop
     singleSource: {
-      type: Object
+      type: Object,
+      default: () => {
+        return {
+          name: ''
+        }
+      }
     }
   },
   data () {
@@ -73,6 +78,7 @@ export default {
     }
     console.log(this.singleSource)
   },
+
   methods: {
     /**
      * `addData` add a new data to database
@@ -115,7 +121,7 @@ export default {
     validate () {
       this.errors = []
 
-      if (!this.data.name) {
+      if (!this.singleSource.name) {
         this.errors.push('source name required.')
       }
 

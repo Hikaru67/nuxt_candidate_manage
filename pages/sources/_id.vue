@@ -24,8 +24,8 @@ export default {
       window.location.href = '/dashboard'
     }
   },
-  created () {
-    this.singleSource = apiGetSourceById(this.$axios, this.$route.params.id)
+  async created () {
+    this.singleSource = await apiGetSourceById(this.$axios, this.$route.params.id)
   }
 }
 </script>
