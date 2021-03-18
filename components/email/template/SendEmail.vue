@@ -106,11 +106,6 @@ export default {
       }
     }
   },
-  mounted () {
-    console.log(typeof (this.listTemplates))
-    console.log('haha')
-    console.log(this.listTemplates)
-  },
   methods: {
     changeColor () {
       if (this.color <= 1) { this.color++ } else { this.color = 0 }

@@ -1,17 +1,28 @@
 <template>
-  <ListSource :list-sources="listSources" />
+  <CCard>
+    <CCardHeader>
+      <h3>List Email Templates</h3>
+    </CCardHeader>
+    <CCardBody>
+      <Search @search="getSearchForm" />
+      <br>
+      <ListSource :list-sources="listSources" />
+    </CCardBody>
+  </CCard>
 </template>
 
 <script>
 
 import ListSource from '~/components/source/ListSource'
+import Search from '~/components/Search'
 import { apiGetSource } from '~/api/baseData'
 
 export default {
   name: 'Index',
-  components: { ListSource },
+  components: { ListSource, Search },
   data () {
     return {
+      searchForm: {},
       listSources: []
     }
   },
@@ -24,6 +35,13 @@ export default {
   },
   async created () {
     this.listSources = await apiGetSource(this.$axios)
+  },
+  methods: {
+    getSearchForm (data) {
+      this.searchForm = data
+      // eslint-disable-next-line no-console
+      console.log(this.searchForm)
+    }
   }
 }
 </script>

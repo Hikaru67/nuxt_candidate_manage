@@ -1,5 +1,12 @@
 <template>
-  <ListTemplate :list-templates="listTemplates" />
+  <CCard>
+    <CCardHeader>
+      <h3>List Email Templates</h3>
+    </CCardHeader>
+    <CCardBody>
+      <ListTemplate :list-templates="listTemplates" />
+    </CCardBody>
+  </CCard>
 </template>
 
 <script>
