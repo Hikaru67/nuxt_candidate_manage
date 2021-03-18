@@ -1,3 +1,4 @@
+/*
 export default [
   {
     _name: 'CSidebarNav',
@@ -18,14 +19,14 @@ export default [
       },
       {
         _name: 'CSidebarNavItem',
-        name: 'New candidate profiles',
-        to: '/candidate/profiles/add',
+        name: 'New candidate profile',
+        to: '/candidate-profiles/add',
         icon: 'cil-pencil'
       },
       {
         _name: 'CSidebarNavItem',
         name: 'List candidate profiles',
-        to: '/candidate/profiles/',
+        to: '/candidate-profiles',
         icon: 'cil-drop'
       },
       {
@@ -40,7 +41,7 @@ export default [
       },
       {
         _name: 'CSidebarNavItem',
-        name: 'List email profiles',
+        name: 'List email template',
         to: '/email/templates',
         icon: 'cil-drop'
       },
@@ -58,6 +59,34 @@ export default [
         _name: 'CSidebarNavItem',
         name: 'List source',
         to: '/sources',
+        icon: 'cil-drop'
+      }
+    ]
+  }
+]
+*/
+export default [
+  {
+    _name: 'CSidebarNav',
+    _children: [
+      {
+        _name: 'CSidebarNavItem',
+        name: 'Dashboard',
+        to: '/dashboard',
+        icon: 'cil-speedometer',
+        badge: {
+          color: 'primary',
+          text: 'NEW'
+        }
+      },
+      {
+        _name: 'CSidebarNavTitle',
+        _children: ['Candidate Profiles']
+      },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'List candidate profiles',
+        to: '/candidate-profiles/',
         icon: 'cil-drop'
       }
     ]

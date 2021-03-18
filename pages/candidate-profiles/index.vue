@@ -1,12 +1,28 @@
 <template>
-  <ListTemplate />
+  <ListTemplate :DATA="this.dataCandidate" />
 </template>
 
 <script>
-import ListTemplate from "../../components/candidate/ListTemplate"
+import ListTemplate from "../../components/candidate/ListTemplate";
+
 export default {
   name: "Index",
-  components: { ListTemplate }
+
+  data () {
+    return {
+      dataCandidate: []
+    }
+  },
+
+  components: { ListTemplate },
+
+  mounted() {
+    axios
+      .get(this.$store.state.url.API_CANDIDATE_PROFILES_URL)
+      .then((response) => {
+        this.dataCandidate = response.data;
+      });
+  },
 };
 </script>
 

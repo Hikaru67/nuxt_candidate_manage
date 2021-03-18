@@ -1,8 +1,12 @@
 <template>
   <CCard>
     <CCardHeader class="center">
-      <h3 v-if="id">Edit Candidate Profile</h3>
-      <h3 v-else>Create Candidate Profile</h3>
+      <h3 v-if="id">
+        Edit Candidate Profile
+      </h3>
+      <h3 v-else>
+        Create Candidate Profile
+      </h3>
     </CCardHeader>
 
     <CCardBody>
@@ -36,7 +40,6 @@
         </CCol>
       </CRow>
 
-      <!-- position_id -->
       <CRow>
         <CCol sm="2">
           <label id="label-center" for="position">Position:</label>
@@ -45,14 +48,13 @@
         <CCol sm="4">
           <select
             id="position"
-            class="form-control"
             v-model="data.position_id"
-            horizontal
+            class="form-control"
           >
             <option
               v-for="(item, index) in positions"
-              :value="item.id"
               :key="index"
+              :value="item.id"
             >
               {{ item.name }}
             </option>
@@ -60,7 +62,7 @@
         </CCol>
       </CRow>
 
-      <!-- source_id -->
+      <!-- position_id -->
       <CRow>
         <CCol sm="2">
           <label id="label-center" for="source">Source:</label>
@@ -69,14 +71,13 @@
         <CCol sm="4">
           <select
             id="source"
-            class="form-control"
             v-model="data.source_id"
-            horizontal
+            class="form-control"
           >
             <option
               v-for="(item, index) in sources"
-              :value="item.id"
               :key="index"
+              :value="item.id"
             >
               {{ item.name }}
             </option>
@@ -86,23 +87,32 @@
 
       <!-- received_date -->
       <CRow>
+        <CCol sm="10">
+          <CInput
+            v-model="data.received_date"
+            label="Received Date"
+            type="date"
+            horizontal
+          />
+        </CCol>
+      </CRow>
+      <!--      <CRow>
         <CCol sm="2">
-          <label id="label-center" for="received_date">Received Date:</label>
+          <label for="received_date">Received Date</label>
         </CCol>
 
         <CCol sm="4">
           <input
-            class="form-control"
-            id="source"
-            type="date"
+            id="received_date"
             v-model="data.received_date"
-          />
+            class="form-control"
+            type="date"
+          >
         </CCol>
-      </CRow>
+      </CRow>-->
 
-      <!-- filtered_result -->
       <CRow>
-        <CCol sm="2">
+        <!-- <CCol sm="2">
           <label id="label-center" for="filtered_result">Filtered Result:</label>
         </CCol>
 
@@ -110,35 +120,31 @@
           <select
             id="source"
             class="form-control"
-            v-model="data.filtered_result"
-            horizontal
-          >
-            <option
-              v-for="(item, index) in filtered_results"
-              :value="item.value"
-              :key="index"
-            >
-              {{ item.text }}
-            </option>
-          </select>
-        </CCol>
-      </CRow>
-
-      <!-- interview_date -->
-      <CRow>
-        <CCol sm="2">
-          <label id="label-center" for="interview_date">Interview Date:</label>
-        </CCol>
-
-        <CCol sm="4">
-          <input
-            class="form-control"
-            id="source"
-            type="date"
+            v-model="data.filtered_result" -->
+        <CCol v-if="data.filtered_result===1" sm="10">
+          <CInput
             v-model="data.interview_date"
+            label="Interview Date"
+            type="date"
+            horizontal
           />
         </CCol>
       </CRow>
+
+      <!--      <CRow>
+        <CCol v-if="data.filtered_result===1" sm="2">
+          <label for="interview_date">Interview Date:</label>
+        </CCol>
+
+        <CCol v-if="data.filtered_result===1" sm="4">
+          <input
+            id="interview_date"
+            v-model="data.interview_date"
+            class="form-control"
+            type="date"
+          >
+        </CCol>
+      </CRow>-->
 
       <!-- feedback -->
       <CRow>
@@ -152,8 +158,8 @@
         </CCol>
       </CRow>
 
-      <!-- interview_result -->
-      <CRow>
+<!-- interview_result -->
+<!--       <CRow>
         <CCol sm="2">
           <label id="label-center" for="interview_result">Interview Result:</label>
         </CCol>
@@ -174,12 +180,12 @@
             </option>
           </select>
         </CCol>
-      </CRow>
+      </CRow> -->
 
       <!-- cv_link -->
       <CRow>
         <CCol sm="10">
-          <CInput
+          <CTextarea
             v-model="data.cv_link"
             label="CV Link"
             placeholder="Enter link my cv"
@@ -191,7 +197,7 @@
       <!-- note -->
       <CRow>
         <CCol sm="10">
-          <CInput
+          <CTextarea
             v-model="data.note"
             label="Note"
             placeholder="Enter note"
@@ -204,185 +210,169 @@
     <!-- button -->
     <CCardFooter>
       <div class="center">
+        <a href="./">
+          <CButton color="primary">
+            Return
+          </CButton>
+        </a>
         <CButton v-if="id" color="success" @click="updateData">
           Update
         </CButton>
-        <CButton v-else color="success" @click="addData"> Create </CButton>
+        <CButton v-else color="success" @click="addData">
+          Create
+        </CButton>
       </div>
     </CCardFooter>
   </CCard>
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios'
 
-const urlRoles = "https://candidate-manage.herokuapp.com/api/roles";
-const urlEmailTemplates =
-  "http://candidate-manage.herokuapp.com/api/email-templates";
-const urlSources = "http://candidate-manage.herokuapp.com/api/sources";
-const urlPositions = "http://candidate-manage.herokuapp.com/api/positions";
-const urlCandidatesProfiles =
-  "http://candidate-manage.herokuapp.com/api/candidates-profiles";
+const urlSources = 'http://candidate-manage.herokuapp.com/api/sources'
+const urlPositions = 'http://candidate-manage.herokuapp.com/api/positions'
+const urlCandidatesProfiles = 'http://candidate-manage.herokuapp.com/api/candidates-profiles'
 
 export default {
-  data() {
+  data () {
     return {
-      urlRoles,
-      urlEmailTemplates,
       urlSources,
       urlPositions,
       urlCandidatesProfiles,
 
-      id: "",
+      id: '',
       errors: [],
       positions: [],
       sources: [],
       data: {
-        first_name: "",
-        last_name: "",
+        first_name: '',
+        last_name: '',
         position_id: 0,
         source_id: 0,
-        received_date: "",
+        received_date: '',
         filtered_result: 0,
-        interview_date: "",
-        feedback: "",
+        interview_date: '',
+        feedback: '',
         interview_result: 0,
-        cv_link: "",
-        note: "",
-        created_at: "",
+        cv_link: '',
+        note: '',
+        created_at: ''
       },
       filtered_results: [
-        { value: 3, text: "Pending" },
-        { value: 1, text: "Pass" },
-        { value: 2, text: "Fail" },
+        { value: 0, text: 'Pending' },
+        { value: 1, text: 'Pass' },
+        { value: 2, text: 'Fail' }
       ],
       interview_results: [
-        { value: 3, text: "Pending" },
-        { value: 2, text: "Fail" },
-        { value: 1, text: "Pass" },
-      ],
-    };
+        { value: 0, text: 'Pending' },
+        { value: 2, text: 'Fail' },
+        { value: 1, text: 'Pass' }
+      ]
+    }
   },
 
-  mounted() {
-    this.id = this.$route.params.id;
+  mounted () {
+    /**
+     * call func getData if id is valid
+     */
+    this.id = this.$route.params.id
     if (this.id) {
-      this.getData();
+      this.getData()
     }
 
     /**
      * get data to position
      */
     axios.get(urlPositions).then((response) => {
-      this.positions = response.data;
-      console.log(this.positions);
-    });
+      this.positions = response.data
+    })
 
     /**
      * get data to source
      */
     axios.get(urlSources).then((response) => {
-      this.sources = response.data;
-    });
+      this.sources = response.data
+    })
   },
 
   methods: {
     /**
      * `getData` will get data by id
      */
-    getData() {
+    getData () {
       this.data = axios
-        .get(this.urlCandidatesProfiles + "/" + this.id)
-        // .get(this.urlCandidatesProfiles) // test
+        .get(this.urlCandidatesProfiles + '/' + this.id)
         .then((res) => {
-          this.data = res.data;
-        });
+          this.data = res.data
+        })
     },
 
     /**
      * `addData` add a new data to database
      */
-    addData() {
+    addData () {
       if (this.validate()) {
         axios
           .post(this.urlCandidatesProfiles, this.data)
-          .then((res) => {
-            alert("Add data success");
-            window.location.href = "./";
+          .then(() => {
+            alert('Add data success')
+            window.location.href = './'
           })
           .catch(function (error) {
-            alert(error);
-          });
+            alert(error)
+          })
       }
-      window.scrollTo(0, 0);
-
-      console.log(this.data);
+      window.scrollTo(0, 0)
     },
 
     /**
      * `updateData` update current data by id
      */
-    updateData() {
+    updateData () {
       if (this.validate()) {
         axios
-          .put(this.urlCandidatesProfiles + "/" + this.id, this.data)
-          .then((res) => {
-            alert("Update data success");
-            window.location.href = "./";
+          .put(this.urlCandidatesProfiles + '/' + this.id, this.data)
+          .then(() => {
+            alert('Update data success')
+            window.location.href = './'
           })
           .catch(function (error) {
-            alert(error);
-          });
+            alert(error)
+          })
       }
-      window.scrollTo(0, 0);
+      window.scrollTo(0, 0)
     },
 
     /**
      * `validate` update current data by id
      */
-    validate() {
-      this.errors = [];
+    validate () {
+      this.errors = []
 
       if (!this.data.first_name) {
-        this.errors.push("First Name required.");
+        this.errors.push('First Name required.')
       }
 
       if (!this.data.last_name) {
-        this.errors.push("Last Name required.");
+        this.errors.push('Last Name required.')
       }
 
       if (!this.data.position_id) {
-        this.errors.push("Position required.");
+        this.errors.push('Position required.')
       }
 
       if (!this.data.source_id) {
-        this.errors.push("Source required.");
+        this.errors.push('Source required.')
       }
 
       if (!this.data.received_date) {
-        this.errors.push("Received Date required.");
+        this.errors.push('Received Date required.')
       }
 
-      if (!this.data.filtered_result) {
-        this.errors.push("Filtered Result required.");
-      }
-
-      if (!this.data.interview_date) {
-        this.errors.push("Interview Date required.");
-      }
-
-      if (!this.data.interview_result) {
-        this.errors.push("Interview Result required.");
-      }
-
-      return !this.errors.length;
-    },
-
-    test(input) {
-      console.log(input);
-    },
-  },
-};
+      return !this.errors.length
+    }
+  }
+}
 </script>
 
 <style>

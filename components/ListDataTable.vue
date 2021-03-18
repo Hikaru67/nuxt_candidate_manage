@@ -79,13 +79,6 @@ export default {
     }
   },
   created () {
-    /* fetch('http://candidate-manage.herokuapp.com/api/email-templates')
-      .then(response => response.json())
-      .then(function test (data) {
-        // eslint-disable-next-line no-console
-        console.log(data)
-        this.items = data
-      }) */
     axios.get(this.url)
       .then((response) => {
         this.items = response.data

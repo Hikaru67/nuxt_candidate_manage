@@ -1,6 +1,6 @@
 <template>
   <div>
-    <WidgetsDropdown />
+    <!--    <WidgetsDropdown />-->
     <CCard>
       <!--      <CCardBody>
         <CRow>
@@ -470,19 +470,19 @@
 </template>
 
 <script>
-import MainChartExample from '../charts/MainChartExample'
-import WidgetsDropdown from '../widgets/WidgetsDropdown'
-import WidgetsBrand from '../widgets/WidgetsBrand'
+// import MainChartExample from '../charts/MainChartExample'
+// import WidgetsDropdown from '../widgets/WidgetsDropdown'
+// import WidgetsBrand from '../widgets/WidgetsBrand'
 
 export default {
   name: 'Index',
   middleware: 'auth',
   components: {
     // eslint-disable-next-line vue/no-unused-components
-    MainChartExample,
-    WidgetsDropdown,
+    // MainChartExample,
+    // WidgetsDropdown
     // eslint-disable-next-line vue/no-unused-components
-    WidgetsBrand
+    // WidgetsBrand
   },
   data () {
     return {

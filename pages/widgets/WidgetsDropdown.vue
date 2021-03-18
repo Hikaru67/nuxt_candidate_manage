@@ -1,3 +1,4 @@
+<!--
 <template>
   <CRow>
     <CCol sm="6" lg="3">
@@ -145,3 +146,4 @@ export default {
   components: { CChartLineSimple, CChartBarSimple }
 }
 </script>
+-->

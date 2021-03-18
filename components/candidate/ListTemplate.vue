@@ -4,9 +4,9 @@
       <h3>List Profile</h3>
     </CCardHeader>
 
-    <CCardBody>
+    <CCardBody v-if="$auth.user.role_id === 1">
       <CDataTable
-        :items="items"
+        :items="DATA"
         :fields="fields"
         items-per-page-select
         pagination
@@ -86,6 +86,20 @@
           </td>
         </template>
 
+        <!-- feedback -->
+        <template #feedback="{ item }">
+          <td>
+            {{ item.feedback }}
+          </td>
+        </template>
+
+        <!-- note -->
+        <template #note="{ item }">
+          <td>
+            {{ item.note }}
+          </td>
+        </template>
+
         {{ $route.fullPath }}
 
         <template #action="{ item }">
@@ -105,10 +119,10 @@
       </CDataTable>
     </CCardBody>
 
-    <CCardBody>
+    <CCardBody v-else-if="$auth.user.role_id === 2">
       <CDataTable
         :items="items"
-        :fields="fields"
+        :fields="fields.slice(0, fields.length - 1)"
         items-per-page-select
         pagination
         responsive
@@ -173,14 +187,14 @@
         <template #filtered_result="{ item }">
           <td>
             <input
-              type="button"
               id="filtered_result-button"
+              type="button"
               :class="
                 (item.filtered_result === 2 &&
                   'btn m-2 btn-danger btn-square') ||
                 (item.filtered_result === 1 &&
                   'btn m-2 btn-success btn-square') ||
-                (item.filtered_result === 3 && 'btn m-2 btn-warning btn-square')
+                (item.filtered_result === 0 && 'btn m-2 btn-warning btn-square')
               "
               :value="convertFilteredResult(item.filtered_result)"
               @click="
@@ -190,18 +204,32 @@
           </td>
         </template>
 
+        <!-- feedback -->
+        <template #feedback="{ item }">
+          <td>
+            {{ item.feedback }}
+          </td>
+        </template>
+
+        <!-- note -->
+        <template #note="{ item }">
+          <td>
+            {{ item.note }}
+          </td>
+        </template>
+
         <!-- convertData interview_result -->
         <template #interview_result="{ item }">
-          <td>
+          <td v-if="item.filtered_result === 1">
             <input
-              type="button"
               id="interview_result-button"
+              type="button"
               :class="
                 (item.interview_result === 2 &&
                   'btn m-2 btn-danger btn-square') ||
                 (item.interview_result === 1 &&
                   'btn m-2 btn-success btn-square') ||
-                (item.interview_result === 3 &&
+                (item.interview_result === 0 &&
                   'btn m-2 btn-warning btn-square')
               "
               :value="convertInterviewResult(item.interview_result)"
@@ -210,13 +238,18 @@
               "
             />
           </td>
+          <td v-else>
+            <span class="">{{
+              convertInterviewResult(item.interview_result)
+            }}</span>
+          </td>
         </template>
 
         {{ $route.Path }}
 
-        <template #action="{ item }">
+        <!--        <template #action="{ item }">
           <td class="row">
-            <CButton color="primary" variant="ghost" @click="editData(item.id)">
+            &lt;!&ndash;            <CButton color="primary" variant="ghost" @click="editData(item.id)">
               <CIcon :content="$options.freeSet.cilPencil" />
             </CButton>
             <CButton
@@ -225,9 +258,9 @@
               @click="deleteData(item.id)"
             >
               <CIcon :content="$options.freeSet.cilTrash" />
-            </CButton>
+            </CButton>&ndash;&gt;
           </td>
-        </template>
+        </template>-->
       </CDataTable>
     </CCardBody>
   </CCard>
@@ -241,8 +274,8 @@ const urlSources = "http://candidate-manage.herokuapp.com/api/sources";
 const urlPositions = "http://candidate-manage.herokuapp.com/api/positions";
 const urlCandidatesProfiles =
   "http://candidate-manage.herokuapp.com/api/candidates-profiles";
-
-export default {
+export default { 
+  props: ["DATA"],
   name: "ListTemplate",
   freeSet,
   data() {
@@ -268,18 +301,20 @@ export default {
           key: "source_id",
           label: "Source",
         },
+        "cv_link",
         "received_date",
         "filtered_result",
         "interview_date",
         "feedback",
         "interview_result",
-        "cv_link",
         "note",
         {
           key: "action",
           label: "",
         },
       ],
+
+      setDataFromPage: [],
 
       items: [],
 
@@ -288,33 +323,31 @@ export default {
       sources: [],
 
       filtered_results: [
-        { value: 3, text: "Pending" },
+        { value: 0, text: "Pending" },
         { value: 1, text: "Pass" },
         { value: 2, text: "Fail" },
       ],
-      
+
       interview_results: [
-        { value: 3, text: "Pending" },
+        { value: 0, text: "Pending" },
         { value: 2, text: "Fail" },
         { value: 1, text: "Pass" },
       ],
     };
   },
-
   mounted() {
-    /**
-     * get data to items
-     */
-    axios.get(urlCandidatesProfiles).then((response) => {
-      this.items = response.data;
-    });
+    // // get data to items
+    // axios.get(urlCandidatesProfiles).then((response) => {
+    //   this.items = response.data;
+    // });
 
     /**
      * get data to position
      */
+    // get data to items
     axios.get(urlPositions).then((response) => {
       this.positions = response.data;
-    });
+    })
 
     /**
      * get data to source
@@ -323,8 +356,11 @@ export default {
       this.sources = response.data;
     });
   },
-
   methods: {
+
+    getDataFromPage() {
+      this.setDataFromPage = this.DATA
+    },
     /**
      * `convertDate` will convert format date
      * @param date String
@@ -339,7 +375,7 @@ export default {
      * @param id Integer
      */
     convertPosition(id) {
-      let result = this.positions.find((item) => {
+      const result = this.positions.find((item) => {
         return item.id === id;
       });
       return result ? result.name : "";
@@ -350,7 +386,7 @@ export default {
      * @param id Integer
      */
     convertSource(id) {
-      let result = this.sources.find((item) => {
+      const result = this.sources.find((item) => {
         return item.id === id;
       });
       return result ? result.name : "";
@@ -361,11 +397,10 @@ export default {
      * @param value Integer
      */
     convertFilteredResult(value) {
-      let result = this.filtered_results.find((item) => {
+      const result = this.filtered_results.find((item) => {
         return item.value === value;
       });
-      let temp = result ? result.text : "";
-
+      const temp = result ? result.text : "";
       return temp;
     },
 
@@ -374,7 +409,7 @@ export default {
      * @param value Integer
      */
     convertInterviewResult(value) {
-      let result = this.interview_results.find((item) => {
+      const result = this.interview_results.find((item) => {
         return item.value === value;
       });
       return result ? result.text : "";
@@ -385,6 +420,7 @@ export default {
      * @param id String
      */
     editData(id) {
+      // this.$router.push(this.$route.path + '/' + id)
       window.location.href = "./" + id;
     },
 
@@ -393,8 +429,8 @@ export default {
      * @param id String
      */
     deleteData(id) {
+      // eslint-disable-next-line no-console
       console.log(id);
-          console.log(this.$store.state.url.API_CANDIDATE_PROFILES_URL + '/' + id);
       axios
         .delete(this.$store.state.url.API_CANDIDATE_PROFILES_URL + "/" + id)
         .then((res) => {
@@ -412,32 +448,33 @@ export default {
      * @param idComponent String
      */
     transformButtonFilteredResult(idComponent, id) {
-      let buttonComponent = document.querySelector("#filtered_result-button");
-
+      const buttonComponent = document.querySelector("#filtered_result-button");
       // id increase
       id += 1;
-      if (id > 3) {
+      if (id > 2) {
         id = 1;
       }
 
       // find item update
-      let item = this.items.find((e) => e.id === idComponent);
+      const item = this.items.find((e) => e.id === idComponent);
       if (item) {
         item.filtered_result = id;
       }
 
-      //update item
+      // update item
       axios
         .put(urlCandidatesProfiles + "/" + idComponent, item)
         .then((res) => {})
         .catch(function (error) {
+          // eslint-disable-next-line no-console
           console.log(error);
         });
-
       // convert class button
       if (buttonComponent) {
         this.convertClassButton(buttonComponent, buttonComponent.value);
-      } else return "";
+      } else {
+        return "";
+      }
     },
 
     /**
@@ -446,32 +483,33 @@ export default {
      * @param idComponent String
      */
     transformButtonInterviewResult(idComponent, id) {
-      let buttonComponent = document.querySelector("#interview_result-button");
-
+      const buttonComponent = document.querySelector(
+        "#interview_result-button"
+      );
       // id increase
       id += 1;
-      if (id > 3) {
+      if (id > 2) {
         id = 1;
       }
-
       // find item update
-      let item = this.items.find((e) => e.id === idComponent);
+      const item = this.items.find((e) => e.id === idComponent);
       if (item) {
         item.interview_result = id;
       }
-
-      //update item
+      // update item
       axios
         .put(urlCandidatesProfiles + "/" + idComponent, item)
         .then((res) => {})
         .catch(function (error) {
+          // eslint-disable-next-line no-console
           console.log(error);
         });
-
       // convert class button
       if (buttonComponent) {
         this.convertClassButton(buttonComponent, buttonComponent.value);
-      } else return "";
+      } else {
+        return "";
+      }
     },
 
     /**
@@ -486,7 +524,9 @@ export default {
         Component.classList.add("btn", "m-2", "btn-success", "btn-square");
       } else if (value === "Fail") {
         Component.classList.add("btn", "m-2", "btn-danger", "btn-square");
-      } else return "";
+      } else {
+        return "";
+      }
     },
   },
 };
@@ -496,9 +536,8 @@ export default {
 .test {
   max-width: 5000px;
 }
-
 .test2 {
-  max-width: 20px !important;
+  max-width: 80px !important;
   display: inline-block !important;
   overflow: hidden;
   text-overflow: ellipsis;
