@@ -1,10 +1,5 @@
 <template>
-  <CCard>
-    <CCardHeader class="center">
-      <h3 v-if="id">Edit Candidate Profile</h3>
-      <h3 v-else>Create Candidate Profile</h3>
-    </CCardHeader>
-
+  <div>
     <CCardBody>
       <div v-if="errors.length">
         <CAlert v-for="error in errors" :key="error" color="danger">
@@ -19,6 +14,7 @@
             v-model="data.first_name"
             label="First Name"
             placeholder="Enter first name "
+            :disabled="isInterviewer"
             horizontal
           />
         </CCol>
@@ -26,16 +22,14 @@
 
       <!-- last_name -->
       <CRow>
-        <CCol sm="10" v-if="!isInterviewer">
+        <CCol sm="10">
           <CInput
             v-model="data.last_name"
             label="Last Name"
             placeholder="Enter last name "
+            :disabled="isInterviewer"
             horizontal
           />
-        </CCol>
-        <CCol sm="10" v-else>
-          <p>{{ data.last_name }}</p>
         </CCol>
       </CRow>
 
@@ -51,6 +45,7 @@
               v-for="(item, index) in positions"
               :key="index"
               :value="item.id"
+              :disabled="isInterviewer"
             >
               {{ item.name }}
             </option>
@@ -70,6 +65,7 @@
               v-for="(item, index) in sources"
               :key="index"
               :value="item.id"
+              :disabled="isInterviewer"
             >
               {{ item.name }}
             </option>
@@ -84,10 +80,12 @@
             v-model="data.received_date"
             label="Received Date"
             type="date"
+            :disabled="isInterviewer"
             horizontal
           />
         </CCol>
       </CRow>
+
       <!--      <CRow>
         <CCol sm="2">
           <label for="received_date">Received Date</label>
@@ -105,20 +103,12 @@
 
       <!-- filtered_result -->
       <CRow>
-        <!-- <CCol sm="2">
-          <label id="label-center" for="filtered_result">Filtered Result:</label>
-        </CCol>
-
-        <CCol sm="4">
-          <select
-            id="source"
-            class="form-control"
-            v-model="data.filtered_result" -->
         <CCol v-if="data.filtered_result === 1" sm="10">
           <CInput
             v-model="data.interview_date"
             label="Interview Date"
             type="date"
+            :disabled="isInterviewer"
             horizontal
           />
         </CCol>
@@ -150,6 +140,7 @@
           />
         </CCol>
       </CRow>
+      {{ isInterviewer }}
 
       <!-- interview_result -->
       <!--       <CRow>
@@ -182,13 +173,14 @@
             v-model="data.cv_link"
             label="CV Link"
             placeholder="Enter link my cv"
+            :disabled="isInterviewer"
             horizontal
           />
         </CCol>
       </CRow>
 
       <!-- note -->
-      <CRow>
+      <!-- <CRow>
         <CCol sm="10">
           <CTextarea
             v-model="data.note"
@@ -197,7 +189,7 @@
             horizontal
           />
         </CCol>
-      </CRow>
+      </CRow> -->
     </CCardBody>
 
     <!-- button -->
@@ -206,13 +198,13 @@
         <a href="./">
           <CButton color="primary"> Return </CButton>
         </a>
-        <CButton v-if="id" color="success" @click="updateData">
+        <CButton v-if="this.id" color="success" @click="updateData">
           Update
         </CButton>
         <CButton v-else color="success" @click="addData"> Create </CButton>
       </div>
     </CCardFooter>
-  </CCard>
+  </div>
 </template>
 
 <script>
@@ -234,6 +226,7 @@ export default {
       errors: [],
       positions: [],
       sources: [],
+
       data: {
         first_name: "",
         last_name: "",
@@ -245,18 +238,23 @@ export default {
         feedback: "",
         interview_result: 0,
         cv_link: "",
-        note: "",
+        note: "NULL",
         created_at: "",
       },
+
       filtered_results: [
-        { value: 0, text: "Pending" },
+        { value: 0, text: "New" },
         { value: 1, text: "Pass" },
         { value: 2, text: "Fail" },
       ],
+
       interview_results: [
-        { value: 0, text: "Pending" },
+        { value: 0, text: "" },
         { value: 2, text: "Fail" },
         { value: 1, text: "Pass" },
+        { value: 3, text: "Sent Mail Interview" },
+        { value: 4, text: "Sent Mail Thanks" },
+        { value: 5, text: "Sent Mail Work" },
       ],
     };
   },
@@ -265,7 +263,8 @@ export default {
     /**
      * call func getData if id is valid
      */
-    this.id = this.$route.params.id;
+    if(this.$route.params.id)
+      this.id = this.$route.params.id
     if (this.id) {
       this.getData();
     }
@@ -285,15 +284,18 @@ export default {
     });
   },
 
-  methods: {
+  computed: {
     /**
      * `isInterviewer` will check role is interviewer
      *  @return boolean
      */
     isInterviewer() {
-      return this.$auth.user.role_id === 2 ? true : false;
-    },
+      if (this.$auth.user.role_id === 2) return true;
+      return false;
+    }
+  },
 
+  methods: {
     /**
      * `getData` will get data by id
      */

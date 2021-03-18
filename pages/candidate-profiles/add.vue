@@ -1,33 +1,37 @@
 <template>
-  <AddTemplate />
+  <CCard>
+    <CCardHeader class="center">
+      <h3 v-if="id">Edit Candidate Profile</h3>
+      <h3 v-else>Create Candidate Profile</h3>
+    </CCardHeader>
+
+    <AddTemplate />
+  </CCard>
 </template>
 
 <script>
-
-import AddTemplate from '../../components/candidate/CreateEdit'
+import AddTemplate from "../../components/candidate/CreateEdit";
 export default {
-  data () {
+  data() {
     return {
-      dataCandidate: []
-    }
+      dataCandidate: [],
+    };
   },
-  
-  name: 'Add',
+
+  name: "Add",
 
   components: { AddTemplate },
 
-  beforeCreate () {
+  beforeCreate() {
     if (this.$auth.user.role_id !== 1) {
-      alert('You dont have permission !')
+      alert("You dont have permission !");
       // eslint-disable-next-line nuxt/no-globals-in-created
-      window.location.href = '/dashboard'
+      window.location.href = "/dashboard";
     }
   },
 
-  mounted() {
-    
-  },
-}
+  mounted() {},
+};
 </script>
 
 <style scoped></style>
