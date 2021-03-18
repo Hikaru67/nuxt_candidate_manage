@@ -296,6 +296,7 @@ export default {
           label: "",
         },
       ],
+      
 
       color: [
         "btn-secondary",
