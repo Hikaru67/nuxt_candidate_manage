@@ -20,9 +20,8 @@
 <script>
 
 import ListSource from '~/components/source/ListSource'
-import Search from '~/components/Search'
-import { apiGetSource } from '~/api/apiSource'
-import { apiSearchCandidateProfiles } from '~/api/apiCandidate'
+import Search from '~/components/candidate/Search'
+import { apiGetSource } from '~/api/baseData'
 
 export default {
   name: 'Index',
