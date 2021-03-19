@@ -4,7 +4,9 @@
 
 <script>
 import SendEmail from '~/components/email/template/SendEmail'
-import { apiGetCandidateProfiles, apiGetEmailTemplates } from '~/api/baseData'
+import { apiGetCandidateProfiles } from '~/api/apiCandidate'
+import { apiGetEmailTemplates } from '~/api/apiEmail'
+
 export default {
   name: 'Send',
   components: {

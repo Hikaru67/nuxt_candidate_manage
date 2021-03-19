@@ -7,7 +7,7 @@
 
 <script>
 import AddSource from '~/components/source/AddSource'
-import { apiGetSourceById } from '~/api/baseData'
+import { apiGetSourceById } from '~/api/apiSource'
 
 export default {
   name: 'Id',

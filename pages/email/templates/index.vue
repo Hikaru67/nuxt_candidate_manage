@@ -11,7 +11,7 @@
 
 <script>
 import ListTemplate from '~/components/email/template/ListTemplate'
-import { apiGetEmailTemplates } from '~/api/baseData'
+import { apiGetEmailTemplates } from '~/api/apiEmail'
 
 export default {
   name: 'Index',
