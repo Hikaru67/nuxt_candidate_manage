@@ -10,14 +10,15 @@
 </template>
 
 <script>
-
 import ListTemplate from '~/components/email/template/ListTemplate'
 import { apiGetEmailTemplates } from '~/api/baseData'
+
 export default {
   name: 'Index',
   components: { ListTemplate },
   data () {
     return {
+      searchForm: {},
       listTemplates: []
     }
   },

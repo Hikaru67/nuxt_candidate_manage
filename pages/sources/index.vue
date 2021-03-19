@@ -1,11 +1,15 @@
 <template>
   <CCard>
+    <CCard>
+      <CCardBody>
+        <Search @search="getSearchForm($event)" />
+      </CCardBody>
+      {{ searchForm }}
+    </CCard>
     <CCardHeader>
       <h3>List Email Templates</h3>
     </CCardHeader>
     <CCardBody>
-      <Search @search="getSearchForm" />
-      <br>
       <ListSource :list-sources="listSources" />
     </CCardBody>
   </CCard>
@@ -37,10 +41,8 @@ export default {
     this.listSources = await apiGetSource(this.$axios)
   },
   methods: {
-    getSearchForm (data) {
-      this.searchForm = data
-      // eslint-disable-next-line no-console
-      console.log(this.searchForm)
+    getSearchForm (form) {
+      this.searchForm = form
     }
   }
 }
