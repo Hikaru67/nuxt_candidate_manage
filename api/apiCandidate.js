@@ -5,7 +5,7 @@ export function apiGetCandidateProfiles (axios) {
 }
 
 export function apiSearchCandidateProfiles (axios, condition) {
-  return axios.get('/candidates-profiles', condition)
+  return axios.get('/candidates-profiles?' + condition)
     .then(res => res.data)
     .catch(xhr => xhr)
 }

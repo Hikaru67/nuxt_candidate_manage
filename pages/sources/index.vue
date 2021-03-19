@@ -4,7 +4,7 @@
       <CCardBody>
         <Search @search="getSearchForm($event)" />
       </CCardBody>
-      {{ searchForm }}
+      {{ condition }}
       <br>
       {{ listProfiles }}
     </CCard>
@@ -21,14 +21,15 @@
 
 import ListSource from '~/components/source/ListSource'
 import Search from '~/components/candidate/Search'
-import { apiGetSource } from '~/api/baseData'
+import { apiGetSource } from '~/api/apiSource'
+import { apiSearchCandidateProfiles } from '~/api/apiCandidate'
 
 export default {
   name: 'Index',
   components: { ListSource, Search },
   data () {
     return {
-      searchForm: {},
+      condition: '',
       listSources: [],
       listProfiles: []
     }
@@ -45,8 +46,12 @@ export default {
   },
   methods: {
     async getSearchForm (form) {
-      this.searchForm = form
-      this.listProfiles = await apiSearchCandidateProfiles(this.$axios, this.searchForm)
+      this.condition = ''
+      Object.entries(form).forEach((value) => {
+        if (value[1]) { this.condition += value[0] + '=' + value[1] + '&' }
+      })
+      this.listProfiles = await apiSearchCandidateProfiles(this.$axios, this.condition)
+      console.log(this.listProfiles)
     }
   }
 }
