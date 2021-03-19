@@ -465,7 +465,11 @@ export default {
 
       // dataProfile.interview_result++;
       if (dataProfile.interview_result < 3) {
-        if (dataProfile.interview_result === 2) { dataProfile.interview_result = 1 } else if (dataProfile.interview_result === 1) { dataProfile.interview_result = 2 } else { dataProfile.interview_result++ }
+        if (dataProfile.interview_result === 2)
+          dataProfile.interview_result = 1;
+        else if (dataProfile.interview_result === 1)
+          dataProfile.interview_result = 2;
+        else dataProfile.interview_result++;
 
         axios
           .put(urlCandidatesProfiles + '/' + idProfile, dataProfile)
