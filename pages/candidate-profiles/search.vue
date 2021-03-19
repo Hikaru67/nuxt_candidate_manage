@@ -24,6 +24,21 @@ export default {
       // eslint-disable-next-line no-console
       console.log(this.searchForm)
     },
+    
+    /**
+     * updatePage update dataCandidate by page
+     * @param page String
+     * @return boolean
+     */
+    updatePage (page) {
+      axios
+        .get(URL_CANDIDATE_PROFILES + '?page=' + page)
+        .then((response) => {
+          this.dataCandidate = response.data
+          console.log(this.dataCandidate)
+          // console.log(this.dataCandidate);
+        })
+    }
   },
 };
 </script>

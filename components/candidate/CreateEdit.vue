@@ -211,18 +211,11 @@
 
 <script>
 import axios from 'axios'
-
-const urlSources = 'http://candidate-manage.herokuapp.com/api/sources'
-const urlPositions = 'http://candidate-manage.herokuapp.com/api/positions'
-const urlCandidatesProfiles =
-  'http://candidate-manage.herokuapp.com/api/candidates-profiles'
+import { URL_CANDIDATE_PROFILES, URL_RESOURCES,  URL_POSITIONS} from "../../common/constant/url";
 
 export default {
   data () {
     return {
-      urlSources,
-      urlPositions,
-      urlCandidatesProfiles,
 
       id: '',
       errors: [],
@@ -284,14 +277,14 @@ export default {
     /**
      * get data to position
      */
-    axios.get(urlPositions).then((response) => {
+    axios.get(URL_POSITIONS).then((response) => {
       this.positions = response.data
     })
 
     /**
      * get data to source
      */
-    axios.get(urlSources).then((response) => {
+    axios.get(URL_RESOURCES).then((response) => {
       this.sources = response.data
     })
   },
@@ -302,7 +295,7 @@ export default {
      */
     getData () {
       this.data = axios
-        .get(this.urlCandidatesProfiles + '/' + this.id)
+        .get(URL_CANDIDATE_PROFILES + '/' + this.id)
         .then((res) => {
           this.data = res.data
         })
@@ -314,7 +307,7 @@ export default {
     addData () {
       if (this.validate()) {
         axios
-          .post(this.urlCandidatesProfiles, this.data)
+          .post(URL_CANDIDATE_PROFILES, this.data)
           .then(() => {
             alert('Add data success')
             window.location.href = './'
@@ -333,7 +326,7 @@ export default {
       if (!this.isInterviewer) {
         if (this.validate()) {
           axios
-            .put(this.urlCandidatesProfiles + '/' + this.id, this.data)
+            .put(URL_CANDIDATE_PROFILES + '/' + this.id, this.data)
             .then(() => {
               alert('Update data success')
               window.location.href = './'
@@ -344,7 +337,7 @@ export default {
         }
       } else {
         axios
-          .put(this.urlCandidatesProfiles + '/' + this.id, {
+          .put(URL_CANDIDATE_PROFILES + '/' + this.id, {
             feedback: this.data.feedback
           })
           .then(() => {

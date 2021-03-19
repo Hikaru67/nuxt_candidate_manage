@@ -5,13 +5,14 @@
     </CCardHeader>
 
     <CCardBody>
-      <ListCandidate :d-a-t-a="this.dataCandidate" />
+      <ListCandidate @change_page="updatePage($event)" :d-a-t-a="dataCandidate" />
     </CCardBody>
   </CCard>
 </template>
 
 <script>
 import axios from 'axios'
+import { URL_CANDIDATE_PROFILES } from "../../common/constant/url";
 import ListCandidate from '../../components/candidate/List'
 
 export default {
@@ -27,11 +28,29 @@ export default {
 
   mounted () {
     axios
-      .get(this.$store.state.url.API_CANDIDATE_PROFILES_URL)
+      .get(URL_CANDIDATE_PROFILES)
       .then((response) => {
         this.dataCandidate = response.data
         // console.log(this.dataCandidate);
       })
+
+  },
+
+  methods: {
+    /**
+     * updatePage update dataCandidate by page
+     * @param page String
+     * @return boolean
+     */
+    updatePage (page) {
+      axios
+        .get(URL_CANDIDATE_PROFILES + '?page=' + page)
+        .then((response) => {
+          this.dataCandidate = response.data
+          console.log(this.dataCandidate)
+          // console.log(this.dataCandidate);
+        })
+    }
   }
 }
 </script>
