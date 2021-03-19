@@ -249,9 +249,9 @@
 <script>
 import { freeSet } from "@coreui/icons";
 import axios from "axios";
-import { URL_RESOURCES } from "../../common/constant/url.js";
-import { URL_POSITIONS } from "../../common/constant/url.js";
-import { URL_CANDIDATE_PROFILES } from "../../common/constant/url.js";
+import { URL_RESOURCES } from "../../common/constant/url.js"
+import { URL_POSITIONS } from "../../common/constant/url.js"
+import { URL_CANDIDATE_PROFILES } from "../../common/constant/url.js"
 
 // const urlSources = "http://candidate-manage.herokuapp.com/api/sources";
 // const urlPositions = "http://candidate-manage.herokuapp.com/api/positions";
