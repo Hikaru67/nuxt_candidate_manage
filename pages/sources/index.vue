@@ -18,7 +18,7 @@
 <script>
 
 import ListSource from '~/components/source/ListSource'
-import Search from '~/components/Search'
+import Search from '~/components/candidate/Search'
 import { apiGetSource } from '~/api/baseData'
 
 export default {
