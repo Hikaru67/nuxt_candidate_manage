@@ -249,11 +249,14 @@
 <script>
 import { freeSet } from "@coreui/icons";
 import axios from "axios";
+import { URL_RESOURCES } from "../../common/constant/url.js";
+import { URL_POSITIONS } from "../../common/constant/url.js";
+import { URL_CANDIDATE_PROFILES } from "../../common/constant/url.js";
 
-const urlSources = "http://candidate-manage.herokuapp.com/api/sources";
-const urlPositions = "http://candidate-manage.herokuapp.com/api/positions";
-const urlCandidatesProfiles =
-  "http://candidate-manage.herokuapp.com/api/candidates-profiles";
+// const urlSources = "http://candidate-manage.herokuapp.com/api/sources";
+// const urlPositions = "http://candidate-manage.herokuapp.com/api/positions";
+// const urlCandidatesProfiles =
+//   "http://candidate-manage.herokuapp.com/api/candidates-profiles";
 export default {
   props: ["DATA"],
 
@@ -341,12 +344,12 @@ export default {
   },
   mounted() {
     // get data to position
-    axios.get(urlPositions).then((response) => {
+    axios.get(URL_POSITIONS).then((response) => {
       this.positions = response.data;
     });
 
     // get data to source
-    axios.get(urlSources).then((response) => {
+    axios.get(URL_RESOURCES).then((response) => {
       this.sources = response.data;
     });
   },
@@ -451,7 +454,7 @@ export default {
       if (dataProfile.filtered_result > 2) dataProfile.filtered_result = 1;
 
       axios
-        .put(urlCandidatesProfiles + "/" + idProfile, dataProfile)
+        .put(URL_CANDIDATE_PROFILES + "/" + idProfile, dataProfile)
         .catch(function (error) {
           console.log(error);
         });
@@ -474,7 +477,7 @@ export default {
           dataProfile.interview_result++;
 
         axios
-          .put(urlCandidatesProfiles + "/" + idProfile, dataProfile)
+          .put(URL_CANDIDATE_PROFILES + "/" + idProfile, dataProfile)
           .catch(function (error) {
             console.log(error);
           });

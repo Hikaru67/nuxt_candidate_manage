@@ -208,19 +208,22 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "axios"
+import { URL_RESOURCES } from "../../common/constant/url.js"
+import { URL_POSITIONS } from "../../common/constant/url.js"
+import { URL_CANDIDATE_PROFILES } from "../../common/constant/url.js"
 
-const urlSources = "http://candidate-manage.herokuapp.com/api/sources";
-const urlPositions = "http://candidate-manage.herokuapp.com/api/positions";
-const urlCandidatesProfiles =
-  "http://candidate-manage.herokuapp.com/api/candidates-profiles";
+// const urlSources = "http://candidate-manage.herokuapp.com/api/sources"
+// const urlPositions = "http://candidate-manage.herokuapp.com/api/positions"
+// const urlCandidatesProfiles =
+// "http://candidate-manage.herokuapp.com/api/candidates-profiles"
 
 export default {
   data() {
     return {
-      urlSources,
-      urlPositions,
-      urlCandidatesProfiles,
+      //   urlSources : URL_RESOURCES,
+      //   urlPositions : URL_POSITIONS,
+      //   urlCandidatesProfiles : URL_CANDIDATE_PROFILES,
 
       id: "",
       errors: [],
@@ -248,7 +251,6 @@ export default {
         { value: 2, text: "Fail" },
       ],
 
-      
       interview_results: [
         { value: 0, text: "" },
         { value: 2, text: "Fail" },
@@ -257,32 +259,31 @@ export default {
         { value: 4, text: "Sent Mail Thanks" },
         { value: 5, text: "Sent Mail Work" },
       ],
-    };
+    }
   },
 
   mounted() {
     /**
      * call func getData if id is valid
      */
-    if(this.$route.params.id)
-      this.id = this.$route.params.id
+    if (this.$route.params.id) this.id = this.$route.params.id
     if (this.id) {
-      this.getData();
+      this.getData()
     }
 
     /**
      * get data to position
      */
-    axios.get(urlPositions).then((response) => {
-      this.positions = response.data;
-    });
+    axios.get(URL_POSITIONS).then((response) => {
+      this.positions = response.data
+    })
 
     /**
      * get data to source
      */
-    axios.get(urlSources).then((response) => {
-      this.sources = response.data;
-    });
+    axios.get(URL_RESOURCES).then((response) => {
+      this.sources = response.data
+    })
   },
 
   computed: {
@@ -291,9 +292,9 @@ export default {
      *  @return boolean
      */
     isInterviewer() {
-      if (this.$auth.user.role_id === 2) return true;
-      return false;
-    }
+      if (this.$auth.user.role_id === 2) return true
+      return false
+    },
   },
 
   methods: {
@@ -302,10 +303,10 @@ export default {
      */
     getData() {
       this.data = axios
-        .get(this.urlCandidatesProfiles + "/" + this.id)
+        .get(URL_CANDIDATE_PROFILES + "/" + this.id)
         .then((res) => {
-          this.data = res.data;
-        });
+          this.data = res.data
+        })
     },
 
     /**
@@ -314,16 +315,16 @@ export default {
     addData() {
       if (this.validate()) {
         axios
-          .post(this.urlCandidatesProfiles, this.data)
+          .post(URL_CANDIDATE_PROFILES, this.data)
           .then(() => {
-            alert("Add data success");
-            window.location.href = "./";
+            alert("Add data success")
+            window.location.href = "./"
           })
           .catch(function (error) {
-            alert(error);
-          });
+            alert(error)
+          })
       }
-      window.scrollTo(0, 0);
+      window.scrollTo(0, 0)
     },
 
     /**
@@ -333,62 +334,62 @@ export default {
       if (!this.isInterviewer) {
         if (this.validate()) {
           axios
-            .put(this.urlCandidatesProfiles + "/" + this.id, this.data)
+            .put(URL_CANDIDATE_PROFILES + "/" + this.id, this.data)
             .then(() => {
-              alert("Update data success");
-              window.location.href = "./";
+              alert("Update data success")
+              window.location.href = "./"
             })
             .catch(function (error) {
-              alert(error);
-            });
+              alert(error)
+            })
         }
       } else {
         axios
-          .put(this.urlCandidatesProfiles + "/" + this.id, {
+          .put(URL_CANDIDATE_PROFILES + "/" + this.id, {
             feedback: this.data.feedback,
           })
           .then(() => {
-            alert("Update data success");
-            window.location.href = "./";
+            alert("Update data success")
+            window.location.href = "./"
           })
           .catch(function (error) {
-            alert(error);
-          });
+            alert(error)
+          })
       }
 
-      window.scrollTo(0, 0);
+      window.scrollTo(0, 0)
     },
 
     /**
      * `validate` update current data by id
      */
     validate() {
-      this.errors = [];
+      this.errors = []
 
       if (!this.data.first_name) {
-        this.errors.push("First Name required.");
+        this.errors.push("First Name required.")
       }
 
       if (!this.data.last_name) {
-        this.errors.push("Last Name required.");
+        this.errors.push("Last Name required.")
       }
 
       if (!this.data.position_id) {
-        this.errors.push("Position required.");
+        this.errors.push("Position required.")
       }
 
       if (!this.data.source_id) {
-        this.errors.push("Source required.");
+        this.errors.push("Source required.")
       }
 
       if (!this.data.received_date) {
-        this.errors.push("Received Date required.");
+        this.errors.push("Received Date required.")
       }
 
-      return !this.errors.length;
+      return !this.errors.length
     },
   },
-};
+}
 </script>
 
 <style>
