@@ -10,9 +10,17 @@
       <CRow>
         <CCol sm="6">
           <CInput
-            v-model="formSearch.name"
-            label="Name"
-            placeholder="Enter name"
+            v-model="formSearch.firstName"
+            label="First name"
+            placeholder="Enter first name"
+            horizontal
+          />
+        </CCol>
+        <CCol sm="6">
+          <CInput
+            v-model="formSearch.lastName"
+            label="Last name"
+            placeholder="Enter last name"
             horizontal
           />
         </CCol>
@@ -38,7 +46,7 @@
       <CRow>
         <CCol sm="6">
           <CInput
-            v-model="formSearch.receiverDateFrom"
+            v-model="receivedDate.from"
             label="From date"
             type="date"
             horizontal
@@ -46,7 +54,7 @@
         </CCol>
         <CCol sm="6">
           <CInput
-            v-model="formSearch.receiverDateTo"
+            v-model="receivedDate.to"
             label="To date"
             type="date"
             horizontal
@@ -65,7 +73,8 @@
 </template>
 
 <script>
-import { apiGetPositions, apiGetSource } from '~/api/baseData'
+import { apiGetPositions } from '~/api/baseData'
+import { apiGetSource } from '~/api/apiSource'
 
 export default {
   name: 'Search',
@@ -73,12 +82,17 @@ export default {
     return {
       positions: [],
       sources: [],
+      receivedDate: {
+        from: '',
+        to: ''
+      },
       formSearch: {
-        name: '',
+        firstName: '',
+        lastName: '',
         position: '',
         source: '',
-        receiverDateFrom: '',
-        receiverDateTo: ''
+        receivedDateFrom: '',
+        receivedDateTo: ''
       }
     }
   },
@@ -89,8 +103,23 @@ export default {
     this.sources = this.sources.map((item) => { return { value: item.id, label: item.name } })
   },
   methods: {
+    /**
+     * `search` will send an event search
+     *
+     */
     search () {
-      this.$emit('search', this.SearchForm)
+      this.formSearch.receivedDateFrom = this.toUnixTime(this.receivedDate.from)
+      this.formSearch.receivedDateTo = this.toUnixTime(this.receivedDate.to)
+      this.$emit('search', this.formSearch)
+    },
+
+    /**
+     * `toUnixTime` will convert time to unixTime
+     * @param time String
+     * @return String
+     */
+    toUnixTime (time) {
+      return (time) ? new Date(time).getTime()/1000 : ''
     }
   }
 }
