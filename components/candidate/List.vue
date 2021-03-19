@@ -187,7 +187,7 @@
           :v-model="item.filtered_result"
           :value="convertFilteredResult(item.filtered_result)"
           @click="transformButtonFilteredResult(item.id)"
-        />
+        >
       </td>
     </template>
 
@@ -216,7 +216,7 @@
           :value="convertInterviewResult(item.interview_result)"
           :v-model="item.interview_result"
           @click="transformButtonInterviewResult(item.id)"
-        />
+        >
       </td>
       <td v-else>
         <span class="">{{
@@ -247,64 +247,63 @@
 </template>
 
 <script>
-import { freeSet } from "@coreui/icons";
-import axios from "axios";
+import { freeSet } from '@coreui/icons'
+import axios from 'axios'
 
-const urlSources = "http://candidate-manage.herokuapp.com/api/sources";
-const urlPositions = "http://candidate-manage.herokuapp.com/api/positions";
+const urlSources = 'http://candidate-manage.herokuapp.com/api/sources'
+const urlPositions = 'http://candidate-manage.herokuapp.com/api/positions'
 const urlCandidatesProfiles =
-  "http://candidate-manage.herokuapp.com/api/candidates-profiles";
+  'http://candidate-manage.herokuapp.com/api/candidates-profiles'
 export default {
-  props: ["DATA"],
 
-  name: "ListTemplate",
+  name: 'ListTemplate',
+  props: ['DATA'],
 
   freeSet,
 
-  data() {
+  data () {
     return {
       fields: [
         {
-          key: "id",
-          label: "ID",
+          key: 'id',
+          label: 'ID'
         },
         {
-          key: "first_name",
-          label: "First Name",
+          key: 'first_name',
+          label: 'First Name'
         },
         {
-          key: "last_name",
-          label: "Last Name",
+          key: 'last_name',
+          label: 'Last Name'
         },
         {
-          key: "position_id",
-          label: "Position",
+          key: 'position_id',
+          label: 'Position'
         },
         {
-          key: "source_id",
-          label: "Source",
+          key: 'source_id',
+          label: 'Source'
         },
-        "cv_link",
-        "received_date",
-        "filtered_result",
-        "interview_date",
-        "feedback",
-        "interview_result",
-        "note",
+        'cv_link',
+        'received_date',
+        'filtered_result',
+        'interview_date',
+        'feedback',
+        'interview_result',
+        'note',
         {
-          key: "action",
-          label: "",
-        },
+          key: 'action',
+          label: ''
+        }
       ],
 
-
       color: [
-        "btn-secondary",
-        "btn-success",
-        "btn-danger",
-        "btn-warning",
-        "btn-danger",
-        "btn-success",
+        'btn-secondary',
+        'btn-success',
+        'btn-danger',
+        'btn-warning',
+        'btn-danger',
+        'btn-success'
       ],
 
       positions: [],
@@ -312,18 +311,18 @@ export default {
       sources: [],
 
       filtered_results: [
-        { value: 0, text: "New" },
-        { value: 1, text: "Pass" },
-        { value: 2, text: "Fail" },
+        { value: 0, text: 'New' },
+        { value: 1, text: 'Pass' },
+        { value: 2, text: 'Fail' }
       ],
 
       interview_results: [
-        { value: 0, text: "" },
-        { value: 2, text: "Fail" },
-        { value: 1, text: "Pass" },
-        { value: 3, text: "Sent Mail Interview" },
-        { value: 4, text: "Sent Mail Thanks" },
-        { value: 5, text: "Sent Mail Work" },
+        { value: 0, text: '' },
+        { value: 2, text: 'Fail' },
+        { value: 1, text: 'Pass' },
+        { value: 3, text: 'Sent Mail Interview' },
+        { value: 4, text: 'Sent Mail Thanks' },
+        { value: 5, text: 'Sent Mail Work' }
       ],
 
       /**
@@ -336,19 +335,19 @@ export default {
               "
        */
 
-      classObject: {},
-    };
+      classObject: {}
+    }
   },
-  mounted() {
+  mounted () {
     // get data to position
     axios.get(urlPositions).then((response) => {
-      this.positions = response.data;
-    });
+      this.positions = response.data
+    })
 
     // get data to source
     axios.get(urlSources).then((response) => {
-      this.sources = response.data;
-    });
+      this.sources = response.data
+    })
   },
 
   methods: {
@@ -356,86 +355,86 @@ export default {
      * `isInterviewer` will check role is interviewer
      *  @return boolean
      */
-    isInterviewer() {
-      return this.$auth.user.role_id === 2 ? true : false;
+    isInterviewer () {
+      return this.$auth.user.role_id === 2
     },
 
     /**
      * `convertDate` will convert format date
      * @param date String
      */
-    convertDate(date) {
-      return new Date(date).toLocaleDateString();
+    convertDate (date) {
+      return new Date(date).toLocaleDateString()
     },
 
     /**
      * `convertPosition` will convert from position id to position name
      * @param id Integer
      */
-    convertPosition(id) {
+    convertPosition (id) {
       const result = this.positions.find((item) => {
-        return item.id === id;
-      });
-      return result ? result.name : "";
+        return item.id === id
+      })
+      return result ? result.name : ''
     },
 
     /**
      * `convertSource` will convert from source id to source name
      * @param id Integer
      */
-    convertSource(id) {
+    convertSource (id) {
       const result = this.sources.find((item) => {
-        return item.id === id;
-      });
-      return result ? result.name : "";
+        return item.id === id
+      })
+      return result ? result.name : ''
     },
 
     /**
      * `convertFilteredResult` will convert from value to text of FilteredResult
      * @param value Integer
      */
-    convertFilteredResult(value) {
+    convertFilteredResult (value) {
       const result = this.filtered_results.find((item) => {
-        return item.value === value;
-      });
-      const temp = result ? result.text : "";
-      return temp;
+        return item.value === value
+      })
+      const temp = result ? result.text : ''
+      return temp
     },
 
     /**
      * `convertInterviewResult` will convert from value to text of InterviewResult
      * @param value Integer
      */
-    convertInterviewResult(value) {
+    convertInterviewResult (value) {
       const result = this.interview_results.find((item) => {
-        return item.value === value;
-      });
-      return result ? result.text : "";
+        return item.value === value
+      })
+      return result ? result.text : ''
     },
 
     /**
      * `editData` will redirect to edit data page
      * @param id String
      */
-    editData(id) {
-      window.location.href = "./" + id;
+    editData (id) {
+      window.location.href = './' + id
     },
 
     /**
      * `deleteData` will delete data by id
      * @param id String
      */
-    deleteData(id) {
+    deleteData (id) {
       // eslint-disable-next-line no-console
       axios
-        .delete(this.$store.state.url.API_CANDIDATE_PROFILES_URL + "/" + id)
+        .delete(this.$store.state.url.API_CANDIDATE_PROFILES_URL + '/' + id)
         .then((res) => {
-          alert("Delete data success");
-          window.location.href = "./";
+          alert('Delete data success')
+          window.location.href = './'
         })
         .catch(function (error) {
-          alert(error);
-        });
+          alert(error)
+        })
     },
 
     /**
@@ -443,45 +442,40 @@ export default {
      * @param id String
      * @param idProfile String
      */
-    transformButtonFilteredResult(idProfile) {
-      let dataProfile = this.DATA.find((e) => e.id === idProfile);
+    transformButtonFilteredResult (idProfile) {
+      const dataProfile = this.DATA.find(e => e.id === idProfile)
 
-      if (dataProfile.filtered_result === 2) dataProfile.interview_result = 0;
-      dataProfile.filtered_result++;
-      if (dataProfile.filtered_result > 2) dataProfile.filtered_result = 1;
+      if (dataProfile.filtered_result === 2) { dataProfile.interview_result = 0 }
+      dataProfile.filtered_result++
+      if (dataProfile.filtered_result > 2) { dataProfile.filtered_result = 1 }
 
       axios
-        .put(urlCandidatesProfiles + "/" + idProfile, dataProfile)
+        .put(urlCandidatesProfiles + '/' + idProfile, dataProfile)
         .catch(function (error) {
-          console.log(error);
-        });
+          console.log(error)
+        })
     },
 
     /**
      * `transformButtonInterviewResult` update status of InterviewResult
      * @param idProfile Int
      */
-    transformButtonInterviewResult(idProfile) {
-      let dataProfile = this.DATA.find((e) => e.id === idProfile);
+    transformButtonInterviewResult (idProfile) {
+      const dataProfile = this.DATA.find(e => e.id === idProfile)
 
       // dataProfile.interview_result++;
       if (dataProfile.interview_result < 3) {
-        if (dataProfile.interview_result === 2)
-          dataProfile.interview_result = 1;
-        else if (dataProfile.interview_result === 1)
-          dataProfile.interview_result = 2;
-        else
-          dataProfile.interview_result++;
+        if (dataProfile.interview_result === 2) { dataProfile.interview_result = 1 } else if (dataProfile.interview_result === 1) { dataProfile.interview_result = 2 } else { dataProfile.interview_result++ }
 
         axios
-          .put(urlCandidatesProfiles + "/" + idProfile, dataProfile)
+          .put(urlCandidatesProfiles + '/' + idProfile, dataProfile)
           .catch(function (error) {
-            console.log(error);
-          });
+            console.log(error)
+          })
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style  scoped>
