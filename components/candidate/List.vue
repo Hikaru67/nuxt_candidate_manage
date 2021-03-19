@@ -581,7 +581,4 @@ export default {
   white-space: nowrap;
 }
 
-.full-name{
-  
-}
 </style>
