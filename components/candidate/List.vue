@@ -249,9 +249,9 @@
 <script>
 import { freeSet } from "@coreui/icons";
 import axios from "axios";
-import { URL_RESOURCES } from "../../common/constant/url.js"
-import { URL_POSITIONS } from "../../common/constant/url.js"
-import { URL_CANDIDATE_PROFILES } from "../../common/constant/url.js"
+import { URL_RESOURCES } from "../../common/constant/url.js";
+import { URL_POSITIONS } from "../../common/constant/url.js";
+import { URL_CANDIDATE_PROFILES } from "../../common/constant/url.js";
 
 // const urlSources = "http://candidate-manage.herokuapp.com/api/sources";
 // const urlPositions = "http://candidate-manage.herokuapp.com/api/positions";
@@ -299,7 +299,6 @@ export default {
           label: "",
         },
       ],
-      
 
       color: [
         "btn-secondary",
@@ -473,8 +472,7 @@ export default {
           dataProfile.interview_result = 1;
         else if (dataProfile.interview_result === 1)
           dataProfile.interview_result = 2;
-        else
-          dataProfile.interview_result++;
+        else dataProfile.interview_result++;
 
         axios
           .put(URL_CANDIDATE_PROFILES + "/" + idProfile, dataProfile)
