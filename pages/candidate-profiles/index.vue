@@ -1,21 +1,23 @@
 <template>
-<CCard>
+  <CCard>
     <CCardHeader class="center">
       <h3>List Profile</h3>
     </CCardHeader>
 
     <CCardBody>
-      <ListCandidate :DATA="this.dataCandidate" />
+      <ListCandidate :d-a-t-a="this.dataCandidate" />
     </CCardBody>
   </CCard>
 </template>
 
 <script>
-import axios from "axios";
-import ListCandidate from "../../components/candidate/List";
+import axios from 'axios'
+import ListCandidate from '../../components/candidate/List'
 
 export default {
-  name: "Index",
+  name: 'Index',
+
+  components: { ListCandidate },
 
   data () {
     return {
@@ -23,17 +25,15 @@ export default {
     }
   },
 
-  components: { ListCandidate },
-
-  mounted() {
+  mounted () {
     axios
       .get(this.$store.state.url.API_CANDIDATE_PROFILES_URL)
       .then((response) => {
-        this.dataCandidate = response.data;
+        this.dataCandidate = response.data
         // console.log(this.dataCandidate);
-      });
-  },
-};
+      })
+  }
+}
 </script>
 
 <style scoped></style>

@@ -76,7 +76,9 @@ export default {
     if (this.id) {
       this.data = await this.singleSource
     }
-    console.log(this.singleSource)
+  },
+  updated () {
+    this.data = this.singleSource
   },
 
   methods: {

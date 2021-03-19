@@ -10,9 +10,17 @@
       <CRow>
         <CCol sm="6">
           <CInput
-            v-model="searchForm.name"
+            v-model="searchForm.firstName"
             label="Name"
-            placeholder="Enter name"
+            placeholder="Enter first name"
+            horizontal
+          />
+        </CCol>
+        <CCol sm="6">
+          <CInput
+            v-model="searchForm.lastName"
+            label="Name"
+            placeholder="Enter last name"
             horizontal
           />
         </CCol>
@@ -22,7 +30,7 @@
           <CSelect
             :data-sync="searchForm.position"
             :options="positions"
-            label="Positions"
+            label="Position"
             horizontal
           />
         </CCol>
@@ -38,7 +46,7 @@
       <CRow>
         <CCol sm="6">
           <CInput
-            v-model="searchForm.receiverDateFrom"
+            v-model="receivedDate.from"
             label="From date"
             type="date"
             horizontal
@@ -46,7 +54,7 @@
         </CCol>
         <CCol sm="6">
           <CInput
-            v-model="searchForm.receiverDateTo"
+            v-model="receivedDate.to"
             label="To date"
             type="date"
             horizontal
@@ -73,12 +81,17 @@ export default {
     return {
       positions: [],
       sources: [],
+      receivedDate: {
+        from: '',
+        to: ''
+      },
       searchForm: {
-        name: '',
+        firstName: '',
+        lastName: '',
         position: '',
         source: '',
-        receiverDateFrom: '',
-        receiverDateTo: ''
+        receivedDateFrom: '',
+        receivedDateTo: ''
       }
     }
   },
@@ -90,7 +103,12 @@ export default {
   },
   methods: {
     search () {
+      this.searchForm.receivedDateFrom = this.convertToUnixTime(this.receivedDate.from)
+      this.searchForm.receivedDateTo = this.convertToUnixTime(this.receivedDate.to)
       this.$emit('search', this.searchForm)
+    },
+    convertToUnixTime (time) {
+      return (time) ? new Date(time).getTime() / 1000 : ''
     }
   }
 }
