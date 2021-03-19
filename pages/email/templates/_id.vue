@@ -5,7 +5,7 @@
 <script>
 
 import AddTemplate from '~/components/email/template/AddTemplate'
-import { apiGetEmailTemplatesById } from '~/api/baseData'
+import { apiGetEmailTemplatesById } from '~/api/apiEmail'
 
 export default {
   name: 'Id',

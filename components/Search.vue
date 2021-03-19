@@ -73,7 +73,8 @@
 </template>
 
 <script>
-import { apiGetPositions, apiGetSource } from '~/api/baseData'
+import { apiGetSource } from '~/api/apiSource'
+import { apiGetPositions } from '~/api/baseData'
 
 export default {
   name: 'Search',

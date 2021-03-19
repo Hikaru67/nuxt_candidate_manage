@@ -5,6 +5,8 @@
         <Search @search="getSearchForm($event)" />
       </CCardBody>
       {{ searchForm }}
+      <br>
+      {{ listProfiles }}
     </CCard>
     <CCardHeader>
       <h3>List Email Templates</h3>
@@ -19,7 +21,8 @@
 
 import ListSource from '~/components/source/ListSource'
 import Search from '~/components/Search'
-import { apiGetSource } from '~/api/baseData'
+import { apiGetSource } from '~/api/apiSource'
+import { apiSearchCandidateProfiles } from '~/api/apiCandidate'
 
 export default {
   name: 'Index',
@@ -27,7 +30,8 @@ export default {
   data () {
     return {
       searchForm: {},
-      listSources: []
+      listSources: [],
+      listProfiles: []
     }
   },
   beforeCreate () {
@@ -41,8 +45,9 @@ export default {
     this.listSources = await apiGetSource(this.$axios)
   },
   methods: {
-    getSearchForm (form) {
+    async getSearchForm (form) {
       this.searchForm = form
+      this.listProfiles = await apiSearchCandidateProfiles(this.$axios, this.searchForm)
     }
   }
 }
