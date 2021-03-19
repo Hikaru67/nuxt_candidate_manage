@@ -1,8 +1,7 @@
 <template>
   <CDataTable
-    v-if="$auth.user.role_id === 1"
     :items="DATA"
-    :fields="fields"
+    :fields="fields[$auth.user.role_id - 1]"
     items-per-page-select
     pagination
     responsive
@@ -15,6 +14,13 @@
     }"
     clickable-rows
   >
+    <!-- linked name -->
+    <template #full_name="{ item }" class="full_name">
+      <td>
+        <span class="full-name">{{ linkedName(item.first_name, item.last_name) }}</span>
+      </td>
+    </template>
+
     <!-- convertData interview_date -->
     <template #interview_date="{ item }" class="test">
       <td>
@@ -64,15 +70,51 @@
     </template>
 
     <!-- convertData filtered_result -->
-    <template #filtered_result="{ item }">
+    <!-- <template #filtered_result="{ item }">
       <td>
         <span class=""> {{ convertFilteredResult(item.filtered_result) }}</span>
+      </td>
+    </template> -->
+    <template #filtered_result="{ item }">
+      <td v-if="$auth.user.role_id === 2">
+        <input
+          id="filtered_result-button"
+          type="button"
+          class="btn m-2 btn-square"
+          :class="color[item.filtered_result]"
+          :v-model="item.filtered_result"
+          :value="convertFilteredResult(item.filtered_result)"
+          @click="transformButtonFilteredResult(item.id)"
+        />
+      </td>
+      <td v-else>
+        <span class="">{{ convertFilteredResult(item.filtered_result) }}</span>
       </td>
     </template>
 
     <!-- convertData interview_result -->
-    <template #interview_result="{ item }">
+    <!-- <template #interview_result="{ item }">
       <td>
+        <span class="">{{
+          convertInterviewResult(item.interview_result)
+        }}</span>
+      </td>
+    </template> -->
+
+    <template #interview_result="{ item }">
+      <td v-if="item.filtered_result === 1 && $auth.user.role_id === 2">
+        <input
+          id="interview_result-button"
+          type="button"
+          class="btn m-2 btn-square"
+          :class="color[item.interview_result]"
+          :value="convertInterviewResult(item.interview_result)"
+          :v-model="item.interview_result"
+          @click="transformButtonInterviewResult(item.id)"
+        />
+      </td>
+
+      <td v-else>
         <span class="">{{
           convertInterviewResult(item.interview_result)
         }}</span>
@@ -87,11 +129,11 @@
     </template>
 
     <!-- note -->
-    <template #note="{ item }">
+    <!-- <template #note="{ item }">
       <td>
         {{ item.note }}
       </td>
-    </template>
+    </template> -->
 
     {{ $route.fullPath }}
 
@@ -101,7 +143,7 @@
           <CIcon :content="$options.freeSet.cilPencil" />
         </CButton>
         <CButton
-          v-if="!isInterviewer"
+          v-if="isInterviewer"
           color="danger"
           variant="ghost"
           @click="deleteData(item.id)"
@@ -112,10 +154,10 @@
     </template>
   </CDataTable>
 
-  <CDataTable
+  <!-- <CDataTable
     v-else-if="$auth.user.role_id === 2"
     :items="DATA"
-    :fields="fields"
+    :fields="fields[$auth.user.role_id - 1]"
     items-per-page-select
     pagination
     responsive
@@ -127,57 +169,64 @@
       noItems: 'no items available',
     }"
     clickable-rows
-  >
-    <!-- convertData interview_date -->
-    <template #interview_date="{ item }" class="test">
+  > -->
+  <!-- linked name -->
+  <!-- <template #full_name="{ item }" class="full_name">
+      <td>
+        <span class="">{{ linkedName(item.first_name, item.last_name) }}</span>
+      </td>
+    </template> -->
+
+  <!-- convertData interview_date -->
+  <!-- <template #interview_date="{ item }" class="test">
       <td>
         <span class="">{{ convertDate(item.interview_date) }}</span>
       </td>
-    </template>
+    </template> -->
 
-    <!-- convertData received_date -->
-    <template #received_date="{ item }">
+  <!-- convertData received_date -->
+  <!-- <template #received_date="{ item }">
       <td>
         <span class="">{{ convertDate(item.received_date) }}</span>
       </td>
-    </template>
+    </template> -->
 
-    <!-- convertData created_at -->
-    <template #created_at="{ item }">
+  <!-- convertData created_at -->
+  <!-- <template #created_at="{ item }">
       <td>
         <span class="">{{ convertDate(item.created_at) }}</span>
       </td>
-    </template>
+    </template> -->
 
-    <template #cv_link="{ item }">
+  <!-- <template #cv_link="{ item }">
       <td>
         <span class="test2">{{ item.cv_link }}</span>
       </td>
-    </template>
+    </template> -->
 
-    <!-- convertData updated_at -->
-    <template #updated_at="{ item }">
+  <!-- convertData updated_at -->
+  <!-- <template #updated_at="{ item }">
       <td>
         <span class="">{{ convertDate(item.updated_at) }}</span>
       </td>
-    </template>
+    </template> -->
 
-    <!-- convertData position_id -->
-    <template #position_id="{ item }">
+  <!-- convertData position_id -->
+  <!-- <template #position_id="{ item }">
       <td>
         <span class="">{{ convertPosition(item.position_id) }}</span>
       </td>
-    </template>
+    </template> -->
 
-    <!-- convertData source_id -->
-    <template #source_id="{ item }">
+  <!-- convertData source_id -->
+  <!-- <template #source_id="{ item }">
       <td>
         <span class=""> {{ convertSource(item.source_id) }}</span>
       </td>
-    </template>
+    </template> -->
 
-    <!-- convertData filtered_result -->
-    <template #filtered_result="{ item }">
+  <!-- convertData filtered_result -->
+  <!-- <template #filtered_result="{ item }">
       <td>
         <input
           id="filtered_result-button"
@@ -189,24 +238,24 @@
           @click="transformButtonFilteredResult(item.id)"
         >
       </td>
-    </template>
+    </template> -->
 
-    <!-- feedback -->
-    <template #feedback="{ item }">
+  <!-- feedback -->
+  <!-- <template #feedback="{ item }">
       <td>
         {{ item.feedback }}
       </td>
-    </template>
+    </template> -->
 
-    <!-- note -->
-    <template #note="{ item }">
+  <!-- note -->
+  <!-- <template #note="{ item }">
       <td>
         {{ item.note }}
       </td>
-    </template>
+    </template> -->
 
-    <!-- convertData interview_result -->
-    <template #interview_result="{ item }">
+  <!-- convertData interview_result -->
+  <!-- <template #interview_result="{ item }">
       <td v-if="item.filtered_result === 1">
         <input
           id="interview_result-button"
@@ -223,11 +272,11 @@
           convertInterviewResult(item.interview_result)
         }}</span>
       </td>
-    </template>
+    </template> -->
 
-    {{ $route.Path }}
+  <!-- {{ $route.Path }} -->
 
-    <template #action="{ item }">
+  <!-- <template #action="{ item }">
       <td class="row">
         <CButton color="primary" variant="ghost" @click="editData(item.id)">
           <CIcon :content="$options.freeSet.cilPencil" />
@@ -242,68 +291,92 @@
           <CIcon :content="$options.freeSet.cilTrash" />
         </CButton>
       </td>
-    </template>
-  </CDataTable>
+    </template> -->
+  <!-- </CDataTable>  -->
 </template>
 
 <script>
-import { freeSet } from '@coreui/icons'
-import axios from 'axios'
+import { freeSet } from "@coreui/icons";
+import axios from "axios";
 
-const urlSources = 'http://candidate-manage.herokuapp.com/api/sources'
-const urlPositions = 'http://candidate-manage.herokuapp.com/api/positions'
+const urlSources = "http://candidate-manage.herokuapp.com/api/sources";
+const urlPositions = "http://candidate-manage.herokuapp.com/api/positions";
 const urlCandidatesProfiles =
-  'http://candidate-manage.herokuapp.com/api/candidates-profiles'
+  "http://candidate-manage.herokuapp.com/api/candidates-profiles";
 export default {
-
-  name: 'ListTemplate',
-  props: ['DATA'],
+  name: "ListTemplate",
+  props: ["DATA"],
 
   freeSet,
 
-  data () {
+  data() {
     return {
       fields: [
-        {
-          key: 'id',
-          label: 'ID'
-        },
-        {
-          key: 'first_name',
-          label: 'First Name'
-        },
-        {
-          key: 'last_name',
-          label: 'Last Name'
-        },
-        {
-          key: 'position_id',
-          label: 'Position'
-        },
-        {
-          key: 'source_id',
-          label: 'Source'
-        },
-        'cv_link',
-        'received_date',
-        'filtered_result',
-        'interview_date',
-        'feedback',
-        'interview_result',
-        'note',
-        {
-          key: 'action',
-          label: ''
-        }
+        [
+          {
+            key: "id",
+            label: "ID",
+          },
+          {
+            key: "full_name",
+            label: "Full Name",
+          },
+          {
+            key: "position_id",
+            label: "Position",
+          },
+          {
+            key: "source_id",
+            label: "Source",
+          },
+          "cv_link",
+          "received_date",
+          "filtered_result",
+          "interview_date",
+          "feedback",
+          "interview_result",
+          {
+            key: "action",
+            label: "",
+          },
+        ],
+        [
+          {
+            key: "id",
+            label: "ID",
+          },
+          {
+            key: "full_name",
+            label: "Full Name",
+          },
+          {
+            key: "position_id",
+            label: "Position",
+          },
+          {
+            key: "source_id",
+            label: "Source",
+          },
+          "cv_link",
+          "received_date",
+          "filtered_result",
+          "interview_date",
+          "feedback",
+          "interview_result",
+          {
+            key: "action",
+            label: "",
+          },
+        ],
       ],
 
       color: [
-        'btn-secondary',
-        'btn-success',
-        'btn-danger',
-        'btn-warning',
-        'btn-danger',
-        'btn-success'
+        "btn-secondary",
+        "btn-success",
+        "btn-danger",
+        "btn-warning",
+        "btn-danger",
+        "btn-success",
       ],
 
       positions: [],
@@ -311,18 +384,18 @@ export default {
       sources: [],
 
       filtered_results: [
-        { value: 0, text: 'New' },
-        { value: 1, text: 'Pass' },
-        { value: 2, text: 'Fail' }
+        { value: 0, text: "New" },
+        { value: 1, text: "Pass" },
+        { value: 2, text: "Fail" },
       ],
 
       interview_results: [
-        { value: 0, text: '' },
-        { value: 2, text: 'Fail' },
-        { value: 1, text: 'Pass' },
-        { value: 3, text: 'Sent Mail Interview' },
-        { value: 4, text: 'Sent Mail Thanks' },
-        { value: 5, text: 'Sent Mail Work' }
+        { value: 0, text: "" },
+        { value: 2, text: "Fail" },
+        { value: 1, text: "Pass" },
+        { value: 3, text: "Sent Mail Interview" },
+        { value: 4, text: "Sent Mail Thanks" },
+        { value: 5, text: "Sent Mail Work" },
       ],
 
       /**
@@ -335,19 +408,19 @@ export default {
               "
        */
 
-      classObject: {}
-    }
+      classObject: {},
+    };
   },
-  mounted () {
+  mounted() {
     // get data to position
     axios.get(urlPositions).then((response) => {
-      this.positions = response.data
-    })
+      this.positions = response.data;
+    });
 
     // get data to source
     axios.get(urlSources).then((response) => {
-      this.sources = response.data
-    })
+      this.sources = response.data;
+    });
   },
 
   methods: {
@@ -355,86 +428,96 @@ export default {
      * `isInterviewer` will check role is interviewer
      *  @return boolean
      */
-    isInterviewer () {
-      return this.$auth.user.role_id === 2
+    isInterviewer() {
+      return this.$auth.user.role_id === 2;
     },
 
     /**
      * `convertDate` will convert format date
      * @param date String
      */
-    convertDate (date) {
-      return new Date(date).toLocaleDateString()
+    convertDate(date) {
+      return new Date(date).toLocaleDateString();
+    },
+
+    /**
+     * `linkedName` will linked firstName and lastName
+     * @param firstName String
+     * @param lastName String
+     * @return String
+     */
+    linkedName(firstName, lastName) {
+      return firstName + " " + lastName;
     },
 
     /**
      * `convertPosition` will convert from position id to position name
      * @param id Integer
      */
-    convertPosition (id) {
+    convertPosition(id) {
       const result = this.positions.find((item) => {
-        return item.id === id
-      })
-      return result ? result.name : ''
+        return item.id === id;
+      });
+      return result ? result.name : "";
     },
 
     /**
      * `convertSource` will convert from source id to source name
      * @param id Integer
      */
-    convertSource (id) {
+    convertSource(id) {
       const result = this.sources.find((item) => {
-        return item.id === id
-      })
-      return result ? result.name : ''
+        return item.id === id;
+      });
+      return result ? result.name : "";
     },
 
     /**
      * `convertFilteredResult` will convert from value to text of FilteredResult
      * @param value Integer
      */
-    convertFilteredResult (value) {
+    convertFilteredResult(value) {
       const result = this.filtered_results.find((item) => {
-        return item.value === value
-      })
-      const temp = result ? result.text : ''
-      return temp
+        return item.value === value;
+      });
+      const temp = result ? result.text : "";
+      return temp;
     },
 
     /**
      * `convertInterviewResult` will convert from value to text of InterviewResult
      * @param value Integer
      */
-    convertInterviewResult (value) {
+    convertInterviewResult(value) {
       const result = this.interview_results.find((item) => {
-        return item.value === value
-      })
-      return result ? result.text : ''
+        return item.value === value;
+      });
+      return result ? result.text : "";
     },
 
     /**
      * `editData` will redirect to edit data page
      * @param id String
      */
-    editData (id) {
-      window.location.href = './' + id
+    editData(id) {
+      window.location.href = "./" + id;
     },
 
     /**
      * `deleteData` will delete data by id
      * @param id String
      */
-    deleteData (id) {
+    deleteData(id) {
       // eslint-disable-next-line no-console
       axios
-        .delete(this.$store.state.url.API_CANDIDATE_PROFILES_URL + '/' + id)
+        .delete(this.$store.state.url.API_CANDIDATE_PROFILES_URL + "/" + id)
         .then((res) => {
-          alert('Delete data success')
-          window.location.href = './'
+          alert("Delete data success");
+          window.location.href = "./";
         })
         .catch(function (error) {
-          alert(error)
-        })
+          alert(error);
+        });
     },
 
     /**
@@ -442,26 +525,30 @@ export default {
      * @param id String
      * @param idProfile String
      */
-    transformButtonFilteredResult (idProfile) {
-      const dataProfile = this.DATA.find(e => e.id === idProfile)
+    transformButtonFilteredResult(idProfile) {
+      const dataProfile = this.DATA.find((e) => e.id === idProfile);
 
-      if (dataProfile.filtered_result === 2) { dataProfile.interview_result = 0 }
-      dataProfile.filtered_result++
-      if (dataProfile.filtered_result > 2) { dataProfile.filtered_result = 1 }
+      if (dataProfile.filtered_result === 2) {
+        dataProfile.interview_result = 0;
+      }
+      dataProfile.filtered_result++;
+      if (dataProfile.filtered_result > 2) {
+        dataProfile.filtered_result = 1;
+      }
 
       axios
-        .put(urlCandidatesProfiles + '/' + idProfile, dataProfile)
+        .put(urlCandidatesProfiles + "/" + idProfile, dataProfile)
         .catch(function (error) {
-          console.log(error)
-        })
+          console.log(error);
+        });
     },
 
     /**
      * `transformButtonInterviewResult` update status of InterviewResult
      * @param idProfile Int
      */
-    transformButtonInterviewResult (idProfile) {
-      const dataProfile = this.DATA.find(e => e.id === idProfile)
+    transformButtonInterviewResult(idProfile) {
+      const dataProfile = this.DATA.find((e) => e.id === idProfile);
 
       // dataProfile.interview_result++;
       if (dataProfile.interview_result < 3) {
@@ -472,14 +559,14 @@ export default {
         else dataProfile.interview_result++;
 
         axios
-          .put(urlCandidatesProfiles + '/' + idProfile, dataProfile)
+          .put(urlCandidatesProfiles + "/" + idProfile, dataProfile)
           .catch(function (error) {
-            console.log(error)
-          })
+            console.log(error);
+          });
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style  scoped>
@@ -492,5 +579,9 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.full-name{
+  
 }
 </style>
