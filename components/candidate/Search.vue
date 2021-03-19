@@ -119,7 +119,7 @@ export default {
      * @return String
      */
     toUnixTime (time) {
-      return (time) ? new Date(time).getTime()/1000 : ''
+      return (time) ? new Date(time).getTime() / 1000 : ''
     }
   }
 }

@@ -1,119 +1,8 @@
 <template>
   <div>
     <CDataTable
-      v-if="$auth.user.role_id === 1"
       :items="DATA.data"
-      :fields="fields"
-      responsive
-      sorter
-      class="col-table"
-      :no-items-view="{
-        noResults: 'no filtering results available',
-        noItems: 'no items available',
-      }"
-      clickable-rows
-    >
-      <!-- convertData interview_date -->
-      <template #interview_date="{ item }" class="test">
-        <td>
-          <span class="">{{ convertDate(item.interview_date) }}</span>
-        </td>
-      </template>
-
-      <!-- convertData received_date -->
-      <template #received_date="{ item }">
-        <td>
-          <span class="">{{ convertDate(item.received_date) }}</span>
-        </td>
-      </template>
-
-      <!-- convertData created_at -->
-      <template #created_at="{ item }">
-        <td>
-          <span class="">{{ convertDate(item.created_at) }}</span>
-        </td>
-      </template>
-
-      <template #cv_link="{ item }">
-        <td>
-          <span class="test2">{{ item.cv_link }}</span>
-        </td>
-      </template>
-
-      <!-- convertData updated_at -->
-      <template #updated_at="{ item }">
-        <td>
-          <span class="">{{ convertDate(item.updated_at) }}</span>
-        </td>
-      </template>
-
-      <!-- convertData position_id -->
-      <template #position_id="{ item }">
-        <td>
-          <span class="">{{ convertPosition(item.position_id) }}</span>
-        </td>
-      </template>
-
-      <!-- convertData source_id -->
-      <template #source_id="{ item }">
-        <td>
-          <span class=""> {{ convertSource(item.source_id) }}</span>
-        </td>
-      </template>
-
-      <!-- convertData filtered_result -->
-      <template #filtered_result="{ item }">
-        <td>
-          <span class=""> {{ convertFilteredResult(item.filtered_result) }}</span>
-        </td>
-      </template>
-
-      <!-- convertData interview_result -->
-      <template #interview_result="{ item }">
-        <td>
-          <span class="">{{
-            convertInterviewResult(item.interview_result)
-          }}</span>
-        </td>
-      </template>
-
-      <!-- feedback -->
-      <template #feedback="{ item }">
-        <td>
-          {{ item.feedback }}
-        </td>
-      </template>
-
-      <!-- note -->
-      <template #note="{ item }">
-        <td>
-          {{ item.note }}
-        </td>
-      </template>
-
-      {{ $route.fullPath }}
-
-      <template #action="{ item }">
-        <td class="row">
-          <CButton color="primary" variant="ghost" @click="editData(item.id)">
-            <CIcon :content="$options.freeSet.cilPencil" />
-          </CButton>
-          <CButton
-            v-if="!isInterviewer"
-            color="danger"
-            variant="ghost"
-            @click="deleteData(item.id)"
-          >
-            <CIcon :content="$options.freeSet.cilTrash" />
-          </CButton>
-        </td>
-      </template>
-    </CDataTable>
-
-    <CDataTable
-      v-else-if="$auth.user.role_id === 2"
-      :items="DATA"
-      :fields="fields"
+      :fields="fields[$auth.user.role_id - 1]"
       items-per-page-select
       pagination
       responsive
@@ -126,7 +15,13 @@
       }"
       clickable-rows
     >
-      <CPagination pages="10" />
+      <!-- linked name -->
+      <template #full_name="{ item }" class="full_name">
+        <td>
+          <span class="full-name">{{ linkedName(item.first_name, item.last_name) }}</span>
+        </td>
+      </template>
+
       <!-- convertData interview_date -->
       <template #interview_date="{ item }" class="test">
         <td>
@@ -176,8 +71,13 @@
       </template>
 
       <!-- convertData filtered_result -->
-      <template #filtered_result="{ item }">
+      <!-- <template #filtered_result="{ item }">
         <td>
+          <span class=""> {{ convertFilteredResult(item.filtered_result) }}</span>
+        </td>
+      </template> -->
+      <template #filtered_result="{ item }">
+        <td v-if="$auth.user.role_id === 2">
           <input
             id="filtered_result-button"
             type="button"
@@ -187,6 +87,38 @@
             :value="convertFilteredResult(item.filtered_result)"
             @click="transformButtonFilteredResult(item.id)"
           >
+        </td>
+        <td v-else>
+          <span class="">{{ convertFilteredResult(item.filtered_result) }}</span>
+        </td>
+      </template>
+
+      <!-- convertData interview_result -->
+      <!-- <template #interview_result="{ item }">
+        <td>
+          <span class="">{{
+            convertInterviewResult(item.interview_result)
+          }}</span>
+        </td>
+      </template> -->
+
+      <template #interview_result="{ item }">
+        <td v-if="item.filtered_result === 1 && $auth.user.role_id === 2">
+          <input
+            id="interview_result-button"
+            type="button"
+            class="btn m-2 btn-square"
+            :class="color[item.interview_result]"
+            :value="convertInterviewResult(item.interview_result)"
+            :v-model="item.interview_result"
+            @click="transformButtonInterviewResult(item.id)"
+          >
+        </td>
+
+        <td v-else>
+          <span class="">{{
+            convertInterviewResult(item.interview_result)
+          }}</span>
         </td>
       </template>
 
@@ -198,42 +130,21 @@
       </template>
 
       <!-- note -->
-      <template #note="{ item }">
+      <!-- <template #note="{ item }">
         <td>
           {{ item.note }}
         </td>
-      </template>
+      </template> -->
 
-      <!-- convertData interview_result -->
-      <template #interview_result="{ item }">
-        <td v-if="item.filtered_result === 1">
-          <input
-            id="interview_result-button"
-            type="button"
-            class="btn m-2 btn-square"
-            :class="color[item.interview_result]"
-            :value="convertInterviewResult(item.interview_result)"
-            :v-model="item.interview_result"
-            @click="transformButtonInterviewResult(item.id)"
-          >
-        </td>
-        <td v-else>
-          <span class="">{{
-            convertInterviewResult(item.interview_result)
-          }}</span>
-        </td>
-      </template>
-
-      {{ $route.Path }}
+      {{ $route.fullPath }}
 
       <template #action="{ item }">
         <td class="row">
           <CButton color="primary" variant="ghost" @click="editData(item.id)">
             <CIcon :content="$options.freeSet.cilPencil" />
           </CButton>
-
           <CButton
-            v-if="!isInterviewer"
+            v-if="isInterviewer"
             color="danger"
             variant="ghost"
             @click="deleteData(item.id)"
@@ -243,43 +154,27 @@
         </td>
       </template>
     </CDataTable>
-    {{ DATA }}
     <CPagination
       v-show="DATA.last_page > 1"
       align="end"
       :active-page.sync="DATA.current_page"
       :pages="DATA.last_page"
-    />
-    <!--    <nav aria-label="Page navigation example">
-      <ul class="pagination justify-content-end" style="float: right">
-        <li class="page-item disabled">
-          <a class="page-link" href="#" tabindex="-1">Previous</a>
-        </li>
-        <li class="page-item" v-for="value in DATA.last_page" :key="value">
-          <a class="page-link" href="#" v-if="value<4">{{ value }}</a>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item">
-          <a class="page-link" href="#">Next</a>
-        </li>
-      </ul>
-    </nav>-->
+      @update:activePage="changePage($event)"
+    >
+    </CPagination>
   </div>
 </template>
 
 <script>
 import { freeSet } from '@coreui/icons'
 import axios from 'axios'
-import { URL_CANDIDATE_PROFILES } from '~/common/constant/url'
 
 const urlSources = 'http://candidate-manage.herokuapp.com/api/sources'
 const urlPositions = 'http://candidate-manage.herokuapp.com/api/positions'
-
+const urlCandidatesProfiles =
+  'http://candidate-manage.herokuapp.com/api/candidates-profiles'
 export default {
-
   name: 'ListTemplate',
-  // eslint-disable-next-line vue/require-prop-types
   props: ['DATA'],
 
   freeSet,
@@ -287,37 +182,62 @@ export default {
   data () {
     return {
       fields: [
-        {
-          key: 'id',
-          label: 'ID'
-        },
-        {
-          key: 'first_name',
-          label: 'First Name'
-        },
-        {
-          key: 'last_name',
-          label: 'Last Name'
-        },
-        {
-          key: 'position_id',
-          label: 'Position'
-        },
-        {
-          key: 'source_id',
-          label: 'Source'
-        },
-        'cv_link',
-        'received_date',
-        'filtered_result',
-        'interview_date',
-        'feedback',
-        'interview_result',
-        'note',
-        {
-          key: 'action',
-          label: ''
-        }
+        [
+          {
+            key: 'id',
+            label: 'ID'
+          },
+          {
+            key: 'full_name',
+            label: 'Full Name'
+          },
+          {
+            key: 'position_id',
+            label: 'Position'
+          },
+          {
+            key: 'source_id',
+            label: 'Source'
+          },
+          'cv_link',
+          'received_date',
+          'filtered_result',
+          'interview_date',
+          'feedback',
+          'interview_result',
+          {
+            key: 'action',
+            label: ''
+          }
+        ],
+        [
+          {
+            key: 'id',
+            label: 'ID'
+          },
+          {
+            key: 'full_name',
+            label: 'Full Name'
+          },
+          {
+            key: 'position_id',
+            label: 'Position'
+          },
+          {
+            key: 'source_id',
+            label: 'Source'
+          },
+          'cv_link',
+          'received_date',
+          'filtered_result',
+          'interview_date',
+          'feedback',
+          'interview_result',
+          {
+            key: 'action',
+            label: ''
+          }
+        ]
       ],
 
       color: [
@@ -347,6 +267,17 @@ export default {
         { value: 4, text: 'Sent Mail Thanks' },
         { value: 5, text: 'Sent Mail Work' }
       ],
+
+      /**
+       *
+       (item.filtered_result === 2 &&
+       'btn m-2 btn-danger btn-square') ||
+       (item.filtered_result === 1 &&
+       'btn m-2 btn-success btn-square') ||
+       (item.filtered_result === 0 && 'btn m-2 btn-warning btn-square')
+       "
+       */
+
       classObject: {}
     }
   },
@@ -364,6 +295,15 @@ export default {
 
   methods: {
     /**
+     * `changePage` will an event changePage
+     * @param page String
+     *  @return boolean
+     */
+    changePage (page) {
+      this.$emit('change_page', page)
+    },
+
+    /**
      * `isInterviewer` will check role is interviewer
      *  @return boolean
      */
@@ -377,6 +317,16 @@ export default {
      */
     convertDate (date) {
       return new Date(date).toLocaleDateString()
+    },
+
+    /**
+     * `linkedName` will linked firstName and lastName
+     * @param firstName String
+     * @param lastName String
+     * @return String
+     */
+    linkedName (firstName, lastName) {
+      return firstName + ' ' + lastName
     },
 
     /**
@@ -457,12 +407,16 @@ export default {
     transformButtonFilteredResult (idProfile) {
       const dataProfile = this.DATA.find(e => e.id === idProfile)
 
-      if (dataProfile.filtered_result === 2) { dataProfile.interview_result = 0 }
+      if (dataProfile.filtered_result === 2) {
+        dataProfile.interview_result = 0
+      }
       dataProfile.filtered_result++
-      if (dataProfile.filtered_result > 2) { dataProfile.filtered_result = 1 }
+      if (dataProfile.filtered_result > 2) {
+        dataProfile.filtered_result = 1
+      }
 
       axios
-        .put(URL_CANDIDATE_PROFILES + '/' + idProfile, dataProfile)
+        .put(urlCandidatesProfiles + '/' + idProfile, dataProfile)
         .catch(function (error) {
           console.log(error)
         })
@@ -480,7 +434,7 @@ export default {
         if (dataProfile.interview_result === 2) { dataProfile.interview_result = 1 } else if (dataProfile.interview_result === 1) { dataProfile.interview_result = 2 } else { dataProfile.interview_result++ }
 
         axios
-          .put(URL_CANDIDATE_PROFILES + '/' + idProfile, dataProfile)
+          .put(urlCandidatesProfiles + '/' + idProfile, dataProfile)
           .catch(function (error) {
             console.log(error)
           })
@@ -500,5 +454,9 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.full-name{
+
 }
 </style>
