@@ -33,6 +33,32 @@
         </CCol>
       </CRow>
 
+      <!-- email -->
+      <CRow>
+        <CCol sm="10">
+          <CInput
+            v-model="data.email"
+            label="Email"
+            placeholder="Enter email "
+            :disabled="isInterviewer"
+            horizontal
+          />
+        </CCol>
+      </CRow>
+
+      <!-- phone -->
+      <CRow>
+        <CCol sm="10">
+          <CInput
+            v-model="data.phone"
+            label="Phone"
+            placeholder="Enter phone"
+            :disabled="isInterviewer"
+            horizontal
+          />
+        </CCol>
+      </CRow>
+
       <!-- position_id -->
       <CRow>
         <CCol sm="2">
@@ -140,8 +166,6 @@
           />
         </CCol>
       </CRow>
-      {{ isInterviewer }}
-
       <!-- interview_result -->
       <!--       <CRow>
         <CCol sm="2">
@@ -211,7 +235,7 @@
 
 <script>
 import axios from 'axios'
-import { URL_CANDIDATE_PROFILES, URL_RESOURCES,  URL_POSITIONS} from "../../common/constant/url";
+import { URL_CANDIDATE_PROFILES, URL_RESOURCES, URL_POSITIONS } from '../../common/constant/url'
 
 export default {
   data () {
@@ -225,6 +249,8 @@ export default {
       data: {
         first_name: '',
         last_name: '',
+        email: '',
+        phone: '',
         position_id: 0,
         source_id: 0,
         received_date: '',
@@ -266,24 +292,18 @@ export default {
   },
 
   mounted () {
-    /**
-     * call func getData if id is valid
-     */
+    // call func getData if id is valid
     if (this.$route.params.id) { this.id = this.$route.params.id }
     if (this.id) {
       this.getData()
     }
 
-    /**
-     * get data to position
-     */
+    // get data to position
     axios.get(URL_POSITIONS).then((response) => {
       this.positions = response.data
     })
 
-    /**
-     * get data to source
-     */
+    // get data to source
     axios.get(URL_RESOURCES).then((response) => {
       this.sources = response.data
     })
@@ -298,6 +318,9 @@ export default {
         .get(URL_CANDIDATE_PROFILES + '/' + this.id)
         .then((res) => {
           this.data = res.data
+          console.log(this.data.received_date)
+          this.data.received_date = this.convertDate(this.data.received_date)
+          console.log(this.data.received_date)
         })
     },
 
@@ -306,6 +329,7 @@ export default {
      */
     addData () {
       if (this.validate()) {
+        this.data.received_date = this.toUnixTime(this.data.received_date)
         axios
           .post(URL_CANDIDATE_PROFILES, this.data)
           .then(() => {
@@ -325,6 +349,7 @@ export default {
     updateData () {
       if (!this.isInterviewer) {
         if (this.validate()) {
+          this.data.received_date = this.toUnixTime(this.data.received_date)
           axios
             .put(URL_CANDIDATE_PROFILES + '/' + this.id, this.data)
             .then(() => {
@@ -366,6 +391,14 @@ export default {
         this.errors.push('Last Name required.')
       }
 
+      if (!this.data.email) {
+        this.errors.push('Email required.')
+      }
+
+      if (!this.data.phone) {
+        this.errors.push('Phone required.')
+      }
+
       if (!this.data.position_id) {
         this.errors.push('Position required.')
       }
@@ -379,6 +412,23 @@ export default {
       }
 
       return !this.errors.length
+    },
+
+    /**
+     * `toUnixTime` will convert time to unixTime
+     * @param time String
+     * @return String
+     */
+    toUnixTime (time) {
+      return (time) ? new Date(time).getTime() / 1000 : ''
+    },
+
+    /**
+     * `convertDate` will convert format date
+     * @param date String
+     */
+    convertDate (date) {
+      return (date) ? new Date(date * 1000).toLocaleDateString('zh-Hans-CN', { year: 'numeric', month: '2-digit', day: '2-digit' }).replaceAll('/', '-') : ''
     }
   }
 }

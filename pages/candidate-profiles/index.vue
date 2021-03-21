@@ -5,15 +5,15 @@
     </CCardHeader>
 
     <CCardBody>
-      <ListCandidate @change_page="updatePage($event)" :d-a-t-a="dataCandidate" />
+      <ListCandidate :d-a-t-a="dataCandidate" @change_page="updatePage($event)" @update_data="updateData" />
     </CCardBody>
   </CCard>
 </template>
 
 <script>
 import axios from 'axios'
-import { URL_CANDIDATE_PROFILES } from "../../common/constant/url";
 import ListCandidate from '../../components/candidate/List'
+import { URL_CANDIDATE_PROFILES } from '~/common/constant/url'
 
 export default {
   name: 'Index',
@@ -27,16 +27,20 @@ export default {
   },
 
   mounted () {
-    axios
-      .get(URL_CANDIDATE_PROFILES)
-      .then((response) => {
-        this.dataCandidate = response.data
-        // console.log(this.dataCandidate);
-      })
-
+    this.getListProfile()
   },
 
   methods: {
+    /**
+     * getListProfile will call api get list candidate profile
+     */
+    getListProfile () {
+      axios
+        .get(URL_CANDIDATE_PROFILES)
+        .then((response) => {
+          this.dataCandidate = response.data
+        })
+    },
     /**
      * updatePage update dataCandidate by page
      * @param page String
@@ -50,6 +54,12 @@ export default {
           console.log(this.dataCandidate)
           // console.log(this.dataCandidate);
         })
+    },
+    /**
+     * updateData update call func get list profile
+     */
+    updateData () {
+      this.getListProfile()
     }
   }
 }

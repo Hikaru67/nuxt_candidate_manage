@@ -11,3 +11,11 @@ export default {
   }
 }
 </script>
+<style>
+.center {
+  text-align: center;
+}
+.right {
+  text-align: right;
+}
+</style>

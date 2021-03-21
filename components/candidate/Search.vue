@@ -28,16 +28,16 @@
       <CRow>
         <CCol sm="6">
           <CSelect
-            :data-sync="formSearch.position"
-            :options="positions"
+            :value.sync="formSearch.position"
+            :options="formatOptionsValue(positions)"
             label="Positions"
             horizontal
           />
         </CCol>
         <CCol sm="6">
           <CSelect
-            :data-sync="formSearch.source"
-            :options="sources"
+            :value.sync="formSearch.source"
+            :options="formatOptionsValue(sources)"
             label="Source"
             horizontal
           />
@@ -63,6 +63,9 @@
       </CRow>
     </CCardBody>
     <CCardFooter>
+      {{ formSearch }}
+      <br>
+      {{ formatOptionsValue(positions) }}
       <div class="center">
         <CButton color="success" @click="search">
           Search
@@ -98,14 +101,12 @@ export default {
   },
   async mounted () {
     this.positions = await apiGetPositions(this.$axios)
-    this.positions = this.positions.map((item) => { return { value: item.id, label: item.name } })
     this.sources = await apiGetSource(this.$axios)
-    this.sources = this.sources.map((item) => { return { value: item.id, label: item.name } })
   },
   methods: {
     /**
-     * `search` will send an event search
-     *
+     * `search` will change type date to unixTime
+     * Then send an event search
      */
     search () {
       this.formSearch.receivedDateFrom = this.toUnixTime(this.receivedDate.from)
@@ -120,6 +121,20 @@ export default {
      */
     toUnixTime (time) {
       return (time) ? new Date(time).getTime() / 1000 : ''
+    },
+
+    /**
+     * `formatOptionsValue` will change format item in array
+     * @param listValue Array
+     * @return Array
+     */
+    formatOptionsValue (listValue) {
+      if (listValue.length) {
+        return listValue.map((item) => {
+          return { value: item.id, label: item.name }
+        })
+      }
+      return []
     }
   }
 }
