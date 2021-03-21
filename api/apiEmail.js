@@ -9,3 +9,9 @@ export function apiGetEmailTemplatesById (axios, id) {
     .then(res => res.data)
     .catch(xhr => xhr)
 }
+
+export function apiSearchEmailTemplates (axios, condition) {
+  return axios.get('/email-templates?' + condition)
+    .then(res => res.data)
+    .catch(xhr => xhr)
+}

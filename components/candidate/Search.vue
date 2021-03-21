@@ -63,9 +63,6 @@
       </CRow>
     </CCardBody>
     <CCardFooter>
-      {{ formSearch }}
-      <br>
-      {{ formatOptionsValue(positions) }}
       <div class="center">
         <CButton color="success" @click="search">
           Search

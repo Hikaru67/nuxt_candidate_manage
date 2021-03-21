@@ -79,7 +79,7 @@ export default {
       axios.delete(URL_RESOURCES + '/' + id)
         .then((res) => {
           alert('Delete data success')
-          window.location.href = './'
+          this.$emit('update_data')
         })
         .catch(function (error) {
           alert(error)

@@ -55,6 +55,27 @@
           />
         </CCol>
       </CRow>
+      <CRow>
+        <CCol sm="10">
+          <CInput
+            v-model="data.singleTemplate.title"
+            label="Title email"
+            placeholder="Title email"
+            horizontal
+          />
+        </CCol>
+      </CRow>
+      <CRow>
+        <CCol sm="10">
+          <CTextarea
+            v-model="data.singleTemplate.content"
+            label="Content email"
+            placeholder="Content email"
+            rows="10"
+            horizontal
+          />
+        </CCol>
+      </CRow>
     </CCardBody>
     <CCardFooter>
       <div class="right">

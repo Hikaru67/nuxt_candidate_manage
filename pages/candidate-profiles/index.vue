@@ -55,6 +55,7 @@ export default {
           // console.log(this.dataCandidate);
         })
     },
+
     /**
      * updateData update call func get list profile
      */

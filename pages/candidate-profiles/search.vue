@@ -10,6 +10,7 @@
         <ListCandidate
           :d-a-t-a="dataCandidate"
           @change_page="updatePage($event)"
+          @update_data="updateData"
         />
       </CCardBody>
     </CCard>
@@ -37,20 +38,20 @@ export default {
   },
 
   mounted () {
-    axios
-      .get(URL_CANDIDATE_PROFILES)
-      .then((response) => {
-        this.dataCandidate = response.data
-        // console.log(this.dataCandidate);
-      })
+    this.getListProfile()
   },
 
   methods: {
-    /* getSearchForm (data) {
-      this.searchForm = data
-      // eslint-disable-next-line no-console
-      console.log(this.searchForm)
-    }, */
+    /**
+     * getListProfile will call api get list candidate profile
+     */
+    getListProfile () {
+      axios
+        .get(URL_CANDIDATE_PROFILES)
+        .then((response) => {
+          this.dataCandidate = response.data
+        })
+    },
 
     /**
      * updatePage update dataCandidate by page
@@ -60,17 +61,26 @@ export default {
     updatePage (page) {
       axios.get(URL_CANDIDATE_PROFILES + '?page=' + page).then((response) => {
         this.dataCandidate = response.data
-        console.log(this.dataCandidate)
-        // console.log(this.dataCandidate);
       })
     },
+
+    /**
+     * `getSearchForm` will get form search data and send api search candidate profile
+     * @param form Object
+     */
     async getSearchForm (form) {
       this.condition = ''
-      console.log(form)
       Object.entries(form).forEach((value) => {
         if (value[1]) { this.condition += value[0] + '=' + value[1] + '&' }
       })
       this.dataCandidate = await apiSearchCandidateProfiles(this.$axios, this.condition)
+    },
+
+    /**
+     * updateData update call func get list profile
+     */
+    updateData () {
+      this.getListProfile()
     }
   }
 }

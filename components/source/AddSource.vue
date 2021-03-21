@@ -1,6 +1,5 @@
 <template>
   <CCard>
-    {{ data }}
     <CCardHeader class="center">
       <h3 v-if="id">
         Edit Source
@@ -33,7 +32,7 @@
             Return
           </CButton>
         </a>
-        <CButton v-if="singleSource" color="success" @click="updateData">
+        <CButton v-if="$route.params.id" color="success" @click="updateData">
           Submit
         </CButton>
         <CButton v-else color="success" @click="addData">

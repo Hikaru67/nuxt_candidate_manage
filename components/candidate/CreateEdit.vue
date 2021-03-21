@@ -158,7 +158,7 @@
       <!-- feedback -->
       <CRow>
         <CCol sm="10">
-          <CInput
+          <CTextarea
             v-model="data.feedback"
             label="Feedback"
             placeholder="Enter feedback"
@@ -293,8 +293,8 @@ export default {
 
   mounted () {
     // call func getData if id is valid
-    if (this.$route.params.id) { this.id = this.$route.params.id }
-    if (this.id) {
+    if (this.$route.params.id) {
+      this.id = this.$route.params.id
       this.getData()
     }
 
@@ -318,9 +318,7 @@ export default {
         .get(URL_CANDIDATE_PROFILES + '/' + this.id)
         .then((res) => {
           this.data = res.data
-          console.log(this.data.received_date)
           this.data.received_date = this.convertDate(this.data.received_date)
-          console.log(this.data.received_date)
         })
     },
 

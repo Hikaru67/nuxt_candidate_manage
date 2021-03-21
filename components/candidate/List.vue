@@ -6,7 +6,6 @@
       responsive
       sorter
       class="col-table"
-      table-filter
       :no-items-view="{
         noResults: 'no filtering results available',
         noItems: 'no items available',
@@ -132,14 +131,14 @@
 
       <template #action="{ item }">
         <td class="row">
-          <CButton color="primary" variant="ghost" @click="beforeSendEmail(item.id)">
+          <CButton v-if="!isInterviewer()" color="primary" variant="ghost" @click="beforeSendEmail(item.id)">
             <CIcon :content="$options.freeSet.cilArrowThickTop" />
           </CButton>
           <CButton color="primary" variant="ghost" @click="editData(item.id)">
             <CIcon :content="$options.freeSet.cilPencil" />
           </CButton>
           <CButton
-            v-if="isInterviewer"
+            v-if="!isInterviewer()"
             color="danger"
             variant="ghost"
             @click="deleteData(item.id)"
@@ -151,8 +150,8 @@
     </CDataTable>
     <CModal title="SEND EMAIL" color="primary" :show.sync="test" size="lg" backdrop>
       <SendEmail2 :list-templates="JSON.parse(JSON.stringify(listTemplates))" :single-profile="singleProfile" @after_send_email="afterSendEmail" />
-      <div slot="footer" class="w-100"></div>
-      <div slot="footer-wrapper"></div>
+      <div slot="footer" class="w-100" />
+      <div slot="footer-wrapper" />
     </CModal>
     <CPagination
       v-show="DATA.last_page > 1"
@@ -307,7 +306,7 @@ export default {
      *  @return boolean
      */
     isInterviewer () {
-      return this.$auth.user.role_id === 2
+      return (this.$auth.user.role_id === 2)
     },
 
     /**

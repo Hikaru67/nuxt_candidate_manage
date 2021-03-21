@@ -6,7 +6,6 @@
     pagination
     responsive
     sorter
-    table-filter
     :no-items-view="{ noResults: 'no filtering results available', noItems: 'no items available' }"
     clickable-rows
   >
@@ -24,9 +23,6 @@
 
     <template #action="{ item }">
       <td style="max-width: 90px">
-        <CButton color="primary" variant="ghost" @click="toSendPage(item.id)">
-          <CIcon :content="$options.freeSet.cilBook" />
-        </CButton>
         <CButton color="primary" variant="ghost" @click="toEditPage(item.id)">
           <CIcon :content="$options.freeSet.cilPencil" />
         </CButton>
@@ -41,7 +37,7 @@
 <script>
 import axios from 'axios'
 import { freeSet } from '@coreui/icons'
-import { URL_RESOURCES } from '~/common/constant/url'
+import { URL_EMAIL_TEMPLATES } from '~/common/constant/url'
 
 export default {
   name: 'ListTemplate',
@@ -90,10 +86,10 @@ export default {
      * @param id String
      */
     deleteData (id) {
-      axios.delete(URL_RESOURCES + '/' + id)
+      axios.delete(URL_EMAIL_TEMPLATES + '/' + id)
         .then((res) => {
           alert('Delete data success')
-          window.location.href = './'
+          this.$emit('update_data')
         })
         .catch(function (error) {
           alert(error)

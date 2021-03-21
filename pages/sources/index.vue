@@ -1,18 +1,10 @@
 <template>
   <CCard>
-    <CCard>
-      <CCardBody>
-        <Search @search="getSearchForm($event)" />
-      </CCardBody>
-      {{ condition }}
-      <br>
-      {{ listProfiles }}
-    </CCard>
     <CCardHeader>
       <h3>List Email Templates</h3>
     </CCardHeader>
     <CCardBody>
-      <ListSource :list-sources="listSources" />
+      <ListSource :list-sources="listSources" @update_data="updateData" />
     </CCardBody>
   </CCard>
 </template>
@@ -20,18 +12,14 @@
 <script>
 
 import ListSource from '~/components/source/ListSource'
-import Search from '~/components/candidate/Search'
 import { apiGetSource } from '~/api/apiSource'
-import { apiSearchCandidateProfiles } from '~/api/apiCandidate'
 
 export default {
   name: 'Index',
-  components: { ListSource, Search },
+  components: { ListSource },
   data () {
     return {
-      condition: '',
       listSources: [],
-      listProfiles: []
     }
   },
   beforeCreate () {
@@ -41,17 +29,22 @@ export default {
       window.location.href = '/dashboard'
     }
   },
-  async created () {
-    this.listSources = await apiGetSource(this.$axios)
+  created () {
+    this.getListSources()
   },
   methods: {
-    async getSearchForm (form) {
-      this.condition = ''
-      Object.entries(form).forEach((value) => {
-        if (value[1]) { this.condition += value[0] + '=' + value[1] + '&' }
-      })
-      this.listProfiles = await apiSearchCandidateProfiles(this.$axios, this.condition)
-      console.log(this.listProfiles)
+    /**
+     * `getListSources` will call api get list sources
+     */
+    async getListSources () {
+      this.listSources = await apiGetSource(this.$axios)
+    },
+
+    /**
+     * updateData update call func get list email templates
+     */
+    updateData () {
+      this.getListSources()
     }
   }
 }
