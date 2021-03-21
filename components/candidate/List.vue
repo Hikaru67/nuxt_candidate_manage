@@ -1,99 +1,115 @@
 <template>
-  <CDataTable
-    :items="DATA"
-    :fields="fields[$auth.user.role_id - 1]"
-    items-per-page-select
-    pagination
-    responsive
-    sorter
-    class="col-table"
-    table-filter
-    :no-items-view="{
-      noResults: 'no filtering results available',
-      noItems: 'no items available',
-    }"
-    clickable-rows
-  >
-    <!-- linked name -->
-    <template #full_name="{ item }" class="full_name">
-      <td>
-        <span class="full-name">{{ linkedName(item.first_name, item.last_name) }}</span>
-      </td>
-    </template>
+  <div>
+    <CDataTable
+      :items="DATA.data"
+      :fields="fields[$auth.user.role_id - 1]"
+      responsive
+      sorter
+      class="col-table"
+      table-filter
+      :no-items-view="{
+        noResults: 'no filtering results available',
+        noItems: 'no items available',
+      }"
+      clickable-rows
+    >
+      <!--  -->
 
-    <!-- convertData interview_date -->
-    <template #interview_date="{ item }" class="test">
-      <td>
-        <span class="">{{ convertDate(item.interview_date) }}</span>
-      </td>
-    </template>
+      <!-- work_date-->
+      <template #work_date="{ item }">
+        <td>
+          <CInput
+            v-model="item.work_date"
+            type="date"
+            @change="workDate(item.id)"
+          />
+        </td>
+      </template>
 
-    <!-- convertData received_date -->
-    <template #received_date="{ item }">
-      <td>
-        <span class="">{{ convertDate(item.received_date) }}</span>
-      </td>
-    </template>
+      <!-- linked name -->
+      <template #full_name="{ item }" class="full_name">
+        <td>
+          <span class="full-name">{{
+            linkedName(item.first_name, item.last_name)
+          }}</span>
+        </td>
+      </template>
 
-    <!-- convertData created_at -->
-    <template #created_at="{ item }">
-      <td>
-        <span class="">{{ convertDate(item.created_at) }}</span>
-      </td>
-    </template>
+      <!-- convertData interview_date -->
+      <template #interview_date="{ item }" class="test">
+        <td>
+          <span class="">{{ convertDate(item.interview_date) }}</span>
+        </td>
+      </template>
 
-    <template #cv_link="{ item }">
-      <td>
-        <span class="test2">{{ item.cv_link }}</span>
-      </td>
-    </template>
+      <!-- convertData received_date -->
+      <template #received_date="{ item }">
+        <td>
+          <span class="">{{ convertDate(item.received_date) }}</span>
+        </td>
+      </template>
 
-    <!-- convertData updated_at -->
-    <template #updated_at="{ item }">
-      <td>
-        <span class="">{{ convertDate(item.updated_at) }}</span>
-      </td>
-    </template>
+      <!-- convertData created_at -->
+      <template #created_at="{ item }">
+        <td>
+          <span class="">{{ convertDate(item.created_at) }}</span>
+        </td>
+      </template>
 
-    <!-- convertData position_id -->
-    <template #position_id="{ item }">
-      <td>
-        <span class="">{{ convertPosition(item.position_id) }}</span>
-      </td>
-    </template>
+      <template #cv_link="{ item }">
+        <td>
+          <span class="test2">{{ item.cv_link }}</span>
+        </td>
+      </template>
 
-    <!-- convertData source_id -->
-    <template #source_id="{ item }">
-      <td>
-        <span class=""> {{ convertSource(item.source_id) }}</span>
-      </td>
-    </template>
+      <!-- convertData updated_at -->
+      <template #updated_at="{ item }">
+        <td>
+          <span class="">{{ convertDate(item.updated_at) }}</span>
+        </td>
+      </template>
 
-    <!-- convertData filtered_result -->
-    <!-- <template #filtered_result="{ item }">
+      <!-- convertData position_id -->
+      <template #position_id="{ item }">
+        <td>
+          <span class="">{{ convertPosition(item.position_id) }}</span>
+        </td>
+      </template>
+
+      <!-- convertData source_id -->
+      <template #source_id="{ item }">
+        <td>
+          <span class=""> {{ convertSource(item.source_id) }}</span>
+        </td>
+      </template>
+
+      <!-- convertData filtered_result -->
+      <!-- <template #filtered_result="{ item }">
       <td>
         <span class=""> {{ convertFilteredResult(item.filtered_result) }}</span>
       </td>
     </template> -->
-    <template #filtered_result="{ item }">
-      <td v-if="$auth.user.role_id === 2">
-        <input
-          id="filtered_result-button"
-          type="button"
-          class="btn m-2 btn-square"
-          :class="color[item.filtered_result]"
-          :v-model="item.filtered_result"
-          :value="convertFilteredResult(item.filtered_result)"
-          @click="transformButtonFilteredResult(item.id)"
-        />
-      </td>
-      <td v-else>
-        <span class="">{{ convertFilteredResult(item.filtered_result) }}</span>
-      </td>
-    </template>
+      <template #filtered_result="{ item }">
+        <td v-if="$auth.user.role_id === 2">
+          <input
+            id="filtered_result-button"
+            type="button"
+            class="btn m-2 btn-square"
+            :class="color[item.filtered_result]"
+            :v-model="item.filtered_result"
+            :value="convertFilteredResult(item.filtered_result)"
+            @click="transformButtonFilteredResult(item.id)"
+          />
+        </td>
+        <td v-else>
+          <span class="">{{
+            convertFilteredResult(item.filtered_result)
+          }}</span>
+        </td>
+      </template>
 
-    <!-- convertData interview_result -->
-    <!-- <template #interview_result="{ item }">
+      <!-- convertData interview_result -->
+      <!-- <template #interview_result="{ item }">
       <td>
         <span class="">{{
           convertInterviewResult(item.interview_result)
@@ -101,58 +117,68 @@
       </td>
     </template> -->
 
-    <template #interview_result="{ item }">
-      <td v-if="item.filtered_result === 1 && $auth.user.role_id === 2">
-        <input
-          id="interview_result-button"
-          type="button"
-          class="btn m-2 btn-square"
-          :class="color[item.interview_result]"
-          :value="convertInterviewResult(item.interview_result)"
-          :v-model="item.interview_result"
-          @click="transformButtonInterviewResult(item.id)"
-        />
-      </td>
+      <template #interview_result="{ item }">
+        <td v-if="item.filtered_result === 1 && $auth.user.role_id === 2">
+          <input
+            id="interview_result-button"
+            type="button"
+            class="btn m-2 btn-square"
+            :class="color[item.interview_result]"
+            :value="convertInterviewResult(item.interview_result)"
+            :v-model="item.interview_result"
+            @click="transformButtonInterviewResult(item.id)"
+          />
+        </td>
 
-      <td v-else>
-        <span class="">{{
-          convertInterviewResult(item.interview_result)
-        }}</span>
-      </td>
-    </template>
+        <td v-else>
+          <span class="">{{
+            convertInterviewResult(item.interview_result)
+          }}</span>
+        </td>
+      </template>
 
-    <!-- feedback -->
-    <template #feedback="{ item }">
-      <td>
-        {{ item.feedback }}
-      </td>
-    </template>
+      <!-- feedback -->
+      <template #feedback="{ item }">
+        <td>
+          {{ item.feedback }}
+        </td>
+      </template>
 
-    <!-- note -->
-    <!-- <template #note="{ item }">
+      <!-- note -->
+      <!-- <template #note="{ item }">
       <td>
         {{ item.note }}
       </td>
     </template> -->
 
-    {{ $route.fullPath }}
+      {{ $route.fullPath }}
 
-    <template #action="{ item }">
-      <td class="row">
-        <CButton color="primary" variant="ghost" @click="editData(item.id)">
-          <CIcon :content="$options.freeSet.cilPencil" />
-        </CButton>
-        <CButton
-          v-if="isInterviewer"
-          color="danger"
-          variant="ghost"
-          @click="deleteData(item.id)"
-        >
-          <CIcon :content="$options.freeSet.cilTrash" />
-        </CButton>
-      </td>
-    </template>
-  </CDataTable>
+      <template #action="{ item }">
+        <td class="row">
+          <CButton color="primary" variant="ghost" @click="editData(item.id)">
+            <CIcon :content="$options.freeSet.cilPencil" />
+          </CButton>
+          <CButton
+            v-if="isInterviewer"
+            color="danger"
+            variant="ghost"
+            @click="deleteData(item.id)"
+          >
+            <CIcon :content="$options.freeSet.cilTrash" />
+          </CButton>
+        </td>
+      </template>
+    </CDataTable>
+
+    <CPagination
+      v-show="DATA.last_page > 1"
+      align="end"
+      :active-page.sync="DATA.current_page"
+      :pages="DATA.last_page"
+      @update:activePage="changePage($event)"
+    >
+    </CPagination>
+  </div>
 
   <!-- <CDataTable
     v-else-if="$auth.user.role_id === 2"
@@ -299,10 +325,8 @@
 import { freeSet } from "@coreui/icons";
 import axios from "axios";
 
-const urlSources = "http://candidate-manage.herokuapp.com/api/sources";
-const urlPositions = "http://candidate-manage.herokuapp.com/api/positions";
-const urlCandidatesProfiles =
-  "http://candidate-manage.herokuapp.com/api/candidates-profiles";
+import { URL_CANDIDATE_PROFILES, URL_RESOURCES,  URL_POSITIONS} from "../../common/constant/url";
+
 export default {
   name: "ListTemplate",
   props: ["DATA"],
@@ -335,6 +359,7 @@ export default {
           "interview_date",
           "feedback",
           "interview_result",
+          "work_date",
           {
             key: "action",
             label: "",
@@ -413,12 +438,12 @@ export default {
   },
   mounted() {
     // get data to position
-    axios.get(urlPositions).then((response) => {
+    axios.get(URL_POSITIONS).then((response) => {
       this.positions = response.data;
     });
 
     // get data to source
-    axios.get(urlSources).then((response) => {
+    axios.get(URL_RESOURCES).then((response) => {
       this.sources = response.data;
     });
   },
@@ -526,7 +551,7 @@ export default {
      * @param idProfile String
      */
     transformButtonFilteredResult(idProfile) {
-      const dataProfile = this.DATA.find((e) => e.id === idProfile);
+      const dataProfile = this.DATA.data.find((e) => e.id === idProfile);
 
       if (dataProfile.filtered_result === 2) {
         dataProfile.interview_result = 0;
@@ -537,7 +562,7 @@ export default {
       }
 
       axios
-        .put(urlCandidatesProfiles + "/" + idProfile, dataProfile)
+        .put(URL_CANDIDATE_PROFILES + "/" + idProfile, dataProfile)
         .catch(function (error) {
           console.log(error);
         });
@@ -548,7 +573,7 @@ export default {
      * @param idProfile Int
      */
     transformButtonInterviewResult(idProfile) {
-      const dataProfile = this.DATA.find((e) => e.id === idProfile);
+      const dataProfile = this.DATA.data.find((e) => e.id === idProfile);
 
       // dataProfile.interview_result++;
       if (dataProfile.interview_result < 3) {
@@ -559,11 +584,38 @@ export default {
         else dataProfile.interview_result++;
 
         axios
-          .put(urlCandidatesProfiles + "/" + idProfile, dataProfile)
+          .put(URL_CANDIDATE_PROFILES + "/" + idProfile, dataProfile)
           .catch(function (error) {
             console.log(error);
           });
       }
+    },
+
+    workDate(idProfile) {
+      const dataProfile = this.DATA.data.find((e) => e.id === idProfile);
+      console.warn(dataProfile.work_date);
+      // dataProfile.work_date = this.toUnixTime(dataProfile.work_date)
+
+      axios
+        .put(URL_CANDIDATE_PROFILES + "/" + idProfile, {
+          work_date: dataProfile.work_date,
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+
+    toUnixTime(time) {
+      return time ? new Date(time).getTime() : "";
+    },
+
+    /**
+     * changePage will an event changePage
+     * @param page String
+     *  @return boolean
+     */
+    changePage (page) {
+      this.$emit('change_page', page)
     },
   },
 };
@@ -579,9 +631,5 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.full-name{
-  
 }
 </style>
