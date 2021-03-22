@@ -8,8 +8,8 @@
 
       <CCardBody>
         <ListCandidate
-          :d-a-t-a="dataCandidate"
-          @change_page="updatePage($event)"
+          :DATA="dataCandidate"
+          @change_page="changePage($event)"
           @update_data="updateData"
         />
       </CCardBody>
@@ -54,11 +54,11 @@ export default {
     },
 
     /**
-     * updatePage update dataCandidate by page
+     * changePage update dataCandidate by page
      * @param page String
      * @return boolean
      */
-    updatePage (page) {
+    changePage (page) {
       axios.get(URL_CANDIDATE_PROFILES + '?page=' + page).then((response) => {
         this.dataCandidate = response.data
       })

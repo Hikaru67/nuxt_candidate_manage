@@ -84,7 +84,7 @@
             :v-model="item.filtered_result"
             :value="convertFilteredResult(item.filtered_result)"
             @click="transformButtonFilteredResult(item.id)"
-          >
+          />
         </td>
         <td v-else>
           <span class="">{{
@@ -112,7 +112,7 @@
             :value="convertInterviewResult(item.interview_result)"
             :v-model="item.interview_result"
             @click="transformButtonInterviewResult(item.id)"
-          >
+          />
         </td>
 
         <td v-else>
@@ -131,7 +131,12 @@
 
       <template #action="{ item }">
         <td class="row">
-          <CButton v-if="!isInterviewer()" color="primary" variant="ghost" @click="beforeSendEmail(item.id)">
+          <CButton
+            v-if="!isInterviewer()"
+            color="primary"
+            variant="ghost"
+            @click="beforeSendEmail(item.id)"
+          >
             <CIcon :content="$options.freeSet.cilArrowThickTop" />
           </CButton>
           <CButton color="primary" variant="ghost" @click="editData(item.id)">
@@ -148,8 +153,18 @@
         </td>
       </template>
     </CDataTable>
-    <CModal title="SEND EMAIL" color="primary" :show.sync="test" size="lg" backdrop>
-      <SendEmail2 :list-templates="JSON.parse(JSON.stringify(listTemplates))" :single-profile="singleProfile" @after_send_email="afterSendEmail" />
+    <CModal
+      title="SEND EMAIL"
+      color="primary"
+      :show.sync="test"
+      size="lg"
+      backdrop
+    >
+      <SendEmail2
+        :list-templates="JSON.parse(JSON.stringify(listTemplates))"
+        :single-profile="singleProfile"
+        @after_send_email="afterSendEmail"
+      />
       <div slot="footer" class="w-100" />
       <div slot="footer-wrapper" />
     </CModal>
@@ -164,98 +179,44 @@
 </template>
 
 <script>
-import { freeSet } from '@coreui/icons'
-import axios from 'axios'
-import SendEmail2 from '~/components/email/template/SendEmail2'
-import { apiGetEmailTemplates } from '~/api/apiEmail'
+import { freeSet } from "@coreui/icons";
+import axios from "axios";
+import SendEmail2 from "~/components/email/template/SendEmail2";
+import { apiGetEmailTemplates } from "~/api/apiEmail";
 
-import { URL_CANDIDATE_PROFILES, URL_RESOURCES, URL_POSITIONS } from '~/common/constant/url'
+import {
+  URL_CANDIDATE_PROFILES,
+  URL_RESOURCES,
+  URL_POSITIONS,
+} from "~/common/constant/url";
+
+import {
+  COLOR,
+  FILTERED_RESULTS,
+  INTERVIEW_RESULTS,
+} from "~/common/constant/nature";
+import { FIELDS } from "~/common/constant/field";
 
 export default {
-  name: 'ListTemplate',
+  name: "ListTemplate",
   components: { SendEmail2 },
   // eslint-disable-next-line vue/require-prop-types,vue/prop-name-casing
-  props: ['DATA'],
+  props: ["DATA"],
 
   freeSet,
 
-  data () {
+  data() {
     return {
       listTemplates: {
-        default: []
+        default: [],
       },
       listProfiles: [],
 
       singleProfile: {},
 
-      fields: [
-        [
-          {
-            key: 'id',
-            label: 'ID'
-          },
-          {
-            key: 'full_name',
-            label: 'Full Name'
-          },
-          {
-            key: 'position_id',
-            label: 'Position'
-          },
-          {
-            key: 'source_id',
-            label: 'Source'
-          },
-          'cv_link',
-          'received_date',
-          'filtered_result',
-          'interview_date',
-          'feedback',
-          'interview_result',
-          'work_date',
-          {
-            key: 'action',
-            label: ''
-          }
-        ],
-        [
-          {
-            key: 'id',
-            label: 'ID'
-          },
-          {
-            key: 'full_name',
-            label: 'Full Name'
-          },
-          {
-            key: 'position_id',
-            label: 'Position'
-          },
-          {
-            key: 'source_id',
-            label: 'Source'
-          },
-          'cv_link',
-          'received_date',
-          'filtered_result',
-          'interview_date',
-          'feedback',
-          'interview_result',
-          {
-            key: 'action',
-            label: ''
-          }
-        ]
-      ],
+      fields: FIELDS,
 
-      color: [
-        'btn-secondary',
-        'btn-success',
-        'btn-danger',
-        'btn-warning',
-        'btn-danger',
-        'btn-success'
-      ],
+      color: COLOR,
 
       positions: [],
 
@@ -263,41 +224,30 @@ export default {
 
       test: 0,
 
-      filtered_results: [
-        { value: 0, text: 'New' },
-        { value: 1, text: 'Pass' },
-        { value: 2, text: 'Fail' }
-      ],
+      filtered_results: FILTERED_RESULTS,
 
-      interview_results: [
-        { value: 0, text: '' },
-        { value: 2, text: 'Fail' },
-        { value: 1, text: 'Pass' },
-        { value: 3, text: 'Sent Mail Interview' },
-        { value: 4, text: 'Sent Mail Thanks' },
-        { value: 5, text: 'Sent Mail Work' }
-      ],
+      interview_results: INTERVIEW_RESULTS,
 
-      classObject: {}
-    }
+      classObject: {},
+    };
   },
-  mounted () {
-    this.DATA.received_date = this.convertDate(this.DATA.received_date)
+  mounted() {
+    this.DATA.received_date = this.convertDate(this.DATA.received_date);
 
     // get data to position
     axios.get(URL_POSITIONS).then((response) => {
-      this.positions = response.data
-    })
+      this.positions = response.data;
+    });
 
     // get data to source
     axios.get(URL_RESOURCES).then((response) => {
-      this.sources = response.data
-    })
+      this.sources = response.data;
+    });
   },
 
-  async created () {
-    this.listTemplates = await apiGetEmailTemplates(this.$axios)
-    this.listTemplates = JSON.parse(JSON.stringify(this.listTemplates))
+  async created() {
+    this.listTemplates = await apiGetEmailTemplates(this.$axios);
+    this.listTemplates = JSON.parse(JSON.stringify(this.listTemplates));
   },
 
   methods: {
@@ -305,16 +255,24 @@ export default {
      * `isInterviewer` will check role is interviewer
      *  @return boolean
      */
-    isInterviewer () {
-      return (this.$auth.user.role_id === 2)
+    isInterviewer() {
+      return this.$auth.user.role_id === 2;
     },
 
     /**
      * `convertDate` will convert format date
      * @param date String
      */
-    convertDate (date) {
-      return (date) ? new Date(date * 1000).toLocaleDateString('zh-Hans-CN', { year: 'numeric', month: '2-digit', day: '2-digit' }).replaceAll('/', '-') : ''
+    convertDate(date) {
+      return date
+        ? new Date(date * 1000)
+            .toLocaleDateString("zh-Hans-CN", {
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+            })
+            .replaceAll("/", "-")
+        : "";
     },
 
     /**
@@ -323,77 +281,77 @@ export default {
      * @param lastName String
      * @return String
      */
-    linkedName (firstName, lastName) {
-      return firstName + ' ' + lastName
+    linkedName(firstName, lastName) {
+      return firstName + " " + lastName;
     },
 
     /**
      * `convertPosition` will convert from position id to position name
      * @param id Integer
      */
-    convertPosition (id) {
+    convertPosition(id) {
       const result = this.positions.find((item) => {
-        return item.id === id
-      })
-      return result ? result.name : ''
+        return item.id === id;
+      });
+      return result ? result.name : "";
     },
 
     /**
      * `convertSource` will convert from source id to source name
      * @param id Integer
      */
-    convertSource (id) {
+    convertSource(id) {
       const result = this.sources.find((item) => {
-        return item.id === id
-      })
-      return result ? result.name : ''
+        return item.id === id;
+      });
+      return result ? result.name : "";
     },
 
     /**
      * `convertFilteredResult` will convert from value to text of FilteredResult
      * @param value Integer
      */
-    convertFilteredResult (value) {
+    convertFilteredResult(value) {
       const result = this.filtered_results.find((item) => {
-        return item.value === value
-      })
-      const temp = result ? result.text : ''
-      return temp
+        return item.value === value;
+      });
+      const temp = result ? result.text : "";
+      return temp;
     },
 
     /**
      * `convertInterviewResult` will convert from value to text of InterviewResult
      * @param value Integer
      */
-    convertInterviewResult (value) {
+    convertInterviewResult(value) {
       const result = this.interview_results.find((item) => {
-        return item.value === value
-      })
-      return result ? result.text : ''
+        return item.value === value;
+      });
+      return result ? result.text : "";
     },
 
     /**
      * `editData` will redirect to edit data page
      * @param id String
      */
-    editData (id) {
-      window.location.href = './' + id
+    editData(id) {
+      window.location.href = "./" + id;
     },
 
     /**
      * `deleteData` will delete data by id
      * @param id String
      */
-    deleteData (id) {
+    deleteData(id) {
       axios
-        .delete(URL_CANDIDATE_PROFILES + '/' + id)
+        .delete(URL_CANDIDATE_PROFILES + "/" + id)
         .then((res) => {
-          alert('Delete data success')
-          this.$emit('update_data')
+          alert("Delete data success");
+          this.$emit("update_data");
         })
         .catch(function (error) {
-          alert(error)
-        })
+          alert(error);
+        });
     },
 
     /**
@@ -401,53 +359,59 @@ export default {
      * @param idProfile String
      * @param idProfile String
      */
-    transformButtonFilteredResult (idProfile) {
-      const dataProfile = this.DATA.data.find(e => e.id === idProfile)
+    transformButtonFilteredResult(idProfile) {
+      const dataProfile = this.DATA.data.find((e) => e.id === idProfile);
 
       if (dataProfile.filtered_result === 2) {
-        dataProfile.interview_result = 0
+        dataProfile.interview_result = 0;
       }
-      dataProfile.filtered_result++
+      dataProfile.filtered_result++;
       if (dataProfile.filtered_result > 2) {
-        dataProfile.filtered_result = 1
+        dataProfile.filtered_result = 1;
       }
 
       axios
-        .put(URL_CANDIDATE_PROFILES + '/' + idProfile, dataProfile)
+        .put(URL_CANDIDATE_PROFILES + "/" + idProfile, dataProfile)
         .catch(function (error) {
-          console.log(error)
-        })
+          console.log(error);
+        });
     },
 
     /**
      * `transformButtonInterviewResult` update status of InterviewResult
      * @param idProfile Int
      */
-    transformButtonInterviewResult (idProfile) {
-      const dataProfile = this.DATA.data.find(e => e.id === idProfile)
+    transformButtonInterviewResult(idProfile) {
+      const dataProfile = this.DATA.data.find((e) => e.id === idProfile);
 
       // dataProfile.interview_result++;
       if (dataProfile.interview_result < 3) {
-        if (dataProfile.interview_result === 2) { dataProfile.interview_result = 1 } else if (dataProfile.interview_result === 1) { dataProfile.interview_result = 2 } else { dataProfile.interview_result++ }
+        if (dataProfile.interview_result === 2) {
+          dataProfile.interview_result = 1;
+        } else if (dataProfile.interview_result === 1) {
+          dataProfile.interview_result = 2;
+        } else {
+          dataProfile.interview_result++;
+        }
 
         axios
-          .put(URL_CANDIDATE_PROFILES + '/' + idProfile, dataProfile)
+          .put(URL_CANDIDATE_PROFILES + "/" + idProfile, dataProfile)
           .catch(function (error) {
-            console.log(error)
-          })
+            console.log(error);
+          });
       }
     },
 
-    workDate (idProfile) {
-      const dataProfile = this.DATA.data.find(e => e.id === idProfile)
+    workDate(idProfile) {
+      const dataProfile = this.DATA.data.find((e) => e.id === idProfile);
 
       axios
-        .put(URL_CANDIDATE_PROFILES + '/' + idProfile, {
-          work_date: dataProfile.work_date
+        .put(URL_CANDIDATE_PROFILES + "/" + idProfile, {
+          work_date: dataProfile.work_date,
         })
         .catch(function (error) {
-          console.log(error)
-        })
+          console.log(error);
+        });
     },
 
     /**
@@ -455,8 +419,8 @@ export default {
      * @param time String
      * @return String
      */
-    toUnixTime (time) {
-      return (time) ? new Date(time).getTime() / 1000 : ''
+    toUnixTime(time) {
+      return time ? new Date(time).getTime() / 1000 : "";
     },
 
     /**
@@ -464,32 +428,32 @@ export default {
      * @param page String
      *  @return boolean
      */
-    changePage (page) {
-      this.$emit('change_page', page)
+    changePage(page) {
+      this.$emit("change_page", page);
     },
 
-    beforeSendEmail (profileId) {
-      this.test = 1
-      this.getData(profileId)
+    beforeSendEmail(profileId) {
+      this.test = 1;
+      this.getData(profileId);
     },
 
-    async afterSendEmail () {
-      this.test = 0
-      await this.$emit('update_data')
+    async afterSendEmail() {
+      this.test = 0;
+      await this.$emit("update_data");
     },
 
     /**
      * `getData` will get data by id
      */
-    getData (profileId) {
+    getData(profileId) {
       this.data = axios
-        .get(URL_CANDIDATE_PROFILES + '/' + profileId)
+        .get(URL_CANDIDATE_PROFILES + "/" + profileId)
         .then((res) => {
-          this.singleProfile = res.data
-        })
-    }
-  }
-}
+          this.singleProfile = res.data;
+        });
+    },
+  },
+};
 </script>
 
 <style  scoped>
