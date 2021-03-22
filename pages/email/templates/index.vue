@@ -27,8 +27,8 @@ export default {
     }
   },
 
-  // redirect if current role isn't hr
   beforeCreate () {
+    // redirect if current role isn't hr
     if (this.$auth.user.role_id !== 1) {
       alert('You dont have permission !')
       // eslint-disable-next-line nuxt/no-globals-in-created

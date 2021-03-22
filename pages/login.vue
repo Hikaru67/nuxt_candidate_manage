@@ -91,16 +91,16 @@ export default {
       }
     }
   },
-  created () {
-    // eslint-disable-next-line no-console
-    console.log(this.$auth.user)
-    // alert(this.$auth.user)
+  beforeCreate () {
     if (this.$auth.$state.loggedIn) {
-      this.$auth.logout()
-      // this.$router.push('/')
+      // eslint-disable-next-line nuxt/no-globals-in-created
+      window.location.href = '/'
     }
   },
   methods: {
+    /**
+     * `login` will login account and redirect to home if that work be done
+     */
     async login () {
       try {
         await this.$auth
@@ -110,23 +110,19 @@ export default {
           .then(function () {
             alert('Login success !')
             // this.$router.push('/')
-            window.location.href = '/'
+            window.location.href = '/dashboard'
           })
       } catch (er) {
         alert(er)
       }
     },
+
+    /**
+     * `logout` will logout current account
+     */
     logout () {
       this.$auth.logout()
     }
-    // async logout () {
-    //   try {
-    //     await this.$auth.logout()
-    //       .then(() => this.$router.push('/'))
-    //   } catch (er) {
-    //     alert(er)
-    //   }
-    // }
   }
 }
 </script>
