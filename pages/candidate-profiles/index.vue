@@ -41,6 +41,7 @@ export default {
           this.dataCandidate = response.data
         })
     },
+    
     /**
      * changePage update dataCandidate by page
      * @param page String

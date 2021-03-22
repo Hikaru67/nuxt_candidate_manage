@@ -219,13 +219,13 @@
     <!-- button -->
     <CCardFooter>
       <div class="center">
-        <a href="./">
-          <CButton color="primary"> Return </CButton>
-        </a>
         <CButton v-if="this.id" color="success" @click="updateData">
           Update
         </CButton>
         <CButton v-else color="success" @click="addData"> Create </CButton>
+        <a href="./">
+          <CButton color="primary"> Return </CButton>
+        </a>
       </div>
     </CCardFooter>
   </div>
@@ -233,6 +233,7 @@
 
 <script>
 import axios from "axios";
+
 import {
   URL_CANDIDATE_PROFILES,
   URL_RESOURCES,
@@ -276,6 +277,7 @@ export default {
   },
 
   computed: {
+    
     /**
      * `isInterviewer` will check role is interviewer
      *  @return boolean
