@@ -130,7 +130,7 @@
       </template>
 
       <template #action="{ item }">
-        <td class="row" >
+        <td class="row" style="min-width: 150px!important">
           <CButton v-if="!isInterviewer()" color="primary" variant="ghost" @click="beforeSendEmail(item.id)">
             <CIcon :content="$options.freeSet.cilArrowThickTop" />
           </CButton>
