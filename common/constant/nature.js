@@ -16,7 +16,7 @@ export const FILTERED_RESULTS = [
 ]
 
 export const INTERVIEW_RESULTS = [
-  { value: 0, text: '' },
+  { value: 0, text: 'Waiting' },
   { value: 2, text: 'Fail' },
   { value: 1, text: 'Pass' },
   { value: 3, text: 'Sent Mail Interview' },

@@ -116,9 +116,10 @@
         </td>
 
         <td v-else>
-          <span class="">{{
+          <span />
+          <!--          <span class="">{{
             convertInterviewResult(item.interview_result)
-          }}</span>
+          }}</span>-->
         </td>
       </template>
 

@@ -108,7 +108,6 @@ export default {
             data: this.userForm
           })
           .then(function () {
-            alert('Login success !')
             // this.$router.push('/')
             window.location.href = '/dashboard'
           })
