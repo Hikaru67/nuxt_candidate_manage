@@ -41,7 +41,6 @@
             label="Receiver email"
             placeholder="Receiver email"
             horizontal
-            disabled
           />
         </CCol>
       </CRow>
@@ -65,6 +64,38 @@
           />
         </CCol>
       </CRow>
+      <CRow v-if="data.singleTemplate.id === 1">
+        <CCol sm="10">
+          <CInput
+            v-model="time"
+            label="Interview schedule"
+            type="datetime-local"
+            horizontal
+            @change="updateContent"
+          />
+        </CCol>
+      </CRow>
+      <CRow v-if="data.singleTemplate.id === 3">
+        <CCol sm="10">
+          <CInput
+            v-model="data.time"
+            label="Work schedule"
+            type="datetime-local"
+            horizontal
+            @change="updateContent"
+          />
+        </CCol>
+      </CRow>
+      <CRow v-if="data.singleTemplate.id === 3">
+        <CCol sm="10">
+          <CInput
+            v-model="data.salary"
+            label="Salary"
+            placeholder="Enter Salary"
+            horizontal
+          />
+        </CCol>
+      </CRow>
       <CRow>
         <CCol sm="10">
           <CTextarea
@@ -72,6 +103,7 @@
             label="Content email"
             placeholder="Content email"
             rows="10"
+            disabled
             horizontal
           />
         </CCol>
@@ -92,7 +124,7 @@ import axios from 'axios'
 import { URL_SEND_EMAIL, URL_CANDIDATE_PROFILES } from '~/common/constant/url'
 
 export default {
-  name: 'SendEmail2',
+  name: 'SendEmail',
   props: {
     listTemplates: {
       type: Array,
@@ -107,9 +139,12 @@ export default {
   data () {
     return {
       errors: [],
+      time: '',
       data: {
         singleTemplate: {},
-        singleProfile: {}
+        singleProfile: {},
+        time: '',
+        salary: ''
       }
     }
   },
@@ -124,6 +159,20 @@ export default {
     }
   },
   methods: {
+    updateContent () {
+      const ins = new Date(this.time).toDateString()
+      if (ins) {
+        if (this.data.singleTemplate.id === 1) {
+          const temp = this.data.singleTemplate.content.split('Thời gian: ')
+          console.log(temp[0] + 'Thời gian: ' + ins + temp[1])
+          this.data.singleTemplate.content = temp[0] + 'Thời gian: ' + ins + temp[1].substr(15, temp[1].length - 15)
+        } else {
+          const temp = this.data.singleTemplate.content.split('Xin vui lòng phản hồi cho chúng tôi trước ')
+          console.log(temp[0] + 'Thời gian: ' + ins + temp[1])
+          this.data.singleTemplate.content = temp[0] + 'Xin vui lòng phản hồi cho chúng tôi trước ' + ins + temp[1].substr(15, temp[1].length - 15)
+        }
+      }
+    },
     /**
      * `sendEmail` will send a request to send email
      */
@@ -137,6 +186,8 @@ export default {
         receiver: this.singleProfile.email,
         receiverName: this.linkedName,
         title: this.data.singleTemplate.title,
+        time: this.data.time,
+        salary: this.data.salary,
         content: this.data.singleTemplate.content
       }
       axios.post(URL_SEND_EMAIL, dataEmail)

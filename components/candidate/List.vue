@@ -130,7 +130,7 @@
       </template>
 
       <template #action="{ item }">
-        <td class="row">
+        <td class="row" style="min-width: 150px!important;">
           <CButton v-if="!isInterviewer()" color="primary" variant="ghost" @click="beforeSendEmail(item.id)">
             <CIcon :content="$options.freeSet.cilArrowThickTop" />
           </CButton>
@@ -149,7 +149,7 @@
       </template>
     </CDataTable>
     <CModal title="SEND EMAIL" color="primary" :show.sync="test" size="lg" backdrop>
-      <SendEmail2 :list-templates="JSON.parse(JSON.stringify(listTemplates))" :single-profile="singleProfile" @after_send_email="afterSendEmail" />
+      <SendEmail :list-templates="JSON.parse(JSON.stringify(listTemplates))" :single-profile="singleProfile" @after_send_email="afterSendEmail" />
       <div slot="footer" class="w-100" />
       <div slot="footer-wrapper" />
     </CModal>
@@ -166,14 +166,14 @@
 <script>
 import { freeSet } from '@coreui/icons'
 import axios from 'axios'
-import SendEmail2 from '~/components/email/template/SendEmail2'
+import SendEmail from '~/components/email/template/SendEmail'
 import { apiGetEmailTemplates } from '~/api/apiEmail'
 
 import { URL_CANDIDATE_PROFILES, URL_RESOURCES, URL_POSITIONS } from '~/common/constant/url'
 
 export default {
   name: 'ListTemplate',
-  components: { SendEmail2 },
+  components: { SendEmail },
   // eslint-disable-next-line vue/require-prop-types,vue/prop-name-casing
   props: ['DATA'],
 

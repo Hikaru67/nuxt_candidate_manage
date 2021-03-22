@@ -44,7 +44,9 @@ export default {
   freeSet,
   props: {
     // eslint-disable-next-line vue/require-default-prop
-    listTemplates: Array
+    listTemplates: Array,
+    // eslint-disable-next-line vue/require-default-prop,vue/prop-name-casing
+    HAHA: Object
   },
   data () {
     return {
