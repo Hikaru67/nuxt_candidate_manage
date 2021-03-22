@@ -170,7 +170,8 @@ import SendEmail from '~/components/email/template/SendEmail'
 import { apiGetEmailTemplates } from '~/api/apiEmail'
 
 import { FIELDS_CANDIDATE } from '~/common/constant/field'
-import { URL_CANDIDATE_PROFILES, URL_RESOURCES, URL_POSITIONS } from '~/common/constant/url'
+import { URL_CANDIDATE_PROFILES, URL_POSITIONS, URL_RESOURCES } from '~/common/constant/url'
+import { COLOR, FILTERED_RESULTS, INTERVIEW_RESULTS } from '~/common/constant/nature'
 
 export default {
   name: 'ListTemplate',
@@ -184,40 +185,17 @@ export default {
         default: []
       },
       listProfiles: [],
-
       singleProfile: {},
 
       fields: FIELDS_CANDIDATE,
-
-      color: [
-        'btn-secondary',
-        'btn-success',
-        'btn-danger',
-        'btn-warning',
-        'btn-danger',
-        'btn-success'
-      ],
+      color: COLOR,
 
       positions: [],
-
       sources: [],
-
       test: 0,
 
-      filtered_results: [
-        { value: 0, text: 'New' },
-        { value: 1, text: 'Pass' },
-        { value: 2, text: 'Fail' }
-      ],
-
-      interview_results: [
-        { value: 0, text: '' },
-        { value: 2, text: 'Fail' },
-        { value: 1, text: 'Pass' },
-        { value: 3, text: 'Sent Mail Interview' },
-        { value: 4, text: 'Sent Mail Thanks' },
-        { value: 5, text: 'Sent Mail Work' }
-      ],
+      filtered_results: FILTERED_RESULTS,
+      interview_results: INTERVIEW_RESULTS,
 
       classObject: {}
     }
@@ -298,8 +276,7 @@ export default {
       const result = this.filtered_results.find((item) => {
         return item.value === value
       })
-      const temp = result ? result.text : ''
-      return temp
+      return result ? result.text : ''
     },
 
     /**
@@ -356,6 +333,7 @@ export default {
       axios
         .put(URL_CANDIDATE_PROFILES + '/' + idProfile, dataProfile)
         .catch(function (error) {
+          // eslint-disable-next-line no-console
           console.log(error)
         })
     },
@@ -374,6 +352,7 @@ export default {
         axios
           .put(URL_CANDIDATE_PROFILES + '/' + idProfile, dataProfile)
           .catch(function (error) {
+            // eslint-disable-next-line no-console
             console.log(error)
           })
       }
@@ -387,6 +366,7 @@ export default {
           work_date: dataProfile.work_date
         })
         .catch(function (error) {
+          // eslint-disable-next-line no-console
           console.log(error)
         })
     },

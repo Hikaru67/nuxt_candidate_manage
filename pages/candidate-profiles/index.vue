@@ -3,9 +3,8 @@
     <CCardHeader class="center">
       <h3>List Profile</h3>
     </CCardHeader>
-
     <CCardBody>
-      <ListCandidate :DATA="dataCandidate" @change_page="changePage($event)" @update_data="updateData" />
+      <ListCandidate :d-a-t-a="dataCandidate" @change_page="changePage($event)" @update_data="updateData" />
     </CCardBody>
   </CCard>
 </template>
@@ -41,7 +40,7 @@ export default {
           this.dataCandidate = response.data
         })
     },
-    
+
     /**
      * changePage update dataCandidate by page
      * @param page String

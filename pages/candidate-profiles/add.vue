@@ -1,16 +1,5 @@
 <template>
-  <CCard>
-    <CCardHeader class="center">
-      <h3 v-if="$route.params.id">
-        Edit Candidate Profile
-      </h3>
-      <h3 v-else>
-        Create Candidate Profile
-      </h3>
-    </CCardHeader>
-
-    <AddTemplate />
-  </CCard>
+  <AddTemplate />
 </template>
 
 <script>
