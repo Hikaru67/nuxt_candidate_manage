@@ -21,7 +21,6 @@ export default {
       alert('You dont have permission !')
       // eslint-disable-next-line nuxt/no-globals-in-created
       window.location.href = '/dashboard'
-      // asda
     }
   },
 
