@@ -225,59 +225,54 @@
         <CButton v-if="this.id" color="success" @click="updateData">
           Update
         </CButton>
-        <CButton v-else color="success" @click="addData">
-          Create
-        </CButton>
+        <CButton v-else color="success" @click="addData"> Create </CButton>
       </div>
     </CCardFooter>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-import { URL_CANDIDATE_PROFILES, URL_RESOURCES, URL_POSITIONS } from '../../common/constant/url'
+import axios from "axios";
+import {
+  URL_CANDIDATE_PROFILES,
+  URL_RESOURCES,
+  URL_POSITIONS,
+} from "../../common/constant/url";
+
+import {
+  FILTERED_RESULTS,
+  INTERVIEW_RESULTS,
+} from "~/common/constant/nature";
 
 export default {
-  data () {
+  data() {
     return {
-
-      id: '',
+      id: "",
       errors: [],
       positions: [],
       sources: [],
 
       data: {
-        first_name: '',
-        last_name: '',
-        email: '',
-        phone: '',
+        first_name: "",
+        last_name: "",
+        email: "",
+        phone: "",
         position_id: 0,
         source_id: 0,
-        received_date: '',
+        received_date: "",
         filtered_result: 0,
-        interview_date: '',
-        feedback: '',
+        interview_date: "",
+        feedback: "",
         interview_result: 0,
-        cv_link: '',
-        note: 'NULL',
-        created_at: ''
+        cv_link: "",
+        note: "NULL",
+        created_at: "",
       },
 
-      filtered_results: [
-        { value: 0, text: 'New' },
-        { value: 1, text: 'Pass' },
-        { value: 2, text: 'Fail' }
-      ],
+      filtered_results: FILTERED_RESULTS,
 
-      interview_results: [
-        { value: 0, text: '' },
-        { value: 2, text: 'Fail' },
-        { value: 1, text: 'Pass' },
-        { value: 3, text: 'Sent Mail Interview' },
-        { value: 4, text: 'Sent Mail Thanks' },
-        { value: 5, text: 'Sent Mail Work' }
-      ]
-    }
+      interview_results: INTERVIEW_RESULTS
+    };
   },
 
   computed: {
@@ -285,131 +280,133 @@ export default {
      * `isInterviewer` will check role is interviewer
      *  @return boolean
      */
-    isInterviewer () {
-      if (this.$auth.user.role_id === 2) { return true }
-      return false
-    }
+    isInterviewer() {
+      if (this.$auth.user.role_id === 2) {
+        return true;
+      }
+      return false;
+    },
   },
 
-  mounted () {
+  mounted() {
     // call func getData if id is valid
     if (this.$route.params.id) {
-      this.id = this.$route.params.id
-      this.getData()
+      this.id = this.$route.params.id;
+      this.getData();
     }
 
     // get data to position
     axios.get(URL_POSITIONS).then((response) => {
-      this.positions = response.data
-    })
+      this.positions = response.data;
+    });
 
     // get data to source
     axios.get(URL_RESOURCES).then((response) => {
-      this.sources = response.data
-    })
+      this.sources = response.data;
+    });
   },
 
   methods: {
     /**
      * `getData` will get data by id
      */
-    getData () {
+    getData() {
       this.data = axios
-        .get(URL_CANDIDATE_PROFILES + '/' + this.id)
+        .get(URL_CANDIDATE_PROFILES + "/" + this.id)
         .then((res) => {
-          this.data = res.data
-          this.data.received_date = this.convertDate(this.data.received_date)
-        })
+          this.data = res.data;
+          this.data.received_date = this.convertDate(this.data.received_date);
+        });
     },
 
     /**
      * `addData` add a new data to database
      */
-    addData () {
+    addData() {
       if (this.validate()) {
-        this.data.received_date = this.toUnixTime(this.data.received_date)
+        this.data.received_date = this.toUnixTime(this.data.received_date);
         axios
           .post(URL_CANDIDATE_PROFILES, this.data)
           .then(() => {
-            alert('Add data success')
-            window.location.href = './'
+            alert("Add data success");
+            window.location.href = "./";
           })
           .catch(function (error) {
-            alert(error)
-          })
+            alert(error);
+          });
       }
-      window.scrollTo(0, 0)
+      window.scrollTo(0, 0);
     },
 
     /**
      * `updateData` update current data by id
      */
-    updateData () {
+    updateData() {
       if (!this.isInterviewer) {
         if (this.validate()) {
-          this.data.received_date = this.toUnixTime(this.data.received_date)
+          this.data.received_date = this.toUnixTime(this.data.received_date);
           axios
-            .put(URL_CANDIDATE_PROFILES + '/' + this.id, this.data)
+            .put(URL_CANDIDATE_PROFILES + "/" + this.id, this.data)
             .then(() => {
-              alert('Update data success')
-              window.location.href = './'
+              alert("Update data success");
+              window.location.href = "./";
             })
             .catch(function (error) {
-              alert(error)
-            })
+              alert(error);
+            });
         }
       } else {
         axios
-          .put(URL_CANDIDATE_PROFILES + '/' + this.id, {
-            feedback: this.data.feedback
+          .put(URL_CANDIDATE_PROFILES + "/" + this.id, {
+            feedback: this.data.feedback,
           })
           .then(() => {
-            alert('Update data success')
-            window.location.href = './'
+            alert("Update data success");
+            window.location.href = "./";
           })
           .catch(function (error) {
-            alert(error)
-          })
+            alert(error);
+          });
       }
 
-      window.scrollTo(0, 0)
+      window.scrollTo(0, 0);
     },
 
     /**
      * `validate` update current data by id
      */
-    validate () {
-      this.errors = []
+    validate() {
+      this.errors = [];
 
       if (!this.data.first_name) {
-        this.errors.push('First Name required.')
+        this.errors.push("First Name required.");
       }
 
       if (!this.data.last_name) {
-        this.errors.push('Last Name required.')
+        this.errors.push("Last Name required.");
       }
 
       if (!this.data.email) {
-        this.errors.push('Email required.')
+        this.errors.push("Email required.");
       }
 
       if (!this.data.phone) {
-        this.errors.push('Phone required.')
+        this.errors.push("Phone required.");
       }
 
       if (!this.data.position_id) {
-        this.errors.push('Position required.')
+        this.errors.push("Position required.");
       }
 
       if (!this.data.source_id) {
-        this.errors.push('Source required.')
+        this.errors.push("Source required.");
       }
 
       if (!this.data.received_date) {
-        this.errors.push('Received Date required.')
+        this.errors.push("Received Date required.");
       }
 
-      return !this.errors.length
+      return !this.errors.length;
     },
 
     /**
@@ -417,19 +414,27 @@ export default {
      * @param time String
      * @return String
      */
-    toUnixTime (time) {
-      return (time) ? new Date(time).getTime() / 1000 : ''
+    toUnixTime(time) {
+      return time ? new Date(time).getTime() / 1000 : "";
     },
 
     /**
      * `convertDate` will convert format date
      * @param date String
      */
-    convertDate (date) {
-      return (date) ? new Date(date * 1000).toLocaleDateString('zh-Hans-CN', { year: 'numeric', month: '2-digit', day: '2-digit' }).replaceAll('/', '-') : ''
-    }
-  }
-}
+    convertDate(date) {
+      return date
+        ? new Date(date * 1000)
+            .toLocaleDateString("zh-Hans-CN", {
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+            })
+            .replaceAll("/", "-")
+        : "";
+    },
+  },
+};
 </script>
 
 <style>
