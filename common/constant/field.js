@@ -19,7 +19,7 @@ export const FIELDS_CANDIDATE = [
   'received_date',
   'filtered_result',
   'interview_date',
-  'feedback',
+  // 'feedback',
   'interview_result',
   'work_date',
   {
@@ -47,7 +47,7 @@ export const FIELDS_CANDIDATE = [
   'received_date',
   'filtered_result',
   'interview_date',
-  'feedback',
+  // 'feedback',
   'interview_result',
   {
     key: 'action',
