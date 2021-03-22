@@ -169,6 +169,7 @@ import axios from 'axios'
 import SendEmail from '~/components/email/template/SendEmail'
 import { apiGetEmailTemplates } from '~/api/apiEmail'
 
+import { FIELDS_CANDIDATE } from '~/common/constant/field'
 import { URL_CANDIDATE_PROFILES, URL_RESOURCES, URL_POSITIONS } from '~/common/constant/url'
 
 export default {
@@ -176,9 +177,7 @@ export default {
   components: { SendEmail },
   // eslint-disable-next-line vue/require-prop-types,vue/prop-name-casing
   props: ['DATA'],
-
   freeSet,
-
   data () {
     return {
       listTemplates: {
@@ -188,65 +187,7 @@ export default {
 
       singleProfile: {},
 
-      fields: [
-        [
-          {
-            key: 'id',
-            label: 'ID'
-          },
-          {
-            key: 'full_name',
-            label: 'Full Name'
-          },
-          {
-            key: 'position_id',
-            label: 'Position'
-          },
-          {
-            key: 'source_id',
-            label: 'Source'
-          },
-          'cv_link',
-          'received_date',
-          'filtered_result',
-          'interview_date',
-          'feedback',
-          'interview_result',
-          'work_date',
-          {
-            key: 'action',
-            label: ''
-          }
-        ],
-        [
-          {
-            key: 'id',
-            label: 'ID'
-          },
-          {
-            key: 'full_name',
-            label: 'Full Name'
-          },
-          {
-            key: 'position_id',
-            label: 'Position'
-          },
-          {
-            key: 'source_id',
-            label: 'Source'
-          },
-          'cv_link',
-          'received_date',
-          'filtered_result',
-          'interview_date',
-          'feedback',
-          'interview_result',
-          {
-            key: 'action',
-            label: ''
-          }
-        ]
-      ],
+      fields: FIELDS_CANDIDATE,
 
       color: [
         'btn-secondary',

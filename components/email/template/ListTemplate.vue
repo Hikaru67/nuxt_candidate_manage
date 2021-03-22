@@ -38,6 +38,7 @@
 import axios from 'axios'
 import { freeSet } from '@coreui/icons'
 import { URL_EMAIL_TEMPLATES } from '~/common/constant/url'
+import { FIELDS_EMAIL_TEMPLATE } from '~/common/constant/field'
 
 export default {
   name: 'ListTemplate',
@@ -51,11 +52,7 @@ export default {
   data () {
     return {
       items: [],
-      fields: ['id', 'name', 'title', 'created_at',
-        {
-          key: 'action',
-          label: ''
-        }]
+      fields: FIELDS_EMAIL_TEMPLATE
     }
   },
   methods: {

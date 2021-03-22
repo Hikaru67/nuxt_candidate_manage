@@ -39,6 +39,7 @@
 import axios from 'axios'
 import { freeSet } from '@coreui/icons'
 import { URL_RESOURCES } from '~/common/constant/url'
+import { FIELDS_SOURCE } from '~/common/constant/field'
 
 export default {
   name: 'ListSource',
@@ -47,11 +48,7 @@ export default {
   freeSet,
   data () {
     return {
-      fields: ['id', 'name', 'created_at',
-        {
-          key: 'action',
-          label: ''
-        }]
+      fields: FIELDS_SOURCE
     }
   },
   methods: {
